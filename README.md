@@ -43,6 +43,11 @@
     .btn:hover{background:#e02815;}
     .fade-in{opacity:0;transform:translateY(30px);transition:all 1s ease;}
     .fade-in.visible{opacity:1;transform:translateY(0);}
+    /* Intro Section */
+    #intro {display:flex;align-items:center;gap:2em;flex-wrap:wrap;}
+    #intro img {width:250px;height:250px;object-fit:cover;border-radius:50%;box-shadow:0 0 15px rgba(252,61,33,0.5);}
+    #intro div {flex:1;}
+    #intro p {font-size:1.1em;line-height:1.7;}
     .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.2em;}
     .card{background:rgba(255,255,255,0.05);border:1px solid var(--accent-silver);
       padding:1.2em;border-radius:10px;transition:.4s;cursor:pointer;overflow:hidden;}
@@ -61,8 +66,10 @@
       padding:0.4em 0.6em;cursor:pointer;border-radius:50%;transition:background 0.3s;}
     .carousel button:hover{background:rgba(0,0,0,0.7);}
     .carousel .prev{left:10px;} .carousel .next{right:10px;}
+    /* Lightbox */
     #lightbox{display:none;position:fixed;z-index:99999;left:0;top:0;width:100%;height:100%;background:rgba(0,0,0,0.9);}
-    #lightbox img{margin:auto;display:block;max-width:85%;max-height:80%;border-radius:8px;}
+    #lightbox img{margin:auto;display:block;max-width:85%;max-height:75%;border-radius:8px;}
+    #lightbox .caption{color:white;text-align:center;margin-top:10px;font-size:1.1em;}
     #lightbox .close{position:absolute;top:20px;right:35px;color:#fff;font-size:40px;font-weight:bold;cursor:pointer;}
     .lightbox-prev,.lightbox-next{cursor:pointer;position:absolute;top:50%;color:white;font-size:2.5em;font-weight:bold;
       padding:10px;user-select:none;}
@@ -73,7 +80,7 @@
 <body>
   <!-- Navbar -->
   <nav>
-    <a href="#hero">Home</a><a href="#interests">Interests</a>
+    <a href="#hero">Home</a><a href="#intro">About</a>
     <a href="#skills">Skills</a><a href="#education">Education</a>
     <a href="#experience">Experience</a><a href="#projects">Projects</a>
     <a href="#contact">Contact</a>
@@ -81,9 +88,22 @@
   <!-- Hero -->
   <section id="hero">
     <h1>Nischal Raut</h1>
-    <h2>Aerospace Engineer | PhD Aspirant</h2>
+    <h2>Aerospace Engineer</h2>
     <p>"Bridging Computational Models and Experimental Validation."</p>
     <div class="cta"><a href="Nischal_Raut_CV.pdf" class="btn" target="_blank">📄 Download CV</a></div>
+  </section>
+  <!-- Intro -->
+  <section id="intro" class="fade-in">
+    <img src="profile.jpeg" alt="Profile Picture">
+    <div>
+      <h2>About Me</h2>
+      <p>
+        Hello! I'm Nischal Raut, an aspiring aerospace engineer passionate about unraveling the complexities of 
+        fluid dynamics and experimental aerodynamics. My journey reflects resilience, innovation, and a drive to 
+        bridge computational simulations with real-world experimental setups. I enjoy crafting engineering solutions 
+        that are both technically robust and practically impactful.
+      </p>
+    </div>
   </section>
   <!-- Projects -->
   <section id="projects" class="fade-in">
@@ -97,10 +117,10 @@
           <div class="carousel">
             <button class="prev">&#10094;</button>
             <div class="carousel-images">
-              <img src="windtunnel1.jpeg" class="active" alt="Wind Tunnel Image 1">
-              <img src="windtunnel2.jpeg" alt="Wind Tunnel Image 2">
-              <img src="windtunnel3.jpeg" alt="Wind Tunnel Image 3">
-</div>
+              <img src="windtunnel1.jpeg" class="active" alt="Wind Tunnel Front View" data-caption="Wind Tunnel Front View">
+              <img src="windtunnel2.jpeg" alt="Gust Generator" data-caption="Gust Generator">
+              <img src="windtunnel3.jpeg" alt="Flow Visualization" data-caption="Smoke Flow Visualization">
+            </div>
             <button class="next">&#10095;</button>
           </div>
         </div>
@@ -113,7 +133,8 @@
           <div class="carousel">
             <button class="prev">&#10094;</button>
             <div class="carousel-images">
-              <img src="images/b52_1.jpg" class="active" alt="B-52 Project Image">
+              <img src="b52_1.jpeg" class="active" alt="B-52 Payload" data-caption="B-52 Payload Integration">
+              <img src="b52_2.jpeg" alt="Launch Simulation" data-caption="Rocket Launch Simulation">
             </div>
             <button class="next">&#10095;</button>
           </div>
@@ -127,7 +148,8 @@
           <div class="carousel">
             <button class="prev">&#10094;</button>
             <div class="carousel-images">
-              <img src="images/glider1.jpg" class="active" alt="Glider Project Image">
+              <img src="glider1.jpeg" class="active" alt="Glider CAD" data-caption="CAD Model of Glider">
+              <img src="glider2.jpeg" alt="Glider Flight" data-caption="Glider Flight Test">
             </div>
             <button class="next">&#10095;</button>
           </div>
@@ -139,6 +161,7 @@
   <div id="lightbox">
     <span class="close">&times;</span>
     <img class="lightbox-content" id="lightbox-img">
+    <div class="caption" id="lightbox-caption"></div>
     <a class="lightbox-prev">&#10094;</a>
     <a class="lightbox-next">&#10095;</a>
   </div>
@@ -151,7 +174,7 @@
     <p>Location: Pulchowk, Lalitpur, Nepal</p>
   </section>
   <script>
-    // Card expand/collapse
+    // Expand/collapse
     document.querySelectorAll('.card h3').forEach(header=>{
       header.addEventListener('click',()=>{header.parentElement.classList.toggle('active');});
     });
@@ -169,12 +192,18 @@
     // Lightbox
     const lightbox=document.getElementById("lightbox");
     const lightImg=document.getElementById("lightbox-img");
+    const lightCaption=document.getElementById("lightbox-caption");
     const closeBtn=document.querySelector("#lightbox .close");
     const prev=document.querySelector(".lightbox-prev");
     const next=document.querySelector(".lightbox-next");
     let lightboxImages=[];let currentLight=0;
-    function openLightbox(images,index){lightbox.style.display="block";lightboxImages=Array.from(images);currentLight=index;showLightboxImg();}
-    function showLightboxImg(){lightImg.src=lightboxImages[currentLight].src;}
+    function openLightbox(images,index){
+      lightbox.style.display="block";lightboxImages=Array.from(images);currentLight=index;showLightboxImg();}
+    function showLightboxImg(){
+      const img=lightboxImages[currentLight];
+      lightImg.src=img.src;
+      lightCaption.textContent=img.getAttribute("data-caption")||"";
+    }
     closeBtn.onclick=()=>{lightbox.style.display="none";}
     prev.onclick=()=>{currentLight=(currentLight-1+lightboxImages.length)%lightboxImages.length;showLightboxImg();}
     next.onclick=()=>{currentLight=(currentLight+1)%lightboxImages.length;showLightboxImg();}
