@@ -207,8 +207,8 @@
           <p>B-52 modified as rocket carrier, simulated in X-Plane 12.</p>
           <div class="carousel"><button class="prev">&#10094;</button>
             <div class="carousel-images">
-              <img src="b52_1.jpeg" class="active" alt="B-52 Payload" data-caption="B-52 Payload Integration">
-              <img src="b52_2.jpeg" alt="Simulation" data-caption="Simulation Results">
+              <img src="b521.jpeg" class="active" alt="B-52 Payload" data-caption="B-52 Payload Integration">
+              <img src="b522.jpeg" alt="Simulation" data-caption="Simulation Results">
             </div><button class="next">&#10095;</button></div>
         </div>
       </div>
