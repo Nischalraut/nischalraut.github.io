@@ -59,7 +59,7 @@
   <!-- Hero -->
   <section id="hero">
     <h1>Nischal Raut</h1>
-    <h2>Aerospace Engineer | PhD Aspirant</h2>
+    <h2>Aerospace Engineer</h2>
     <p>"Bridging Computational Models and Experimental Validation."</p>
     <div class="cta"><a href="Nischal_Raut_CV.pdf" class="btn" target="_blank">📄 Download CV</a></div>
   </section>
