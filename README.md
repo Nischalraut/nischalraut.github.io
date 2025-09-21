@@ -94,7 +94,7 @@
   </section>
   <!-- Intro -->
   <section id="intro" class="fade-in">
-    <img src="profile.jpeg" alt="Profile Picture">
+    <img src="profile.jpg" alt="Profile Picture">
     <div>
       <h2>About Me</h2>
       <p>
