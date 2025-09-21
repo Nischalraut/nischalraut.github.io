@@ -100,8 +100,7 @@
               <img src="windtunnel1.jpeg" class="active" alt="Wind Tunnel Image 1">
               <img src="windtunnel2.jpeg" alt="Wind Tunnel Image 2">
               <img src="windtunnel3.jpeg" alt="Wind Tunnel Image 3">
-
-            </div>
+</div>
             <button class="next">&#10095;</button>
           </div>
         </div>
