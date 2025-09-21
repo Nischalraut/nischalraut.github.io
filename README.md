@@ -195,7 +195,8 @@
           <div class="carousel"><button class="prev">&#10094;</button>
             <div class="carousel-images">
               <img src="windtunnel1.jpeg" class="active" alt="Wind Tunnel" data-caption="Wind Tunnel Front View">
-              <img src="windtunnel2.jpeg" alt="Gust Generator" data-caption="Gust Generator mechanism">
+              <img src="windtunnel2.jpeg" alt="Gust Generator" data-caption="Wind Tunnel Side View">
+<img src="windtunnel3.jpeg" alt="Gust Generator" data-caption="Wind Tunnel under construction">
             </div><button class="next">&#10095;</button></div>
         </div>
       </div>
