@@ -304,8 +304,8 @@
       <button type="submit">Send Message</button>
     </form>
     <div class="social">
-      <p>Email: <a href="mailto:your-email@example.com">your-email@example.com</a></p>
-      <p>LinkedIn: <a href="https://www.linkedin.com/in/your-linkedin" target="_blank">Connect with me</a></p>
+      <p>Email: <a href="nischalraut6@gmail.com">your-email@example.com</a></p>
+      <p>LinkedIn: <a href=https://www.linkedin.com/in/nischal-raut-1b2227314/"" target="_blank">Connect with me</a></p>
       <p>Location: Your City, Country</p>
     </div>
   </section>
