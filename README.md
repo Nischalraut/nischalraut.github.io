@@ -117,7 +117,7 @@
   <!-- Hero with merged intro -->
   <section id="hero">
     <div class="hero-container">
-      <div class="hero-img"><img src="profile.jpeg" alt="Profile Picture"></div>
+      <div class="hero-img"><img src="profile.jpg" alt="Profile Picture"></div>
       <div class="hero-text">
         <h1>Nischal Raut</h1>
         <h2>Aerospace Engineer</h2>
