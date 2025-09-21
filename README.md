@@ -15,7 +15,7 @@
       --silver: #A9A9A9;
     }
     *{margin:0;padding:0;box-sizing:border-box;scroll-behavior:smooth}
-    body{font-family:'Open Sans',sans-serif;background:var(--dark-bg);color:var(--light-text);}
+    body{font-family:'Open Sans',sans-serif;color:var(--light-text);transition:background 1s ease;}
     h1,h2,h3,h4{font-family:'Montserrat',sans-serif;margin-bottom:.5em}
     a{text-decoration:none;color:inherit}
 
@@ -38,9 +38,7 @@
 
     /* Hero */
     #hero{padding-top:7em;min-height:calc(100vh - 70px);
-      display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;
-      background:linear-gradient(rgba(11,20,50,0.92),rgba(0,0,0,0.9)),
-      url('https://upload.wikimedia.org/wikipedia/commons/e/e2/CFD_visualization.png') center/cover no-repeat fixed;}
+      display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;}
     #hero h1{font-size:3em;font-weight:900;
       background:linear-gradient(90deg,#FC3D21,#ff6b6b,#FC3D21);
       background-size:200%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;
@@ -69,7 +67,12 @@
     .skill-card{background:rgba(255,255,255,0.05);border:1px solid var(--silver);border-radius:8px;padding:1em;text-align:center;transition:.3s;}
     .skill-card:hover{box-shadow:0 0 12px rgba(252,61,33,.5);transform:translateY(-4px);}
 
-    /* Education & Experience */
+    /* Education */
+    .edu-grid{display:grid;grid-template-columns:80px 1fr;gap:1em;align-items:center;margin-bottom:1em;}
+    .edu-grid img{width:80px;height:80px;object-fit:contain;border-radius:6px;background:white;padding:.3em;}
+    .edu-card{background:rgba(255,255,255,0.05);padding:1em;border-radius:8px;}
+
+    /* Experience / Projects */
     .card{background:rgba(255,255,255,0.05);border:1px solid var(--silver);
       padding:1.2em;border-radius:10px;transition:.4s;cursor:pointer;margin-bottom:1em;}
     .card h3{display:flex;justify-content:space-between;align-items:center;cursor:pointer;}
@@ -78,7 +81,7 @@
     .card-content{max-height:0;overflow:hidden;transition:max-height .6s ease,opacity .6s ease;padding-top:0;opacity:0;}
     .card.active .card-content{max-height:1000px;opacity:1;padding-top:1em;}
 
-    /* Projects Carousel + Lightbox */
+    /* Carousels / Lightbox */
     .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.2em;}
     .carousel{position:relative;margin-top:1em;overflow:hidden;border-radius:8px;}
     .carousel-images{display:flex;}
@@ -127,9 +130,8 @@
     <img src="profile.jpg" alt="Profile Picture">
     <div>
       <h2>About Me</h2>
-      <p>Hello! I'm Nischal Raut, an aspiring aerospace engineer passionate about aerodynamics and fluid dynamics.
-      My work blends computational simulations with rigorous experimental setups like wind tunnel testing. 
-      I believe in engineering that is innovative, resilient, and practical.</p>
+      <p>Hi! I'm Nischal Raut, aerospace engineer with deep interest in experimental aerodynamics & CFD. 
+      I combine computational flow modeling with hands-on fabrication to create innovative research setups.</p>
     </div>
   </section>
 
@@ -138,18 +140,27 @@
     <h2>Skills & Tools</h2>
     <div class="skill-grid">
       <div class="skill-card">CAD & Analysis: CATIA, ANSYS, SolidWorks, MATLAB</div>
-      <div class="skill-card">Programming: C (basic)</div>
+      <div class="skill-card">Programming: C (basic), Python, MATLAB scripting</div>
       <div class="skill-card">Simulation: Wind Tunnel Testing, Flow Visualization</div>
-      <div class="skill-card">Productivity: Word, Excel, PowerPoint, LaTeX, AutoCAD</div>
+      <div class="skill-card">Productivity: MS Office, LaTeX, AutoCAD</div>
     </div>
   </section>
 
   <!-- Education -->
   <section id="education" class="fade-in">
     <h2>Education</h2>
-    <div class="card"><h3>Bachelor’s in Aerospace Engineering</h3><div class="card-content"><p>IoE Pulchowk Campus, 2019-2025</p><p>Current Avg: 72.85%</p></div></div>
-    <div class="card"><h3>+2 Science</h3><div class="card-content"><p>Omega International College, GPA: 3.5</p></div></div>
-    <div class="card"><h3>Secondary School</h3><div class="card-content"><p>West Wing Secondary School, GPA: 4.0</p></div></div>
+    <div class="edu-grid">
+      <img src="ioe.jpeg" alt="Pulchowk IOE">
+      <div class="edu-card"><h3>Institute of Engineering, Pulchowk</h3><p>Bachelor's in Aerospace Engineering (2019–2025)</p></div>
+    </div>
+    <div class="edu-grid">
+      <img src="omega.jpeg" alt="Omega International College">
+      <div class="edu-card"><h3>Omega International College</h3><p>+2 Science, GPA: 3.5</p></div>
+    </div>
+    <div class="edu-grid">
+      <img src="westwing.jpeg" alt="West Wing Secondary School">
+      <div class="edu-card"><h3>West Wing Secondary School</h3><p>SEE GPA: 4.0</p></div>
+    </div>
   </section>
 
   <!-- Experience -->
@@ -157,9 +168,7 @@
     <h2>Experience</h2>
     <div class="card active"><h3>Intern – Airlift Technology Nepal (2024–Present)</h3>
       <div class="card-content" style="max-height:1000px;opacity:1;">
-        <ul><li>Drone mapping & photogrammetry for Kathmandu Metro City.</li>
-        <li>3D terrain models & orthomosaic generation.</li>
-        <li>Supported UAV mission planning & maintenance.</li></ul>
+        <ul><li>Drone mapping & photogrammetry projects.</li><li>3D terrain model & orthomosaic generation.</li><li>UAV operations & calibration.</li></ul>
       </div>
     </div>
   </section>
@@ -168,28 +177,53 @@
   <section id="projects" class="fade-in">
     <h2>Projects</h2>
     <div class="grid">
+      <!-- Wind Tunnel -->
       <div class="card">
         <h3>Subsonic Wind Tunnel (FYP)</h3>
-        <div class="card-content">
-          <p>Designed and fabricated a subsonic open-jet tunnel with gust generator.</p>
+        <div class="card-content"><p>Designed & fabricated an open-jet wind tunnel for gust simulation.</p>
           <div class="carousel"><button class="prev">&#10094;</button>
             <div class="carousel-images">
-              <img src="windtunnel1.jpeg" class="active" alt="Wind Tunnel Front View" data-caption="Wind Tunnel Front View">
-              <img src="windtunnel2.jpeg" alt="Gust Generator Close-up" data-caption="Gust Generator Close-up">
-              <img src="windtunnel3.jpeg" alt="Flow Visualization with smoke" data-caption="Flow Visualization">
+              <img src="windtunnel1.jpeg" class="active" alt="Wind Tunnel" data-caption="Wind Tunnel Front View">
+              <img src="windtunnel2.jpeg" alt="Gust Generator" data-caption="Gust Generator mechanism">
             </div><button class="next">&#10095;</button></div>
         </div>
+      </div>
+      <!-- B-52 -->
+      <div class="card">
+        <h3>B-52 Air Launch to Orbit</h3>
+        <div class="card-content"><p>B-52 modified as air-launch rocket carrier, simulated in X-Plane 12.</p>
+          <div class="carousel"><button class="prev">&#10094;</button>
+            <div class="carousel-images">
+              <img src="b52_1.jpeg" class="active" alt="B-52 Payload" data-caption="B-52 Payload Integration">
+              <img src="b52_2.jpeg" alt="Simulation" data-caption="Simulation Results">
+            </div><button class="next">&#10095;</button></div>
+        </div>
+      </div>
+      <!-- Styrofoam Glider -->
+      <div class="card"><h3>Styrofoam Glider</h3>
+        <div class="card-content"><p>Glider designed in XFLR5, fabricated and flight tested.</p>
+          <div class="carousel"><button class="prev">&#10094;</button>
+            <div class="carousel-images">
+              <img src="glider1.jpeg" class="active" alt="Glider CAD" data-caption="Glider CAD">
+              <img src="glider2.jpeg" alt="Glider Test" data-caption="Glider Test Flights">
+            </div><button class="next">&#10095;</button></div>
+        </div>
+      </div>
+      <!-- U-2 -->
+      <div class="card"><h3>U-2 Aircraft Conversion</h3>
+        <div class="card-content"><p>Designed modifications to adapt U-2 as payload test platform.</p></div>
+      </div>
+      <!-- Canteen System -->
+      <div class="card"><h3>Canteen Billing System (C)</h3>
+        <div class="card-content"><p>C program implementing billing with VAT and file storage.</p></div>
       </div>
     </div>
   </section>
 
   <!-- Lightbox -->
-  <div id="lightbox">
-    <span class="close">&times;</span>
-    <img class="lightbox-content" id="lightbox-img">
-    <div class="caption" id="lightbox-caption"></div>
-    <a class="lightbox-prev">&#10094;</a>
-    <a class="lightbox-next">&#10095;</a>
+  <div id="lightbox"><span class="close">&times;</span>
+    <img class="lightbox-content" id="lightbox-img"><div class="caption" id="lightbox-caption"></div>
+    <a class="lightbox-prev">&#10094;</a><a class="lightbox-next">&#10095;</a>
   </div>
 
   <!-- Contact -->
@@ -198,38 +232,42 @@
     <p>Email: <a href="mailto:nischalraut6@gmail.com">nischalraut6@gmail.com</a></p>
     <p>Phone: +977-9813980068</p>
     <p>LinkedIn: <a href="https://www.linkedin.com/in/nischal-raut-1b2227314/" target="_blank">linkedin.com/in/nischal-raut-1b2227314/</a></p>
-    <p>Location: Pulchowk, Lalitpur, Nepal</p>
   </section>
 
-  <!-- Scripts -->
   <script>
     // Navbar toggle
-    document.querySelector('.menu-toggle').addEventListener('click',()=>{
-      document.querySelector('nav ul').classList.toggle('active');
-    });
+    document.querySelector('.menu-toggle').onclick=()=>document.querySelector('nav ul').classList.toggle('active');
+
     // Expand cards
-    document.querySelectorAll('.card h3').forEach(h=>h.addEventListener('click',()=>{h.parentElement.classList.toggle('active');}));
-    // Carousels
-    document.querySelectorAll('.carousel').forEach(carousel=>{
-      const images=carousel.querySelectorAll('img');const prev=carousel.querySelector('.prev');const next=carousel.querySelector('.next');
-      let current=0;function show(idx){images.forEach((im,i)=>im.classList.toggle('active',i===idx));}
-      prev.onclick=()=>{current=(current-1+images.length)%images.length;show(current);}
-      next.onclick=()=>{current=(current+1)%images.length;show(current);}
-      images.forEach((im,idx)=>im.onclick=()=>openLightbox(images,idx));
+    document.querySelectorAll('.card h3').forEach(h=>h.addEventListener('click',()=>h.parentElement.classList.toggle('active')));
+
+    // Carousel logic
+    document.querySelectorAll('.carousel').forEach(c=>{
+      const imgs=c.querySelectorAll('img'); let cur=0;
+      function show(i){imgs.forEach((im,x)=>im.classList.toggle('active',x===i));}
+      c.querySelector('.prev').onclick=()=>{cur=(cur-1+imgs.length)%imgs.length;show(cur);}
+      c.querySelector('.next').onclick=()=>{cur=(cur+1)%imgs.length;show(cur);}
+      imgs.forEach((im,i)=>im.onclick=()=>openLightbox(imgs,i));
     });
+
     // Lightbox
-    const lightbox=document.getElementById('lightbox');const lightImg=document.getElementById('lightbox-img');const lightCaption=document.getElementById('lightbox-caption');
-    let lightImgs=[];let cur=0;
-    function openLightbox(images,index){lightbox.style.display='block';lightImgs=Array.from(images);cur=index;update();}
-    function update(){let im=lightImgs[cur];lightImg.src=im.src;lightCaption.textContent=im.dataset.caption||im.alt;}
-    document.querySelector('.close').onclick=()=>lightbox.style.display='none';
-    document.querySelector('.lightbox-prev').onclick=()=>{cur=(cur-1+lightImgs.length)%lightImgs.length;update();}
-    document.querySelector('.lightbox-next').onclick=()=>{cur=(cur+1)%lightImgs.length;update();}
-    lightbox.onclick=e=>{if(e.target===lightbox)lightbox.style.display='none';}
-    // Fade animation
+    const lb=document.getElementById('lightbox'),lbImg=document.getElementById('lightbox-img'),lbCap=document.getElementById('lightbox-caption');
+    let lbImgs=[],cur=0;
+    function openLightbox(imgs,i){lb.style.display='block';lbImgs=[...imgs];cur=i;update();}
+    function update(){lbImg.src=lbImgs[cur].src;lbCap.textContent=lbImgs[cur].dataset.caption||lbImgs[cur].alt;}
+    document.querySelector('.close').onclick=()=>lb.style.display='none';
+    document.querySelector('.lightbox-prev').onclick=()=>{cur=(cur-1+lbImgs.length)%lbImgs.length;update();}
+    document.querySelector('.lightbox-next').onclick=()=>{cur=(cur+1)%lbImgs.length;update();}
+    lb.onclick=e=>{if(e.target===lb)lb.style.display='none';}
+
+    // Fade scroll
     const faders=document.querySelectorAll('.fade-in');
     const obs=new IntersectionObserver((entries,o)=>{entries.forEach(ent=>{if(ent.isIntersecting){ent.target.classList.add('visible');o.unobserve(ent.target);}});},{threshold:.15});
     faders.forEach(f=>obs.observe(f));
+
+    // Smooth background color change on scroll
+    const colors=["#0b1432","#0B3D91","#162447","#1f4068","#2b2e4a","#3c415c"];
+    window.addEventListener("scroll",()=>{let h=Math.max(document.body.scrollHeight,document.documentElement.scrollHeight)-window.innerHeight;let p=window.scrollY/h;let idx=Math.floor(p*(colors.length-1));document.body.style.background=colors[idx];});
   </script>
 </body>
 </html>
