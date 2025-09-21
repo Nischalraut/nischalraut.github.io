@@ -1,16 +1,11 @@
-
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Nischal Raut | Aerospace Portfolio</title>
-
-  <!-- Google Fonts -->
+  <!-- Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&family=Open+Sans:wght@400;500&display=swap" rel="stylesheet">
-
-  <!-- Chart.js CDN -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
   <style>
     :root {
       --primary-dark: #0b1432;
@@ -18,349 +13,141 @@
       --accent-red: #FC3D21;
       --accent-silver: #A9A9A9;
       --text-light: #f1f1f1;
-      --bg-gradient: linear-gradient(135deg, #0b1432, #0B3D91);
     }
-
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      scroll-behavior: smooth;
-    }
-
-    body {
-      font-family: 'Open Sans', sans-serif;
-      background: var(--primary-dark);
-      color: var(--text-light);
-      line-height: 1.6;
-    }
-
-    h1, h2, h3, h4 {
-      font-family: 'Montserrat', sans-serif;
-      margin-bottom: 0.5em;
-    }
-
-    a { text-decoration: none; }
-
-    /* Navbar */
-    nav {
-      position: fixed;
-      width: 100%;
-      top: 0;
-      left: 0;
-      background: rgba(11,61,145,0.9);
-      backdrop-filter: blur(6px);
-      display: flex;
-      justify-content: center;
-      padding: 1em 0;
-      z-index: 999;
-      transition: background 0.4s;
-    }
-    nav a {
-      color: var(--text-light);
-      font-weight: 600;
-      margin: 0 1em;
-      position: relative;
-      transition: color 0.3s;
-    }
-    nav a:hover {
-      color: var(--accent-red);
-    }
-    nav a::after {
-      content: '';
-      position: absolute;
-      width: 0%;
-      height: 2px;
-      bottom: -4px;
-      left: 0;
-      background: var(--accent-red);
-      transition: width .3s;
-    }
-    nav a:hover::after {
-      width: 100%;
-    }
-
-    section {
-      padding: 6em 1.5em;
-      max-width: 1100px;
-      margin: auto;
-      min-height: 100vh;
-      transition: background 1s ease;
-    }
-
-    /* Hero Section */
-    #hero {
-      background: linear-gradient(rgba(11,20,50,0.9), rgba(0,0,0,0.9)), url('https://upload.wikimedia.org/wikipedia/commons/e/e2/CFD_visualization.png') center/cover no-repeat;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      color: var(--text-light);
-    }
-    #hero h1 { font-size: 2.8em; color: var(--accent-red); }
-    #hero h2 { font-size: 1.2em; color: var(--accent-silver); }
-    #hero p { font-size: 1.1em; margin-top: 0.5em; }
-
-    /* About */
-    #about p {
-      max-width: 800px;
-      margin: auto;
-      font-size: 1.1em;
-      text-align: center;
-    }
-
-    /* Academic Journey */
-    #academic canvas {
-      max-width: 800px !important;
-      margin: 2em auto;
-      display: block;
-      background: rgba(255,255,255,0.05);
-      border-radius: 10px;
-      padding: 1em;
-    }
-    #academic .note {
-      text-align: center;
-      color: var(--accent-silver);
-    }
-
-    /* Skills */
-    #skills .skill-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 1.5em;
-      margin-top: 2em;
-    }
-    .skill-card {
-      border: 1px solid var(--accent-silver);
-      border-radius: 8px;
-      padding: 1.2em;
-      text-align: center;
-      transition: all .4s ease;
-      background: rgba(255,255,255,0.05);
-    }
-    .skill-card:hover {
-      transform: translateY(-6px) scale(1.04);
-      border-color: var(--accent-red);
-      box-shadow: 0px 0px 18px rgba(252,61,33,0.4);
-    }
-
-    /* Projects */
-    .project {
-      margin-bottom: 3em;
-      background: rgba(255,255,255,0.05);
-      padding: 2em;
-      border-radius: 10px;
-      transition: transform .4s ease;
-    }
-    .project:hover {
-      transform: translateY(-4px);
-      box-shadow: 0px 0px 14px rgba(252,61,33,0.3);
-    }
-    .achievements { margin-top: 1em; padding-left: 1.2em; }
-
-    .small-projects {
-      display: grid;
-      grid-template-columns: repeat(auto-fit,minmax(250px,1fr));
-      gap: 1.2em;
-      margin-top: 2em;
-    }
-    .proj-card {
-      border: 1px solid var(--accent-silver);
-      border-radius: 6px;
-      padding: 1em;
-      background: rgba(255,255,255,0.05);
-      transition: all .3s;
-    }
-    .proj-card:hover {
-      transform: scale(1.05);
-      border-color: var(--primary-blue);
-      box-shadow: 0px 0px 12px rgba(11,61,145,0.4);
-    }
-
-    /* Contact */
-    #contact form {
-      display: flex;
-      flex-direction: column;
-      max-width: 500px;
-      margin: auto;
-    }
-    #contact input, #contact textarea {
-      padding: 0.8em;
-      margin-bottom: 1em;
-      border: none;
-      border-radius: 4px;
-      background: rgba(255,255,255,0.1);
-      color: var(--text-light);
-    }
-    #contact button {
-      background: var(--accent-red);
-      color: white;
-      border: none;
-      padding: 0.9em;
-      border-radius: 4px;
-      cursor: pointer;
-      font-weight: bold;
-      transition: background 0.3s;
-    }
-    #contact button:hover {
-      background: #e02815;
-    }
-    #contact .social {
-      text-align: center;
-      margin-top: 1.5em;
-    }
-    #contact .social a {
-      margin: 0 0.5em;
-      color: var(--accent-red);
-      font-weight: bold;
-      transition: color 0.3s;
-    }
-    #contact .social a:hover {
-      color: var(--accent-silver);
-    }
-
+    *{margin:0;padding:0;box-sizing:border-box;scroll-behavior:smooth}
+    body{font-family:'Open Sans',sans-serif;background:var(--primary-dark);color:var(--text-light);line-height:1.6;}
+    h1,h2,h3,h4{font-family:'Montserrat',sans-serif;margin-bottom:.5em}
+    nav{position:fixed;width:100%;top:0;padding:1em 0;background:rgba(11,61,145,0.9);
+      backdrop-filter: blur(8px);display:flex;justify-content:center;z-index:999;}
+    nav a{color:var(--text-light);margin:0 1em;font-weight:600;position:relative;transition:.3s;}
+    nav a:hover{color:var(--accent-red);}
+    nav a::after{content:"";position:absolute;bottom:-4px;left:0;width:0%;height:2px;background:var(--accent-red);transition:.3s;}
+    nav a:hover::after{width:100%;}
+    section{padding:6em 1.5em;max-width:1100px;margin:auto;min-height:100vh}
+    /* Hero */
+    #hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;
+      background:linear-gradient(rgba(11,20,50,0.9),rgba(0,0,0,0.9)),url('https://upload.wikimedia.org/wikipedia/commons/e/e2/CFD_visualization.png') center/cover no-repeat;}
+    #hero h1{font-size:3em;color:var(--accent-red);}
+    #hero h2{color:var(--accent-silver);margin-bottom:.8em}
+    #hero p{max-width:600px;}
+    .cta{margin-top:1.5em;}
+    .btn{display:inline-block;padding:.7em 1.3em;border-radius:5px;font-weight:bold;text-decoration:none;color:white;
+      background:var(--accent-red);transition:.3s;}
+    .btn:hover{background:#e02815;}
+    /* Cards */
+    .card{background:rgba(255,255,255,0.05);border:1px solid var(--accent-silver);
+      padding:1.2em;border-radius:10px;transition:.4s;cursor:pointer;overflow:hidden;}
+    .card:hover{transform:translateY(-4px);box-shadow:0 0 14px rgba(252,61,33,0.4);}
+    .card h3{display:flex;justify-content:space-between;align-items:center;cursor:pointer;}
+    .card h3::after{content:"▼";font-size:.8em;transition:transform .3s;}
+    .card.active h3::after{transform:rotate(-180deg);}
+    .card-content{max-height:0;overflow:hidden;transition:max-height 0.6s ease,opacity 0.6s ease;padding-top:0;opacity:0;}
+    .card.active .card-content{max-height:1000px;opacity:1;padding-top:1em;}
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.2em;}
     /* Animations */
-    .fade-in {
-      opacity: 0;
-      transform: translateY(30px);
-      transition: all 1s ease-out;
-    }
-    .fade-in.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
+    .fade-in{opacity:0;transform:translateY(30px);transition:all 1s ease;}
+    .fade-in.visible{opacity:1;transform:translateY(0);}
   </style>
 </head>
 <body>
-  <!-- Navbar -->
   <nav>
-    <a href="#hero">Home</a>
-    <a href="#about">About</a>
-    <a href="#academic">Academic</a>
-    <a href="#skills">Skills</a>
-    <a href="#projects">Projects</a>
+    <a href="#hero">Home</a><a href="#interests">Interests</a>
+    <a href="#skills">Skills</a><a href="#education">Education</a>
+    <a href="#experience">Experience</a><a href="#projects">Projects</a>
     <a href="#contact">Contact</a>
   </nav>
-
   <!-- Hero -->
   <section id="hero">
     <h1>Nischal Raut</h1>
     <h2>Aerospace Engineer | PhD Aspirant</h2>
     <p>"Bridging Computational Models and Experimental Validation."</p>
+    <div class="cta"><a href="Nischal_Raut_CV.pdf" class="btn" target="_blank">📄 Download CV</a></div>
   </section>
-
-  <!-- About -->
-  <section id="about" class="fade-in">
-    <h2>About Me</h2>
-    <p>
-      I am an aspiring researcher pursuing excellence in Aerospace Engineering, driven to contribute to Experimental Aerodynamics and Fluid Dynamics. 
-      My journey demonstrates resilience and steady growth, empowering me to combine computational and experimental perspectives 
-      in turbulence and flow analysis towards innovative aerospace solutions.
-    </p>
-  </section>
-
-  <!-- Academic -->
-  <section id="academic" class="fade-in">
-    <h2>Academic Journey</h2>
-    <p class="note">From 59.6% in Semester 1 to 89.2% in Semester 8.</p>
-    <canvas id="gpaChart"></canvas>
-    <p>An early challenge in Control Systems strengthened my resolve, leading to consistent improvement and academic maturity.</p>
-  </section>
-
-  <!-- Skills -->
-  <section id="skills" class="fade-in">
-    <h2>Technical Skills</h2>
-    <div class="skill-grid">
-      <div class="skill-card">CFD Analysis (ANSYS/OpenFOAM)</div>
-      <div class="skill-card">Wind Tunnel Design & Operation</div>
-      <div class="skill-card">Turbulence Analysis</div>
-      <div class="skill-card">CAD (SolidWorks)</div>
-      <div class="skill-card">Data Acquisition Systems</div>
-      <div class="skill-card">Fabrication (CNC, Welding, Carpentry)</div>
-      <div class="skill-card">Python/MATLAB for Data Processing</div>
-    </div>
-  </section>
-
   <!-- Projects -->
   <section id="projects" class="fade-in">
-    <h2>Key Projects</h2>
-    <div class="project">
-      <h3>Subsonic Wind Tunnel with Oscillating Vane Gust Generator</h3>
-      <p>Computational design, structural fabrication, and rigorous experimental validation of a low-turbulence wind tunnel.</p>
-      <ul class="achievements">
-        <li>Turbulence Intensity: <b>0.88% (test section)</b>, <b>2.32% (outlet)</b></li>
-        <li>Average flow velocity: <b>8.6 m/s</b> (modeled: 10.15 m/s)</li>
-        <li>Oscillating vane gust generator with smoke visualization</li>
-        <li>50-point grid experimental testing</li>
-        <li>Redesigned via CNC fabrication overcoming turbulence in prior model</li>
-      </ul>
-      <p><b>Impact:</b> Now used as a foundational research tool supporting other peer projects.</p>
-    </div>
-
-    <div class="small-projects">
-      <div class="proj-card">
-        <h4>Hypersonics & Propulsion</h4>
-        <p>Elective coursework projects on high-speed aerodynamics and propulsion thermodynamics.</p>
+    <h2>Projects</h2>
+    <div class="grid">
+      <!-- Project Card -->
+      <div class="card">
+        <h3>Subsonic Wind Tunnel (FYP)</h3>
+        <div class="card-content">
+          <p>Designed and fabricated subsonic open-jet tunnel with cosine-profile gust generator integrated for unsteady aerodynamics research.</p>
+          <ul>
+            <li>Achieved low turbulence intensity of 0.88% (test section).</li>
+            <li>50-point grid experimental testing with smoke visualization.</li>
+            <li>Now used as platform for multiple peer student projects.</li>
+          </ul>
+        </div>
       </div>
-      <div class="proj-card">
-        <h4>Peer Collaborations</h4>
-        <p>Supported projects on wing vibration analysis and active fin control using wind tunnel experiments.</p>
+      <!-- Project Card -->
+      <div class="card">
+        <h3>B-52 Air Launch to Orbit</h3>
+        <div class="card-content">
+          <p>Conceptual modification of B-52 airframe for rocket carriage and release (~28,000 lbs rocket at 50,000 ft altitude).</p>
+          <ul>
+            <li>Preliminary aircraft/mission design: MTOW, CG, structural loads.</li>
+            <li>Simulated deployment sequence using X-Plane 12 for aerodynamics.</li>
+            <li>Analyzed performance using Excel: velocity, pitch, altitude profiles.</li>
+          </ul>
+        </div>
+      </div>
+      <!-- Project Card -->
+      <div class="card">
+        <h3>F-15 Scale Model Study</h3>
+        <div class="card-content">
+          <p>Performed lift-drag coefficient scaling study for subsonic F-15 model.</p>
+          <p>Tools Used: MATLAB + CFD integration.</p>
+        </div>
+      </div>
+      <!-- Project Card -->
+      <div class="card">
+        <h3>U-2 Aircraft Conversion</h3>
+        <div class="card-content">
+          <p>Converted U-2 as aerial testbed platform for payload deployment experiments, focusing on aerodynamic and structural redesign feasibility.</p>
+        </div>
+      </div>
+      <!-- Project Card -->
+      <div class="card">
+        <h3>Styrofoam Glider</h3>
+        <div class="card-content">
+          <p>Designed and fabricated low-speed, high-lift glider using XFLR5 analysis.</p>
+          <p>Fabricated with styrofoam and reinforcements, validated in real flights.</p>
+        </div>
+      </div>
+      <!-- Project Card -->
+      <div class="card">
+        <h3>Canteen Billing System (C)</h3>
+        <div class="card-content">
+          <p>Developed a C program for billing system with VAT computation, file saving, searching, and automated receipts.</p>
+        </div>
       </div>
     </div>
   </section>
-
   <!-- Contact -->
   <section id="contact" class="fade-in">
     <h2>Contact</h2>
-    <form>
-      <input type="text" placeholder="Your Name" required>
-      <input type="email" placeholder="Your Email" required>
-      <textarea rows="5" placeholder="Your Message" required></textarea>
-      <button type="submit">Send Message</button>
-    </form>
-    <div class="social">
-      <p>Email: <a href="mailto:nischalraut6@gmail.com">nischalraut6@gmail.com</a></p>
-      <p>LinkedIn: <a href="https://www.linkedin.com/in/nischal-raut-1b2227314/" target="_blank">My LinkedIn Profile</a></p>
-      <p>Location: Your City, Country</p>
-    </div>
+    <p>Email: <a href="mailto:nischalraut6@gmail.com">nischalraut6@gmail.com</a></p>
+    <p>Phone: +977-9813980068</p>
+    <p>LinkedIn: <a href="https://www.linkedin.com/in/nischal-raut-1b2227314/" target="_blank">linkedin.com/in/nischal-raut-1b2227314/</a></p>
+    <p>Location: Pulchowk, Lalitpur, Nepal</p>
   </section>
-
   <script>
-    // GPA Chart
-    const ctx = document.getElementById('gpaChart').getContext('2d');
-    new Chart(ctx, {
-      type: 'line',
-      data: {
-        labels: ['Sem 1','Sem 2','Sem 3','Sem 4','Sem 5','Sem 6','Sem 7','Sem 8'],
-        datasets: [{
-          label: 'Semester %',
-          data: [59.63, 67.43, 65.92, 69.14, 78.4, 83.25, 86.15, 89.2],
-          borderColor: '#FC3D21',
-          backgroundColor: 'rgba(252,61,33,0.2)',
-          fill: true,
-          tension: 0.3,
-          pointBackgroundColor: '#fff',
-          pointRadius: 5
-        }]
-      },
-      options: {
-        responsive: true,
-        plugins: { legend: { display: false } },
-        scales: {
-          y: { min: 50, max: 100, title: { display: true, text: '% Score' } }
-        }
-      }
-    });
-
-    // Scroll animation
-    const faders = document.querySelectorAll('.fade-in');
-    const appearOnScroll = new IntersectionObserver((entries, obs)=>{
-      entries.forEach(entry=>{
-        if(entry.isIntersecting){ entry.target.classList.add('visible'); obs.unobserve(entry.target); }
+    // Card expand/collapse
+    document.querySelectorAll('.card').forEach(card=>{
+      card.addEventListener('click',()=>{
+        card.classList.toggle('active');
       });
-    },{threshold:0.15, rootMargin:"0px 0px -50px 0px"});
-
+    });
+    // Fade animation
+    const faders=document.querySelectorAll('.fade-in');
+    const appearOnScroll=new IntersectionObserver((entries,observer)=>{
+      entries.forEach(entry=>{
+        if(entry.isIntersecting){
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    },{threshold:0.15,rootMargin:"0px 0px -50px"});
     faders.forEach(f=>appearOnScroll.observe(f));
   </script>
 </body>
