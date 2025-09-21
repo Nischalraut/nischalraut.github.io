@@ -150,15 +150,15 @@
   <section id="education" class="fade-in">
     <h2>Education</h2>
     <div class="edu-grid">
-      <img src="ioe.jpeg" alt="Pulchowk IOE">
+      <img src="ioe.png" alt="Pulchowk IOE">
       <div class="edu-card"><h3>Institute of Engineering, Pulchowk</h3><p>Bachelor's in Aerospace Engineering (2019–2025)</p></div>
     </div>
     <div class="edu-grid">
-      <img src="omega.jpeg" alt="Omega International College">
+      <img src="omega.png" alt="Omega International College">
       <div class="edu-card"><h3>Omega International College</h3><p>+2 Science, GPA: 3.5</p></div>
     </div>
     <div class="edu-grid">
-      <img src="westwing.jpeg" alt="West Wing Secondary School">
+      <img src="westwing.png" alt="West Wing Secondary School">
       <div class="edu-card"><h3>West Wing Secondary School</h3><p>SEE GPA: 4.0</p></div>
     </div>
   </section>
