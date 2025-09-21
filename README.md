@@ -1,162 +1,188 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Nischal Raut | Aerospace Portfolio</title>
-  <!-- Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&family=Open+Sans:wght@400;500&display=swap" rel="stylesheet">
+  <title>Nischal Raut | Aerospace Engineer</title>
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;900&family=Open+Sans:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
     :root {
-      --primary-dark: #0b1432;
+      --dark-bg: #0b1432;
       --primary-blue: #0B3D91;
       --accent-red: #FC3D21;
-      --accent-silver: #A9A9A9;
-      --text-light: #f1f1f1;
+      --light-text: #f1f1f1;
+      --silver: #A9A9A9;
     }
     *{margin:0;padding:0;box-sizing:border-box;scroll-behavior:smooth}
-    body{font-family:'Open Sans',sans-serif;background:var(--primary-dark);color:var(--text-light);line-height:1.6;}
+    body{font-family:'Open Sans',sans-serif;background:var(--dark-bg);color:var(--light-text);}
     h1,h2,h3,h4{font-family:'Montserrat',sans-serif;margin-bottom:.5em}
     a{text-decoration:none;color:inherit}
-    nav{position:fixed;width:100%;top:0;padding:1em 0;background:rgba(11,61,145,0.9);
-      backdrop-filter: blur(8px);display:flex;justify-content:center;z-index:999;}
-    nav a{color:var(--text-light);margin:0 1em;font-weight:600;position:relative;transition:.3s;}
-    nav a:hover{color:var(--accent-red);}
-    nav a::after{content:"";position:absolute;bottom:-4px;left:0;width:0%;height:2px;background:var(--accent-red);transition:.3s;}
-    nav a:hover::after{width:100%;}
-    section{padding:6em 1.5em;max-width:1100px;margin:auto;min-height:100vh;position:relative;z-index:1}
-    section::before{content:"";position:absolute;inset:0;background:rgba(11,20,50,0.85);z-index:-2;}
-    section::after{content:"";position:absolute;inset:0;background-size:cover;background-position:center;opacity:0.08;z-index:-1;}
-    #hero::after{background-image:url('https://upload.wikimedia.org/wikipedia/commons/e/e2/CFD_visualization.png');}
-    #interests::after{background-image:url('https://upload.wikimedia.org/wikipedia/commons/5/54/Airplane_blueprint.png');}
-    #skills::after{background-image:url('https://upload.wikimedia.org/wikipedia/commons/1/1e/Fluid_flow_streamlines.svg');}
-    #education::after{background-image:url('https://upload.wikimedia.org/wikipedia/commons/3/32/Technical_drawing_tools.jpg');}
-    #experience::after{background-image:url('https://upload.wikimedia.org/wikipedia/commons/2/2c/UAV_drone_in_flight.jpg');}
-    #projects::after{background-image:url('https://upload.wikimedia.org/wikipedia/commons/f/f6/Airfoil_geometry.png');}
-    #contact::after{background-image:url('https://upload.wikimedia.org/wikipedia/commons/6/6f/Hexagonal_grid.svg');}
-    #hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;}
-    #hero h1{font-size:3em;color:var(--accent-red);}
-    #hero h2{color:var(--accent-silver);margin-bottom:.8em}
-    .cta{margin-top:1.5em;}
-    .btn{display:inline-block;padding:.7em 1.3em;border-radius:5px;font-weight:bold;text-decoration:none;color:white;
-      background:var(--accent-red);transition:.3s;}
-    .btn:hover{background:#e02815;}
+
+    /* Navbar */
+    nav{position:fixed;top:0;left:0;width:100%;background:rgba(11,61,145,0.95);
+      display:flex;justify-content:space-between;align-items:center;
+      padding:1em 2em;z-index:1000;}
+    nav .brand{font-size:1.3em;font-weight:700;color:white;}
+    nav ul{list-style:none;display:flex;gap:1.5em;}
+    nav ul li a{font-weight:600;position:relative;color:white;}
+    nav ul li a::after{content:"";position:absolute;bottom:-4px;left:0;width:0;height:2px;background:var(--accent-red);transition:.3s;}
+    nav ul li a:hover::after{width:100%;}
+    .menu-toggle{display:none;font-size:1.8em;cursor:pointer;color:white;}
+    @media(max-width:768px){
+      nav ul{display:none;flex-direction:column;background:var(--primary-blue);
+      position:absolute;top:100%;right:0;width:200px;padding:1em;}
+      nav ul.active{display:flex;}
+      .menu-toggle{display:block;}
+    }
+
+    /* Hero */
+    #hero{padding-top:7em;min-height:calc(100vh - 70px);
+      display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;
+      background:linear-gradient(rgba(11,20,50,0.92),rgba(0,0,0,0.9)),
+      url('https://upload.wikimedia.org/wikipedia/commons/e/e2/CFD_visualization.png') center/cover no-repeat fixed;}
+    #hero h1{font-size:3em;font-weight:900;
+      background:linear-gradient(90deg,#FC3D21,#ff6b6b,#FC3D21);
+      background-size:200%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;
+      animation:gradientMove 4s infinite linear;}
+    @keyframes gradientMove{0%{background-position:0%}100%{background-position:200%}}
+    #hero h2{margin-top:.3em;font-size:1.4em;color:white;}
+    #hero p{margin-top:.5em;font-style:italic;opacity:.85;}
+    .btn{margin-top:1.5em;padding:.8em 1.5em;background:var(--accent-red);color:white;font-weight:bold;border-radius:5px;border:none;cursor:pointer;transition:.3s;}
+    .btn:hover{background:white;color:var(--accent-red);transform:scale(1.05);}
+    .scroll-down{margin-top:2em;font-size:2em;color:var(--accent-red);animation:bounce 1.5s infinite;}
+    @keyframes bounce{0%,20%,50%,80%,100%{transform:translateY(0);}40%{transform:translateY(8px);}60%{transform:translateY(4px);}}
+
+    /* Sections */
+    section{padding:6em 1.5em;max-width:1100px;margin:auto;position:relative}
     .fade-in{opacity:0;transform:translateY(30px);transition:all 1s ease;}
     .fade-in.visible{opacity:1;transform:translateY(0);}
-    /* Intro Section */
-    #intro {display:flex;align-items:center;gap:2em;flex-wrap:wrap;}
-    #intro img {width:250px;height:250px;object-fit:cover;border-radius:50%;box-shadow:0 0 15px rgba(252,61,33,0.5);}
-    #intro div {flex:1;}
-    #intro p {font-size:1.1em;line-height:1.7;}
-    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.2em;}
-    .card{background:rgba(255,255,255,0.05);border:1px solid var(--accent-silver);
-      padding:1.2em;border-radius:10px;transition:.4s;cursor:pointer;overflow:hidden;}
-    .card:hover{transform:translateY(-4px);box-shadow:0 0 14px rgba(252,61,33,0.4);}
+
+    /* Intro */
+    #intro{display:flex;align-items:center;gap:2em;flex-wrap:wrap;}
+    #intro img{width:240px;max-width:100%;border-radius:50%;box-shadow:0 0 15px rgba(252,61,33,.5);}
+    #intro div{flex:1;}
+    #intro p{font-size:1.1em;line-height:1.7;}
+
+    /* Skills */
+    .skill-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1.5em;margin-top:2em;}
+    .skill-card{background:rgba(255,255,255,0.05);border:1px solid var(--silver);border-radius:8px;padding:1em;text-align:center;transition:.3s;}
+    .skill-card:hover{box-shadow:0 0 12px rgba(252,61,33,.5);transform:translateY(-4px);}
+
+    /* Education & Experience */
+    .card{background:rgba(255,255,255,0.05);border:1px solid var(--silver);
+      padding:1.2em;border-radius:10px;transition:.4s;cursor:pointer;margin-bottom:1em;}
     .card h3{display:flex;justify-content:space-between;align-items:center;cursor:pointer;}
-    .card h3::after{content:"▼";font-size:.8em;transition:transform .3s;}
+    .card h3::after{content:"▼";font-size:.8em;transition:.3s;}
     .card.active h3::after{transform:rotate(-180deg);}
-    .card-content{max-height:0;overflow:hidden;transition:max-height 0.6s ease,opacity 0.6s ease;padding-top:0;opacity:0;}
+    .card-content{max-height:0;overflow:hidden;transition:max-height .6s ease,opacity .6s ease;padding-top:0;opacity:0;}
     .card.active .card-content{max-height:1000px;opacity:1;padding-top:1em;}
+
+    /* Projects Carousel + Lightbox */
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.2em;}
     .carousel{position:relative;margin-top:1em;overflow:hidden;border-radius:8px;}
     .carousel-images{display:flex;}
     .carousel img{width:100%;display:none;border-radius:6px;cursor:pointer;}
     .carousel img.active{display:block;}
     .carousel button{position:absolute;top:50%;transform:translateY(-50%);
       background:rgba(0,0,0,0.4);border:none;color:white;font-size:1.5em;
-      padding:0.4em 0.6em;cursor:pointer;border-radius:50%;transition:background 0.3s;}
-    .carousel button:hover{background:rgba(0,0,0,0.7);}
-    .carousel .prev{left:10px;} .carousel .next{right:10px;}
-    /* Lightbox */
-    #lightbox{display:none;position:fixed;z-index:99999;left:0;top:0;width:100%;height:100%;background:rgba(0,0,0,0.9);}
-    #lightbox img{margin:auto;display:block;max-width:85%;max-height:75%;border-radius:8px;}
+      padding:.3em .5em;cursor:pointer;border-radius:50%;}
+    .carousel .prev{left:10px}.carousel .next{right:10px}
+    #lightbox{display:none;position:fixed;z-index:9999;left:0;top:0;width:100%;height:100%;background:rgba(0,0,0,0.9);}
+    #lightbox img{margin:auto;display:block;max-width:85%;max-height:75%;}
     #lightbox .caption{color:white;text-align:center;margin-top:10px;font-size:1.1em;}
     #lightbox .close{position:absolute;top:20px;right:35px;color:#fff;font-size:40px;font-weight:bold;cursor:pointer;}
-    .lightbox-prev,.lightbox-next{cursor:pointer;position:absolute;top:50%;color:white;font-size:2.5em;font-weight:bold;
-      padding:10px;user-select:none;}
-    .lightbox-prev{left:15px;} .lightbox-next{right:15px;}
+    .lightbox-prev,.lightbox-next{cursor:pointer;position:absolute;top:50%;color:white;font-size:2.5em;font-weight:bold;padding:10px;}
+    .lightbox-prev{left:15px}.lightbox-next{right:15px}
     .lightbox-prev:hover,.lightbox-next:hover,#lightbox .close:hover{color:var(--accent-red);}
   </style>
 </head>
 <body>
   <!-- Navbar -->
   <nav>
-    <a href="#hero">Home</a><a href="#intro">About</a>
-    <a href="#skills">Skills</a><a href="#education">Education</a>
-    <a href="#experience">Experience</a><a href="#projects">Projects</a>
-    <a href="#contact">Contact</a>
+    <div class="brand">Nischalraut</div>
+    <div class="menu-toggle">&#9776;</div>
+    <ul>
+      <li><a href="#hero">Home</a></li>
+      <li><a href="#intro">About</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#education">Education</a></li>
+      <li><a href="#experience">Experience</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
   </nav>
+
   <!-- Hero -->
   <section id="hero">
     <h1>Nischal Raut</h1>
     <h2>Aerospace Engineer</h2>
     <p>"Bridging Computational Models and Experimental Validation."</p>
-    <div class="cta"><a href="Nischal_Raut_CV.pdf" class="btn" target="_blank">📄 Download CV</a></div>
+    <a href="Nischal_Raut_CV.pdf" class="btn">📄 Download CV</a>
+    <div class="scroll-down">&#8595;</div>
   </section>
+
   <!-- Intro -->
   <section id="intro" class="fade-in">
     <img src="profile.jpg" alt="Profile Picture">
     <div>
       <h2>About Me</h2>
-      <p>
-        Hello! I'm Nischal Raut, an aspiring aerospace engineer passionate about unraveling the complexities of 
-        fluid dynamics and experimental aerodynamics. My journey reflects resilience, innovation, and a drive to 
-        bridge computational simulations with real-world experimental setups. I enjoy crafting engineering solutions 
-        that are both technically robust and practically impactful.
-      </p>
+      <p>Hello! I'm Nischal Raut, an aspiring aerospace engineer passionate about aerodynamics and fluid dynamics.
+      My work blends computational simulations with rigorous experimental setups like wind tunnel testing. 
+      I believe in engineering that is innovative, resilient, and practical.</p>
     </div>
   </section>
+
+  <!-- Skills -->
+  <section id="skills" class="fade-in">
+    <h2>Skills & Tools</h2>
+    <div class="skill-grid">
+      <div class="skill-card">CAD & Analysis: CATIA, ANSYS, SolidWorks, MATLAB</div>
+      <div class="skill-card">Programming: C (basic)</div>
+      <div class="skill-card">Simulation: Wind Tunnel Testing, Flow Visualization</div>
+      <div class="skill-card">Productivity: Word, Excel, PowerPoint, LaTeX, AutoCAD</div>
+    </div>
+  </section>
+
+  <!-- Education -->
+  <section id="education" class="fade-in">
+    <h2>Education</h2>
+    <div class="card"><h3>Bachelor’s in Aerospace Engineering</h3><div class="card-content"><p>IoE Pulchowk Campus, 2019-2025</p><p>Current Avg: 72.85%</p></div></div>
+    <div class="card"><h3>+2 Science</h3><div class="card-content"><p>Omega International College, GPA: 3.5</p></div></div>
+    <div class="card"><h3>Secondary School</h3><div class="card-content"><p>West Wing Secondary School, GPA: 4.0</p></div></div>
+  </section>
+
+  <!-- Experience -->
+  <section id="experience" class="fade-in">
+    <h2>Experience</h2>
+    <div class="card active"><h3>Intern – Airlift Technology Nepal (2024–Present)</h3>
+      <div class="card-content" style="max-height:1000px;opacity:1;">
+        <ul><li>Drone mapping & photogrammetry for Kathmandu Metro City.</li>
+        <li>3D terrain models & orthomosaic generation.</li>
+        <li>Supported UAV mission planning & maintenance.</li></ul>
+      </div>
+    </div>
+  </section>
+
   <!-- Projects -->
   <section id="projects" class="fade-in">
     <h2>Projects</h2>
     <div class="grid">
-      <!-- Wind Tunnel -->
       <div class="card">
         <h3>Subsonic Wind Tunnel (FYP)</h3>
         <div class="card-content">
-          <p>A custom subsonic open-jet tunnel with cosine-profile gust generator.</p>
-          <div class="carousel">
-            <button class="prev">&#10094;</button>
+          <p>Designed and fabricated a subsonic open-jet tunnel with gust generator.</p>
+          <div class="carousel"><button class="prev">&#10094;</button>
             <div class="carousel-images">
               <img src="windtunnel1.jpeg" class="active" alt="Wind Tunnel Front View" data-caption="Wind Tunnel Front View">
-              <img src="windtunnel2.jpeg" alt="Gust Generator" data-caption="Gust Generator">
-              <img src="windtunnel3.jpeg" alt="Flow Visualization" data-caption="Smoke Flow Visualization">
-            </div>
-            <button class="next">&#10095;</button>
-          </div>
-        </div>
-      </div>
-      <!-- B-52 -->
-      <div class="card">
-        <h3>B-52 Air Launch to Orbit</h3>
-        <div class="card-content">
-          <p>Conceptual B-52 modification for rocket launch missions.</p>
-          <div class="carousel">
-            <button class="prev">&#10094;</button>
-            <div class="carousel-images">
-              <img src="b52_1.jpeg" class="active" alt="B-52 Payload" data-caption="B-52 Payload Integration">
-              <img src="b52_2.jpeg" alt="Launch Simulation" data-caption="Rocket Launch Simulation">
-            </div>
-            <button class="next">&#10095;</button>
-          </div>
-        </div>
-      </div>
-      <!-- Glider -->
-      <div class="card">
-        <h3>Styrofoam Glider</h3>
-        <div class="card-content">
-          <p>Hand-launched glider designed in XFLR5, optimized for low-speed flight.</p>
-          <div class="carousel">
-            <button class="prev">&#10094;</button>
-            <div class="carousel-images">
-              <img src="glider1.jpeg" class="active" alt="Glider CAD" data-caption="CAD Model of Glider">
-              <img src="glider2.jpeg" alt="Glider Flight" data-caption="Glider Flight Test">
-            </div>
-            <button class="next">&#10095;</button>
-          </div>
+              <img src="windtunnel2.jpeg" alt="Gust Generator Close-up" data-caption="Gust Generator Close-up">
+              <img src="windtunnel3.jpeg" alt="Flow Visualization with smoke" data-caption="Flow Visualization">
+            </div><button class="next">&#10095;</button></div>
         </div>
       </div>
     </div>
   </section>
+
   <!-- Lightbox -->
   <div id="lightbox">
     <span class="close">&times;</span>
@@ -165,6 +191,7 @@
     <a class="lightbox-prev">&#10094;</a>
     <a class="lightbox-next">&#10095;</a>
   </div>
+
   <!-- Contact -->
   <section id="contact" class="fade-in">
     <h2>Contact</h2>
@@ -173,49 +200,36 @@
     <p>LinkedIn: <a href="https://www.linkedin.com/in/nischal-raut-1b2227314/" target="_blank">linkedin.com/in/nischal-raut-1b2227314/</a></p>
     <p>Location: Pulchowk, Lalitpur, Nepal</p>
   </section>
+
+  <!-- Scripts -->
   <script>
-    // Expand/collapse
-    document.querySelectorAll('.card h3').forEach(header=>{
-      header.addEventListener('click',()=>{header.parentElement.classList.toggle('active');});
+    // Navbar toggle
+    document.querySelector('.menu-toggle').addEventListener('click',()=>{
+      document.querySelector('nav ul').classList.toggle('active');
     });
-    // Carousel
+    // Expand cards
+    document.querySelectorAll('.card h3').forEach(h=>h.addEventListener('click',()=>{h.parentElement.classList.toggle('active');}));
+    // Carousels
     document.querySelectorAll('.carousel').forEach(carousel=>{
-      const images=carousel.querySelectorAll('img');
-      const prevBtn=carousel.querySelector('.prev');
-      const nextBtn=carousel.querySelector('.next');
-      let current=0;
-      function showImage(idx){images.forEach((img,i)=>img.classList.toggle('active',i===idx));}
-      prevBtn.addEventListener('click',()=>{current=(current-1+images.length)%images.length;showImage(current);});
-      nextBtn.addEventListener('click',()=>{current=(current+1)%images.length;showImage(current);});
-      images.forEach((img,idx)=>{img.addEventListener('click',()=>openLightbox(images,idx));});
+      const images=carousel.querySelectorAll('img');const prev=carousel.querySelector('.prev');const next=carousel.querySelector('.next');
+      let current=0;function show(idx){images.forEach((im,i)=>im.classList.toggle('active',i===idx));}
+      prev.onclick=()=>{current=(current-1+images.length)%images.length;show(current);}
+      next.onclick=()=>{current=(current+1)%images.length;show(current);}
+      images.forEach((im,idx)=>im.onclick=()=>openLightbox(images,idx));
     });
     // Lightbox
-    const lightbox=document.getElementById("lightbox");
-    const lightImg=document.getElementById("lightbox-img");
-    const lightCaption=document.getElementById("lightbox-caption");
-    const closeBtn=document.querySelector("#lightbox .close");
-    const prev=document.querySelector(".lightbox-prev");
-    const next=document.querySelector(".lightbox-next");
-    let lightboxImages=[];let currentLight=0;
-    function openLightbox(images,index){
-      lightbox.style.display="block";lightboxImages=Array.from(images);currentLight=index;showLightboxImg();}
-    function showLightboxImg(){
-      const img=lightboxImages[currentLight];
-      lightImg.src=img.src;
-      lightCaption.textContent=img.getAttribute("data-caption")||"";
-    }
-    closeBtn.onclick=()=>{lightbox.style.display="none";}
-    prev.onclick=()=>{currentLight=(currentLight-1+lightboxImages.length)%lightboxImages.length;showLightboxImg();}
-    next.onclick=()=>{currentLight=(currentLight+1)%lightboxImages.length;showLightboxImg();}
-    lightbox.onclick=(e)=>{if(e.target===lightbox)lightbox.style.display="none";}
+    const lightbox=document.getElementById('lightbox');const lightImg=document.getElementById('lightbox-img');const lightCaption=document.getElementById('lightbox-caption');
+    let lightImgs=[];let cur=0;
+    function openLightbox(images,index){lightbox.style.display='block';lightImgs=Array.from(images);cur=index;update();}
+    function update(){let im=lightImgs[cur];lightImg.src=im.src;lightCaption.textContent=im.dataset.caption||im.alt;}
+    document.querySelector('.close').onclick=()=>lightbox.style.display='none';
+    document.querySelector('.lightbox-prev').onclick=()=>{cur=(cur-1+lightImgs.length)%lightImgs.length;update();}
+    document.querySelector('.lightbox-next').onclick=()=>{cur=(cur+1)%lightImgs.length;update();}
+    lightbox.onclick=e=>{if(e.target===lightbox)lightbox.style.display='none';}
     // Fade animation
     const faders=document.querySelectorAll('.fade-in');
-    const appearOnScroll=new IntersectionObserver((entries,observer)=>{
-      entries.forEach(entry=>{
-        if(entry.isIntersecting){entry.target.classList.add('visible');observer.unobserve(entry.target);}
-      });
-    },{threshold:0.15,rootMargin:"0px 0px -50px"});
-    faders.forEach(f=>appearOnScroll.observe(f));
+    const obs=new IntersectionObserver((entries,o)=>{entries.forEach(ent=>{if(ent.isIntersecting){ent.target.classList.add('visible');o.unobserve(ent.target);}});},{threshold:.15});
+    faders.forEach(f=>obs.observe(f));
   </script>
 </body>
 </html>
