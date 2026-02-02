@@ -15,8 +15,8 @@
   <style>
     :root {
       /* Palette */
-      --bg-body: #08080C;
-      --bg-card: rgba(30, 30, 35, 0.6);
+      --bg-body: #0B0D17;
+      --bg-card: rgba(30, 35, 45, 0.6);
       --text-main: #F1F5F9;
       --text-muted: #94A3B8;
       --accent: #FC3D21;
@@ -28,15 +28,15 @@
       --font-body: 'Nunito', sans-serif;
       
       /* Transitions */
-      --trans-speed: 0.8s;
-      --trans-ease: cubic-bezier(0.4, 0, 0.2, 1); /* Very smooth fluid easing */
+      --trans-speed: 1s;
+      --trans-ease: cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     [data-theme="light"] {
-      --bg-body: #F0F4F8;
+      --bg-body: #E0F2FE;
       --bg-card: rgba(255, 255, 255, 0.7);
-      --text-main: #1E293B;
-      --text-muted: #64748B;
+      --text-main: #0F172A;
+      --text-muted: #475569;
       --accent: #DC2626;
       --border: rgba(0, 0, 0, 0.06);
     }
@@ -60,488 +60,538 @@
       position: fixed; inset: 0; z-index: -1; overflow: hidden; pointer-events: none;
     }
 
-    /* --- DARK MODE: ROTATING GALAXY --- */
-    .galaxy-wrapper {
-      position: absolute; top: 50%; left: 50%;
-      width: 100vw; height: 100vh;
-      transform: translate(-50%, -50%);
+    /* --- DARK MODE: PLANETS & SPACE --- */
+    .space-wrapper {
+      position: absolute; inset: 0;
       opacity: 0; transition: opacity var(--trans-speed) var(--trans-ease);
+      background: radial-gradient(circle at bottom, #1e1b4b 0%, #000000 80%);
     }
-    [data-theme="dark"] .galaxy-wrapper { opacity: 1; }
+    [data-theme="dark"] .space-wrapper { opacity: 1; }
 
-    .galaxy {
-      position: absolute; top: 50%; left: 50%;
-      width: 800px; height: 800px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(252,61,33,0.05) 0%, rgba(0,0,0,0) 70%);
-      box-shadow: inset 0 0 40px rgba(255,255,255,0.02);
-      animation: rotateGalaxy 120s linear infinite;
-    }
-    
-    /* Spiral Arms generated via Box Shadows for performance */
-    .galaxy::after {
-      content: ''; position: absolute; inset: 0; border-radius: 50%;
-      box-shadow: 
-        100px 50px 2px rgba(255,255,255,0.4), 
-        200px 150px 1px rgba(255,255,255,0.3),
-        -150px -200px 2px rgba(255,255,255,0.4),
-        -300px 100px 1px rgba(255,255,255,0.3),
-        10px -300px 2px rgba(255,255,255,0.5);
-      animation: rotateGalaxy 80s linear infinite reverse;
-    }
-    
+    /* Stars */
     .stars {
-      position: absolute; width: 2px; height: 2px; background: white;
-      box-shadow: 10vw 20vh 0 white, 80vw 10vh 0 white, 40vw 80vh 1px white, 90vw 90vh 0 white;
-      opacity: 0.3; animation: twinkle 5s infinite alternate;
+      position: absolute; inset: 0;
+      background-image: 
+        radial-gradient(1px 1px at 10% 10%, white, transparent),
+        radial-gradient(1px 1px at 20% 40%, white, transparent),
+        radial-gradient(2px 2px at 50% 50%, white, transparent),
+        radial-gradient(2px 2px at 80% 80%, white, transparent);
+      background-size: 500px 500px;
+      opacity: 0.6; animation: starDrift 100s linear infinite;
     }
+
+    /* Planet 1: Ringed Gas Giant */
+    .planet-1 {
+      position: absolute; top: 15%; right: 10%;
+      width: 120px; height: 120px; border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, #a78bfa, #4c1d95);
+      box-shadow: -5px -5px 20px rgba(0,0,0,0.8) inset, 0 0 20px rgba(167, 139, 250, 0.2);
+    }
+    .ring {
+      position: absolute; top: 50%; left: 50%;
+      width: 200px; height: 60px;
+      border: 8px solid rgba(255, 255, 255, 0.1);
+      border-top: 8px solid rgba(255, 255, 255, 0.4);
+      border-radius: 50%;
+      transform: translate(-50%, -50%) rotate(-20deg);
+    }
+
+    /* Planet 2: Red Rocky Planet */
+    .planet-2 {
+      position: absolute; bottom: 20%; left: 5%;
+      width: 80px; height: 80px; border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, #fda4af, #be123c);
+      box-shadow: -10px -10px 30px rgba(0,0,0,0.9) inset;
+    }
+
+    /* Meteors */
+    .meteor {
+      position: absolute; top: -10%; left: 50%;
+      width: 150px; height: 2px;
+      background: linear-gradient(90deg, white, transparent);
+      transform: rotate(45deg); opacity: 0;
+      filter: drop-shadow(0 0 5px white);
+    }
+    .m1 { animation: meteorShower 6s infinite 2s; left: 20%; }
+    .m2 { animation: meteorShower 8s infinite 5s; left: 70%; width: 100px; }
 
     /* --- LIGHT MODE: SKY & AVIATION --- */
     .sky-wrapper {
       position: absolute; inset: 0;
-      background: linear-gradient(to bottom, #DBEAFE, #F0F9FF);
+      background: linear-gradient(to bottom, #BAE6FD, #F0F9FF);
       opacity: 0; transition: opacity var(--trans-speed) var(--trans-ease);
     }
     [data-theme="light"] .sky-wrapper { opacity: 1; }
 
-    /* Commercial Plane */
-    .plane-comm {
-      position: absolute; top: 15%; left: -100px;
-      width: 60px; height: 30px;
-      opacity: 0.6;
-      animation: flyAcross 25s linear infinite;
+    /* Clouds */
+    .cloud {
+      position: absolute; background: white; border-radius: 50px; opacity: 0.8;
+      filter: blur(5px); animation: drift linear infinite;
     }
-    .plane-body {
-      width: 100%; height: 100%; background: #64748B;
-      border-radius: 50% 50% 5px 5px; transform: rotate(90deg);
-      position: relative;
-    }
-    .plane-wing {
-      position: absolute; width: 40px; height: 8px; background: #64748B;
-      top: 10px; left: -10px; border-radius: 5px;
-    }
+    .c1 { width: 150px; height: 60px; top: 10%; left: -200px; animation-duration: 45s; }
+    .c2 { width: 250px; height: 90px; top: 30%; left: -300px; animation-duration: 60s; opacity: 0.6; }
 
-    /* Rocket Launching (Every 2s) */
+    /* Commercial Plane SVG */
+    .plane-container {
+      position: absolute; top: 20%; left: -200px;
+      width: 100px; opacity: 0.7;
+      animation: flyBy 35s linear infinite;
+    }
+    .plane-svg { fill: #475569; width: 100%; filter: drop-shadow(0 10px 10px rgba(0,0,0,0.1)); }
+
+    /* Rocket (Every 8 seconds) */
     .rocket-launch {
-      position: absolute; bottom: -100px; left: 50%;
-      transform: translateX(-50%);
-      width: 20px; height: 60px;
-      animation: launchUp 2s ease-in infinite; /* Requested 2s frequency */
+      position: absolute; bottom: -120px; left: 50%; transform: translateX(-50%);
+      width: 30px; height: 80px;
+      animation: launchSequence 8s ease-in-out infinite; /* 8s Loop */
     }
     .rocket-body {
-      width: 100%; height: 100%; background: #CBD5E1; border-radius: 50% 50% 4px 4px;
-      position: relative; overflow: hidden;
-      box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+      width: 100%; height: 100%; background: linear-gradient(to right, #CBD5E1, #94A3B8);
+      border-radius: 50% 50% 4px 4px; position: relative; z-index: 2;
+      box-shadow: inset -5px 0 5px rgba(0,0,0,0.1);
+    }
+    .rocket-window {
+      position: absolute; top: 20px; left: 50%; transform: translateX(-50%);
+      width: 12px; height: 12px; background: #38BDF8; border-radius: 50%; border: 2px solid #E2E8F0;
     }
     .rocket-fin {
-      position: absolute; bottom: 0; width: 10px; height: 20px; background: #EF4444;
+      position: absolute; bottom: 0; width: 15px; height: 25px; background: #EF4444; z-index: 1;
     }
-    .rf-left { left: -8px; border-radius: 10px 0 0 0; }
-    .rf-right { right: -8px; border-radius: 0 10px 0 0; }
-    .fire {
-      position: absolute; top: 100%; left: 2px; width: 16px; height: 40px;
-      background: linear-gradient(#F59E0B, transparent);
-      border-radius: 0 0 10px 10px;
-      filter: blur(2px);
+    .fin-l { left: -10px; border-radius: 10px 0 0 0; }
+    .fin-r { right: -10px; border-radius: 0 10px 0 0; }
+    
+    .flame {
+      position: absolute; top: 100%; left: 4px; width: 22px; height: 50px;
+      background: linear-gradient(to bottom, #F59E0B, transparent);
+      border-radius: 0 0 10px 10px; filter: blur(3px);
+      animation: flamePulse 0.1s infinite alternate;
     }
 
-    @keyframes rotateGalaxy { to { transform: translate(-50%, -50%) rotate(360deg); } }
-    @keyframes twinkle { 0%,100% { opacity:0.3; } 50% { opacity:0.8; } }
-    @keyframes flyAcross { 0% { left: -10%; } 100% { left: 110%; } }
-    @keyframes launchUp {
-      0% { bottom: -100px; opacity: 1; transform: translateX(-50%) scale(0.8); }
-      50% { opacity: 1; }
-      100% { bottom: 120%; opacity: 0; transform: translateX(-50%) scale(0.8); }
+    /* Keyframes */
+    @keyframes starDrift { from { transform:translateY(0); } to { transform:translateY(-500px); } }
+    @keyframes meteorShower {
+      0% { transform: translate(0,0) rotate(45deg); opacity: 0; }
+      10% { opacity: 1; }
+      20% { transform: translate(400px, 400px) rotate(45deg); opacity: 0; }
+      100% { opacity: 0; }
     }
+    @keyframes flyBy { 0% { left: -15%; } 100% { left: 115%; } }
+    @keyframes drift { to { transform: translateX(120vw); } }
+    @keyframes launchSequence {
+      0% { bottom: -150px; opacity: 1; transform: translateX(-50%) scale(0.8); }
+      15% { bottom: 120vh; opacity: 1; transform: translateX(-50%) scale(0.8); } /* Fly up quickly */
+      20% { opacity: 0; bottom: 120vh; } 
+      100% { opacity: 0; bottom: 120vh; } /* Stay hidden rest of 8s */
+    }
+    @keyframes flamePulse { from { height: 40px; opacity:0.8; } to { height: 60px; opacity:1; } }
 
     /* 
      * -----------------------------------------------------------
-     * 2. LAYOUT & TYPOGRAPHY
+     * 2. LAYOUT & UI
      * -----------------------------------------------------------
      */
-    h1, h2, h3 { font-family: var(--font-head); }
-    h1 { font-size: 3.5em; font-weight: 800; letter-spacing: -1px; line-height: 1.1; margin-bottom: 0.2em; }
-    h2 { font-size: 1.8em; font-weight: 600; color: var(--text-muted); margin-bottom: 1em; }
-    p { font-size: 1.1em; line-height: 1.7; color: var(--text-muted); margin-bottom: 1.5em; }
-
-    .container { max-width: 1100px; margin: 0 auto; padding: 0 2em; }
-    
-    /* Navbar */
     nav {
-      position: fixed; top: 0; width: 100%; height: 80px;
+      position: fixed; top: 0; width: 100%; height: 90px;
       display: flex; align-items: center; justify-content: space-between;
-      padding: 0 2em; z-index: 100;
-      backdrop-filter: blur(10px);
-      background: rgba(var(--bg-body), 0.1);
-      border-bottom: 1px solid var(--border);
+      padding: 0 3em; z-index: 100;
+      backdrop-filter: blur(12px);
+      background: rgba(var(--bg-body), 0.05);
     }
-    .brand { font-weight: 800; font-size: 1.4em; letter-spacing: -0.5px; }
+    .brand { font-weight: 800; font-size: 1.5em; letter-spacing: -0.5px; }
     
-    /* Slider Toggle */
-    .switch { position: relative; display: inline-block; width: 60px; height: 30px; }
+    /* Toggle Switch */
+    .theme-switch-wrapper { display: flex; align-items: center; gap: 10px; }
+    .theme-label { font-size: 0.85em; opacity: 0.7; }
+    .switch { position: relative; display: inline-block; width: 50px; height: 26px; }
     .switch input { opacity: 0; width: 0; height: 0; }
     .slider {
       position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0;
-      background-color: #333; transition: .4s; border-radius: 34px;
+      background-color: rgba(255,255,255,0.2); transition: .4s; border-radius: 34px;
     }
     .slider:before {
-      position: absolute; content: ""; height: 22px; width: 22px;
+      position: absolute; content: ""; height: 18px; width: 18px;
       left: 4px; bottom: 4px; background-color: white;
       transition: .4s; border-radius: 50%;
     }
     input:checked + .slider { background-color: var(--accent); }
-    input:checked + .slider:before { transform: translateX(30px); }
+    input:checked + .slider:before { transform: translateX(24px); }
 
-    /* Hero Section */
+    /* Hero */
+    .container { max-width: 1100px; margin: 0 auto; padding: 0 2em; }
     #hero {
-      min-height: 100vh; display: flex; align-items: center; justify-content: center;
-      text-align: center; padding-top: 80px;
+      min-height: 100vh; display: flex; flex-direction: column; 
+      justify-content: center; align-items: center; text-align: center;
+      padding-top: 80px; position: relative; z-index: 2;
     }
-    .hero-avatar {
-      width: 160px; height: 160px; border-radius: 50%;
-      border: 4px solid var(--accent); padding: 4px;
-      margin: 0 auto 2em; overflow: hidden; background: var(--bg-body);
-      transition: transform 0.5s var(--trans-ease);
+    .avatar {
+      width: 150px; height: 150px; border-radius: 50%; 
+      border: 3px solid var(--accent); padding: 5px;
+      margin-bottom: 1.5em; background: var(--bg-body);
+      transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
-    .hero-avatar img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
-    .hero-avatar:hover { transform: scale(1.05); }
+    .avatar img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
+    .avatar:hover { transform: scale(1.1); }
 
-    /* Quick Cards (Hybrid Scroll/Popup Entry) */
-    .quick-cards {
-      display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 2em; margin-top: 3em; width: 100%;
+    h1 { font-size: 3.5em; margin-bottom: 0.2em; font-weight: 800; }
+    h2 { font-size: 1.6em; font-weight: 600; color: var(--text-muted); margin-bottom: 1em; }
+    .hero-desc { max-width: 600px; margin: 0 auto 3em; line-height: 1.8; color: var(--text-muted); }
+
+    /* Hybrid Cards */
+    .card-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.5em; width: 100%; animation: floatUp 1s ease-out forwards;
     }
-    .q-card {
+    .card {
       background: var(--bg-card); backdrop-filter: var(--glass);
-      padding: 2em; border-radius: 20px; border: 1px solid var(--border);
-      cursor: pointer; transition: transform 0.3s var(--trans-ease), box-shadow 0.3s;
-      text-align: left;
+      padding: 2em; border-radius: 16px; border: 1px solid var(--border);
+      text-align: left; cursor: pointer;
+      transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
     }
-    .q-card:hover {
+    .card:hover {
       transform: translateY(-8px);
-      box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+      box-shadow: 0 15px 30px rgba(0,0,0,0.1);
       border-color: var(--accent);
     }
-    .q-icon { font-size: 2em; margin-bottom: 0.5em; display: block; }
-    
+    .card-icon { font-size: 2.5em; margin-bottom: 0.5em; display: inline-block; }
+    .card h3 { font-size: 1.2em; margin-bottom: 0.5em; }
+    .card p { font-size: 0.9em; color: var(--text-muted); margin: 0; }
+
     /* 
      * -----------------------------------------------------------
-     * 3. MODALS (Popups)
+     * 3. MODALS
      * -----------------------------------------------------------
      */
-    .modal {
-      position: fixed; inset: 0; z-index: 1000;
-      background: rgba(0,0,0,0.6); backdrop-filter: blur(15px);
+    .modal-overlay {
+      position: fixed; inset: 0; background: rgba(0,0,0,0.6);
+      backdrop-filter: blur(10px); z-index: 1000;
       opacity: 0; pointer-events: none;
-      transition: opacity 0.5s var(--trans-ease);
       display: flex; align-items: center; justify-content: center;
+      transition: opacity 0.5s var(--trans-ease);
     }
-    .modal.active { opacity: 1; pointer-events: all; }
+    .modal-overlay.active { opacity: 1; pointer-events: all; }
     
-    .modal-content {
-      background: var(--bg-body); width: 90%; max-width: 900px;
-      max-height: 90vh; overflow-y: auto;
-      border-radius: 24px; padding: 3em;
-      border: 1px solid var(--border);
-      position: relative; transform: translateY(50px);
-      transition: transform 0.5s var(--trans-ease);
+    .modal-box {
+      background: var(--bg-body); width: 90%; max-width: 850px;
+      max-height: 85vh; overflow-y: auto;
+      border-radius: 20px; border: 1px solid var(--border);
+      padding: 3em; position: relative;
+      transform: scale(0.9); transition: transform 0.5s var(--trans-ease);
     }
-    .modal.active .modal-content { transform: translateY(0); }
+    .modal-overlay.active .modal-box { transform: scale(1); }
     
     .close-btn {
       position: absolute; top: 20px; right: 20px;
       width: 40px; height: 40px; border-radius: 50%;
-      background: var(--bg-card); display: flex; align-items: center; justify-content: center;
-      cursor: pointer; transition: 0.3s;
+      background: rgba(255,255,255,0.05); display: flex;
+      align-items: center; justify-content: center; cursor: pointer;
+      font-size: 1.5em; transition: 0.3s;
     }
     .close-btn:hover { color: var(--accent); background: rgba(255,255,255,0.1); }
 
-    /* Academic Graph */
-    .lock-screen {
-      text-align: center; padding: 4em 0; border: 2px dashed var(--border);
-      border-radius: 16px; margin-top: 2em;
+    /* Academic Graph Styles */
+    .lock-view {
+      text-align: center; border: 2px dashed var(--border);
+      border-radius: 12px; padding: 3em 1em; margin-top: 1em;
     }
-    .graph-wrap { display: none; margin-top: 2em; height: 300px; align-items: flex-end; gap: 10px; }
+    .graph-view {
+      display: none; height: 350px; margin-top: 2em;
+      align-items: flex-end; justify-content: space-between; gap: 8px;
+    }
+    .bar-wrapper {
+      flex: 1; display: flex; flex-direction: column;
+      align-items: center; justify-content: flex-end; height: 100%;
+    }
     .bar {
-      flex: 1; background: var(--accent); border-radius: 8px 8px 0 0;
-      position: relative; transition: height 1s var(--trans-ease); height: 0;
+      width: 100%; background: linear-gradient(to top, var(--accent), #fb923c);
+      border-radius: 6px 6px 0 0; position: relative;
+      transition: height 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      height: 0;
+      opacity: 0.8;
     }
-    .bar span {
+    .bar:hover { opacity: 1; }
+    .bar-val {
       position: absolute; top: -25px; left: 50%; transform: translateX(-50%);
-      font-size: 0.75em; font-weight: bold; width: 100%; text-align: center;
+      font-size: 0.7em; font-weight: 700; width: 40px; text-align: center;
     }
-    .sem-label { font-size: 0.7em; margin-top: 10px; text-align: center; color: var(--text-muted); }
+    .sem-label { font-size: 0.75em; margin-top: 8px; color: var(--text-muted); }
 
-    /* Experience Timeline */
-    .timeline-item {
-      padding-left: 2em; border-left: 2px solid var(--accent);
-      margin-bottom: 2em; position: relative;
+    /* Timeline Styles */
+    .job-item {
+      padding-left: 20px; border-left: 3px solid var(--accent);
+      margin-bottom: 30px; position: relative;
     }
-    .timeline-item::before {
-      content: ''; position: absolute; left: -6px; top: 0; width: 10px; height: 10px;
-      background: var(--accent); border-radius: 50%;
+    .job-item::before {
+      content:''; position: absolute; left: -9px; top: 0;
+      width: 15px; height: 15px; background: var(--accent); border-radius: 50%;
+      border: 3px solid var(--bg-body);
     }
-
-    /* Buttons */
+    
     .btn {
-      padding: 0.8em 2em; background: var(--accent); color: white;
+      padding: 10px 25px; background: var(--accent); color: white;
       border-radius: 50px; border: none; font-weight: 600; cursor: pointer;
-      transition: 0.3s; display: inline-block; margin-top: 1em;
+      transition: 0.3s;
     }
-    .btn:hover { filter: brightness(1.2); transform: translateY(-2px); }
-    .btn-ghost { background: transparent; border: 1px solid var(--border); color: var(--text-main); margin-left: 10px; }
-    .btn-ghost:hover { background: rgba(255,255,255,0.05); }
+    .btn:hover { filter: brightness(1.1); transform: translateY(-2px); }
+    .btn-outline { background: transparent; border: 1px solid var(--border); color: var(--text-main); margin-left: 10px; }
+    .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
 
+    @keyframes floatUp { from { opacity:0; transform:translateY(30px); } to { opacity:1; transform:translateY(0); } }
   </style>
 </head>
 <body>
 
   <!-- Backgrounds -->
   <div class="bg-canvas">
-    <!-- Dark Mode Galaxy -->
-    <div class="galaxy-wrapper">
+    
+    <!-- Dark Mode: Deep Space -->
+    <div class="space-wrapper">
       <div class="stars"></div>
-      <div class="galaxy"></div>
+      
+      <!-- Ringed Planet -->
+      <div class="planet-1"><div class="ring"></div></div>
+      
+      <!-- Rocky Planet -->
+      <div class="planet-2"></div>
+      
+      <!-- Shooting Stars -->
+      <div class="meteor m1"></div>
+      <div class="meteor m2"></div>
     </div>
     
-    <!-- Light Mode Sky -->
+    <!-- Light Mode: Sky -->
     <div class="sky-wrapper">
-      <div class="plane-comm">
-        <div class="plane-body"></div>
-        <div class="plane-wing"></div>
+      <div class="cloud c1"></div>
+      <div class="cloud c2"></div>
+      
+      <!-- Realistic Plane SVG -->
+      <div class="plane-container">
+        <svg class="plane-svg" viewBox="0 0 576 512">
+          <path d="M482.3 192c34.2 0 93.7 29 93.7 64c0 36-59.5 64-93.7 64l-116.6 0L265.2 495.9c-5.7 10-16.3 16.1-27.8 16.1l-56.2 0c-10.6 0-18.3-10.2-15.4-20.4l49-171.6L112 320 68.8 377.6c-3 4-7.8 6.4-12.8 6.4l-42 0c-7.8 0-14-6.3-14-14c0-1.3 .2-2.6 .5-3.9L32 256 .5 145.9c-.4-1.3-.5-2.6-.5-3.9c0-7.7 6.2-14 14-14l42 0c5 0 9.8 2.4 12.8 6.4L112 192l102.9 0-49-171.6C162.9 10.2 170.6 0 181.2 0l56.2 0c11.5 0 22.1 6.1 27.8 16.1L365.7 192l116.6 0z"/>
+        </svg>
       </div>
+
+      <!-- Rocket (Every 8s) -->
       <div class="rocket-launch">
         <div class="rocket-body">
-          <div class="rocket-fin rf-left"></div>
-          <div class="rocket-fin rf-right"></div>
+          <div class="rocket-window"></div>
+          <div class="rocket-fin fin-l"></div>
+          <div class="rocket-fin fin-r"></div>
         </div>
-        <div class="fire"></div>
+        <div class="flame"></div>
       </div>
     </div>
   </div>
 
-  <!-- Navbar -->
+  <!-- Nav -->
   <nav>
     <div class="brand">NR<span style="color:var(--accent)">.</span></div>
-    
-    <!-- Theme Slider -->
-    <div style="display:flex; align-items:center; gap:1em;">
-      <span style="font-size:0.8em; opacity:0.6;">Light / Dark</span>
+    <div class="theme-switch-wrapper">
+      <span class="theme-label">Theme</span>
       <label class="switch">
-        <input type="checkbox" id="themeSlider">
+        <input type="checkbox" id="themeToggle">
         <span class="slider"></span>
       </label>
     </div>
   </nav>
 
-  <!-- Hero Section -->
+  <!-- Hero -->
   <section id="hero">
     <div class="container">
-      <div class="hero-avatar">
+      <div class="avatar">
         <img src="profile.jpg" alt="Profile">
       </div>
-      <h1 style="opacity:0; animation:fadeInUp 1s forwards;">Nischal Raut</h1>
-      <h2 style="opacity:0; animation:fadeInUp 1s 0.2s forwards;">Aerospace Engineer</h2>
-      <p style="opacity:0; animation:fadeInUp 1s 0.4s forwards; max-width:600px; margin:0 auto 2em;">
-        Passionate about Experimental Aerodynamics, CFD, and UAV Systems. 
-        Currently integrating avionics at Airbus India.
+      <h1>Nischal Raut</h1>
+      <h2>Aerospace Engineer</h2>
+      <p class="hero-desc">
+        Specializing in Experimental Aerodynamics, CFD, and UAV Systems.<br>
+        Currently integrating avionics at <strong>Airbus India</strong>.
       </p>
 
-      <!-- Hybrid Cards Navigation -->
-      <div class="quick-cards" style="opacity:0; animation:fadeInUp 1s 0.6s forwards;">
-        
-        <div class="q-card" onclick="openModal('experience')">
-          <span class="q-icon">💼</span>
+      <div class="card-grid">
+        <div class="card" onclick="openModal('experience')">
+          <span class="card-icon">💼</span>
           <h3>Experience</h3>
-          <p>Internship to Associate Engineer at Airbus.</p>
+          <p>Internship to Associate Engineer @ Airbus.</p>
         </div>
-
-        <div class="q-card" onclick="openModal('academic')">
-          <span class="q-icon">🎓</span>
+        <div class="card" onclick="openModal('academic')">
+          <span class="card-icon">📊</span>
           <h3>Academic Vault</h3>
-          <p>Semester breakdown & aggregate stats.</p>
+          <p>Semester marks & Aggregate graph.</p>
         </div>
-
-        <div class="q-card" onclick="openModal('projects')">
-          <span class="q-icon">🚀</span>
+        <div class="card" onclick="openModal('projects')">
+          <span class="card-icon">🚀</span>
           <h3>Projects</h3>
-          <p>Wind Tunnels, Gliders, CFD Studies.</p>
+          <p>Wind Tunnels, Gliders, CFD.</p>
         </div>
-
-        <div class="q-card" onclick="openModal('skills')">
-          <span class="q-icon">🛠</span>
-          <h3>Skills</h3>
-          <p>Software, Analysis & Fabrication.</p>
+        <div class="card" onclick="openModal('contact')">
+          <span class="card-icon">📬</span>
+          <h3>Contact</h3>
+          <p>Email & LinkedIn.</p>
         </div>
-
       </div>
     </div>
   </section>
 
   <!-- 
-    MODALS (Hidden Content)
+    MODALS 
   -->
 
   <!-- Experience Modal -->
-  <div class="modal" id="experience-modal">
-    <div class="modal-content">
+  <div class="modal-overlay" id="modal-experience">
+    <div class="modal-box">
       <div class="close-btn" onclick="closeModal('experience')">&times;</div>
-      <h2>Professional Timeline</h2>
-      
-      <div class="timeline-item">
-        <h3>Associate Engineer - Integration Test & Analytics</h3>
-        <p style="color:var(--accent); font-weight:700;">AIRBUS INDIA, Bangalore</p>
-        <p style="font-size:0.9em; margin-bottom:0.5em;">Dec 2024 – Present</p>
-        <p>Conducting integration testing for avionics subsystems. Leveraging data analytics to optimize flight test campaigns and automating testing workflows.</p>
-      </div>
-
-      <div class="timeline-item">
-        <h3>Intern - System Testing Engineer</h3>
-        <p style="color:var(--accent); font-weight:700;">AIRBUS INDIA, Bangalore</p>
-        <p style="font-size:0.9em; margin-bottom:0.5em;">July 2024 – Nov 2024</p>
-        <p>Executed functional verification and validation (V&V) on system benches. Analyzed test logs and supported defect tracking.</p>
-      </div>
-
-      <div class="timeline-item">
-        <h3>Engineering Intern</h3>
-        <p style="color:var(--accent); font-weight:700;">AIRLIFT TECHNOLOGY, Nepal</p>
-        <p style="font-size:0.9em; margin-bottom:0.5em;">2024</p>
-        <p>Drone mapping and photogrammetry for Kathmandu Metropolitan City. Generated 3D orthomosaics.</p>
+      <h2>Professional Experience</h2>
+      <div style="margin-top:2em;">
+        <div class="job-item">
+          <h3>Associate Engineer - Integration Test & Analytics</h3>
+          <p style="color:var(--accent); font-weight:700;">AIRBUS INDIA, Bangalore</p>
+          <p style="font-size:0.9em; margin-bottom:0.5em; opacity:0.7;">Dec 2024 – Present</p>
+          <p>Conducting integration testing for avionics subsystems. Leveraging data analytics to optimize flight test campaigns and automating testing workflows.</p>
+        </div>
+        <div class="job-item">
+          <h3>Intern - System Testing Engineer</h3>
+          <p style="color:var(--accent); font-weight:700;">AIRBUS INDIA, Bangalore</p>
+          <p style="font-size:0.9em; margin-bottom:0.5em; opacity:0.7;">July 2024 – Nov 2024</p>
+          <p>Executed functional verification and validation (V&V) on system benches. Analyzed test logs and supported defect tracking.</p>
+        </div>
+        <div class="job-item">
+          <h3>Engineering Intern</h3>
+          <p style="color:var(--accent); font-weight:700;">AIRLIFT TECHNOLOGY, Nepal</p>
+          <p style="font-size:0.9em; margin-bottom:0.5em; opacity:0.7;">2024</p>
+          <p>Drone mapping and photogrammetry for Kathmandu Metropolitan City. Generated 3D orthomosaics.</p>
+        </div>
       </div>
     </div>
   </div>
 
   <!-- Academic Modal -->
-  <div class="modal" id="academic-modal">
-    <div class="modal-content">
+  <div class="modal-overlay" id="modal-academic">
+    <div class="modal-box">
       <div class="close-btn" onclick="closeModal('academic')">&times;</div>
       <h2>Academic Performance</h2>
       <p>IOE Pulchowk Campus (2019-2025)</p>
-      
-      <div class="lock-screen" id="lockScreen">
+
+      <!-- Lock Screen -->
+      <div class="lock-view" id="academicLock">
         <div style="font-size:3em; margin-bottom:0.5em;">🔒</div>
         <h3>Restricted Access</h3>
-        <p>Detailed semester marks are confidential.</p>
-        <div style="margin-top:1.5em;">
-          <button class="btn" onclick="location.href='mailto:nischalraut6@gmail.com?subject=Access Request'">Request Access</button>
-          <button class="btn btn-ghost" onclick="unlockGraph()">Demo Unlock</button>
+        <p>Detailed semester breakdown is confidential.</p>
+        <div style="margin-top:2em;">
+          <button class="btn" onclick="location.href='mailto:nischalraut6@gmail.com?subject=Request Academic Records'">Request Access</button>
+          <button class="btn btn-outline" onclick="unlockGraph()">Demo Unlock</button>
         </div>
       </div>
 
-      <div class="graph-wrap" id="graphWrap">
-        <!-- Bars injected by JS -->
+      <!-- Graph View -->
+      <div class="graph-view" id="academicGraph">
+        <!-- Bars injected via JS -->
       </div>
-      <h3 id="aggText" style="display:none; text-align:center; margin-top:2em;">Aggregate: <span style="color:var(--accent)">76.71%</span></h3>
+      <h3 id="aggText" style="text-align:center; margin-top:2em; display:none;">Aggregate Score: <span style="color:var(--accent); font-size:1.2em;">76.71%</span></h3>
     </div>
   </div>
 
   <!-- Projects Modal -->
-  <div class="modal" id="projects-modal">
-    <div class="modal-content">
+  <div class="modal-overlay" id="modal-projects">
+    <div class="modal-box">
       <div class="close-btn" onclick="closeModal('projects')">&times;</div>
-      <h2>Selected Projects</h2>
-      <div class="quick-cards">
-        <div class="q-card">
+      <h2>Key Projects</h2>
+      <div class="card-grid" style="margin-top:2em;">
+        <div class="card" style="cursor:default;">
           <h3>Subsonic Wind Tunnel</h3>
-          <p>Final Year Project. Designed open-jet tunnel with gust generator. Validated 0.88% Turbulent Intensity.</p>
+          <p style="color:var(--accent); font-size:0.8em; font-weight:bold;">RESEARCH</p>
+          <p>Designed open-jet tunnel with gust generator. Validated 0.88% Turbulent Intensity.</p>
         </div>
-        <div class="q-card">
+        <div class="card" style="cursor:default;">
           <h3>B-52 Air Launch</h3>
+          <p style="color:var(--accent); font-size:0.8em; font-weight:bold;">DESIGN</p>
           <p>Conceptual design study. Analyzed release altitudes for optimal small satellite orbit insertion.</p>
         </div>
-        <div class="q-card">
+        <div class="card" style="cursor:default;">
           <h3>RC Styrofoam Glider</h3>
+          <p style="color:var(--accent); font-size:0.8em; font-weight:bold;">FABRICATION</p>
           <p>End-to-end fabrication (hot wire cutting) and flight testing. XFLR5 Analysis included.</p>
         </div>
-        <div class="q-card">
+        <div class="card" style="cursor:default;">
           <h3>F-15 CFD Analysis</h3>
+          <p style="color:var(--accent); font-size:0.8em; font-weight:bold;">SIMULATION</p>
           <p>ANSYS Fluent simulation of supersonic flow. Studied shock diamonds and drag coefficients.</p>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Skills Modal -->
-  <div class="modal" id="skills-modal">
-    <div class="modal-content">
-      <div class="close-btn" onclick="closeModal('skills')">&times;</div>
-      <h2>Technical Arsenal</h2>
-      <ul style="list-style:none; margin-top:1em; display:grid; gap:1em;">
-        <li style="background:var(--bg-card); padding:1em; border-radius:10px;">
-          <strong>Analysis:</strong> ANSYS Fluent, XFLR5, MATLAB
-        </li>
-        <li style="background:var(--bg-card); padding:1em; border-radius:10px;">
-          <strong>Design (CAD):</strong> CATIA V5, SolidWorks, AutoCAD
-        </li>
-        <li style="background:var(--bg-card); padding:1em; border-radius:10px;">
-          <strong>Programming:</strong> Python (Data Vis), C, MATLAB Scripting
-        </li>
-        <li style="background:var(--bg-card); padding:1em; border-radius:10px;">
-          <strong>Experimental:</strong> Wind Tunnel Calibration, Photogrammetry (Agisoft)
-        </li>
-      </ul>
+  <!-- Contact Modal -->
+  <div class="modal-overlay" id="modal-contact">
+    <div class="modal-box">
+      <div class="close-btn" onclick="closeModal('contact')">&times;</div>
+      <h2>Get in Touch</h2>
+      <p style="margin-bottom:2em;">nischalraut6@gmail.com</p>
+      <form style="display:grid; gap:1em;">
+        <input type="text" placeholder="Your Name" style="padding:1em; border-radius:10px; border:1px solid var(--border); background:var(--bg-card); color:var(--text-main);">
+        <input type="email" placeholder="Your Email" style="padding:1em; border-radius:10px; border:1px solid var(--border); background:var(--bg-card); color:var(--text-main);">
+        <textarea rows="5" placeholder="Message" style="padding:1em; border-radius:10px; border:1px solid var(--border); background:var(--bg-card); color:var(--text-main);"></textarea>
+        <button class="btn" type="button" onclick="alert('Message Sent (Demo)')">Send Message</button>
+      </form>
     </div>
   </div>
 
-  <style>
-    @keyframes fadeInUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
-  </style>
-
   <script>
-    // Theme Slider Logic
-    const slider = document.getElementById('themeSlider');
+    // Theme Logic
+    const toggle = document.getElementById('themeToggle');
     const root = document.documentElement;
 
-    // Check saved
     if(localStorage.getItem('theme') === 'light') {
       root.setAttribute('data-theme', 'light');
-      slider.checked = true;
+      toggle.checked = true;
     }
 
-    slider.addEventListener('change', (e) => {
-      if(e.target.checked) {
-        root.setAttribute('data-theme', 'light');
-        localStorage.setItem('theme', 'light');
-      } else {
-        root.setAttribute('data-theme', 'dark');
-        localStorage.setItem('theme', 'dark');
-      }
+    toggle.addEventListener('change', (e) => {
+      const theme = e.target.checked ? 'light' : 'dark';
+      root.setAttribute('data-theme', theme);
+      localStorage.setItem('theme', theme);
     });
 
     // Modal Logic
     function openModal(id) {
-      document.getElementById(id + '-modal').classList.add('active');
+      document.getElementById('modal-' + id).classList.add('active');
     }
     function closeModal(id) {
-      document.getElementById(id + '-modal').classList.remove('active');
+      document.getElementById('modal-' + id).classList.remove('active');
     }
 
-    // Graph Logic
+    // Graph Data & Logic
     const marks = [
-      {s:'1', v:59.68}, {s:'2', v:67.43}, {s:'3', v:65.29}, {s:'4', v:69.14},
-      {s:'5', v:78.4}, {s:'6', v:83.75}, {s:'7', v:86.15}, {s:'8', v:89.2}
+      {s: '1st', v: 59.68},
+      {s: '2nd', v: 67.43},
+      {s: '3rd', v: 65.29},
+      {s: '4th', v: 69.14},
+      {s: '5th', v: 78.4},
+      {s: '6th', v: 83.75},
+      {s: '7th', v: 86.15},
+      {s: '8th', v: 89.2}
     ];
 
     function unlockGraph() {
-      const lock = document.getElementById('lockScreen');
-      const wrap = document.getElementById('graphWrap');
+      const lock = document.getElementById('academicLock');
+      const graph = document.getElementById('academicGraph');
       const agg = document.getElementById('aggText');
       
+      // Hide lock, show graph
       lock.style.display = 'none';
-      wrap.style.display = 'flex';
+      graph.style.display = 'flex';
       agg.style.display = 'block';
 
-      // Render bars
-      wrap.innerHTML = marks.map(m => `
-        <div style="flex:1; display:flex; flex-direction:column; align-items:center; justify-content:flex-end; height:100%;">
+      // Generate Bars
+      graph.innerHTML = marks.map(m => `
+        <div class="bar-wrapper">
           <div class="bar" style="height:0%" data-h="${m.v}%">
-            <span>${m.v}</span>
+            <span class="bar-val">${m.v}%</span>
           </div>
-          <div class="sem-label">Sem ${m.s}</div>
+          <span class="sem-label">${m.s}</span>
         </div>
       `).join('');
 
-      // Animate height
+      // Trigger Animation
       setTimeout(() => {
         document.querySelectorAll('.bar').forEach(b => {
           b.style.height = b.getAttribute('data-h');
