@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NISCHAL RAUT | AERO-OS | WARP CORE</title>
+    <title>NISCHAL RAUT | AEROSPACE ENGINEER</title>
     
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpolygon points='50,10 90,90 50,75 10,90' fill='%23FC3D21'/%3E%3C/svg%3E">
 
@@ -16,7 +16,7 @@
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@100;400;800&family=Rajdhani:wght@300;500;600;700&family=Syncopate:wght@400;700&display=swap" rel="stylesheet">
 
     <style>
-        /* CORE VARIABLES */
+        /* VARIABLES */
         :root {
             --c-void: #030405;
             --c-panel: rgba(8, 12, 16, 0.85);
@@ -41,7 +41,7 @@
             width: 100vw; height: 100vh;
         }
 
-        /* VISUAL LAYERS */
+        /* LAYERS */
         #gl-canvas { position: fixed; inset: 0; z-index: 0; }
         
         .scanlines {
@@ -70,7 +70,7 @@
         }
         body.hovering #cursor { width: 50px; height: 50px; background: rgba(255,255,255,0.1); }
 
-        /* UI LAYOUT */
+        /* HUD */
         header {
             position: fixed; top: 0; left: 0; width: 100%; height: var(--head-h);
             display: flex; justify-content: space-between; align-items: center;
@@ -87,11 +87,12 @@
             display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 3rem;
             z-index: 90;
         }
-        .nav-dot {
-            width: 12px; height: 12px; border: 1px solid #666; transform: rotate(45deg);
-            cursor: pointer; transition: 0.3s;
+        .nav-icon {
+            font-family: var(--f-code); font-size: 10px; color: var(--c-muted);
+            writing-mode: vertical-rl; transform: rotate(180deg); letter-spacing: 2px;
+            cursor: pointer; transition: 0.3s; padding: 10px 0;
         }
-        .nav-dot:hover, .nav-dot.active { background: var(--c-prim); border-color: var(--c-prim); box-shadow: 0 0 10px var(--c-prim); }
+        .nav-icon:hover, .nav-icon.active { color: var(--c-prim); border-left: 2px solid var(--c-prim); }
 
         footer {
             position: fixed; bottom: 0; left: var(--nav-w); right: 0; height: 30px;
@@ -120,7 +121,7 @@
         p { font-size: 1.1rem; line-height: 1.7; color: var(--c-text); margin-bottom: 1.5rem; }
         .intro-border { border-left: 3px solid var(--c-prim); padding-left: 2rem; background: linear-gradient(90deg, var(--c-prim-dim), transparent); }
 
-        /* Profile HUD */
+        /* Profile */
         .profile-container { position: relative; width: 350px; height: 350px; margin: auto; }
         .p-img { width: 100%; height: 100%; object-fit: cover; clip-path: polygon(20% 0%, 80% 0%, 100% 20%, 100% 80%, 80% 100%, 20% 100%, 0% 80%, 0% 20%); filter: grayscale(0.5); }
         .hud-ring {
@@ -155,19 +156,18 @@
         .card:hover { transform: translateY(-5px); border-color: var(--c-prim); background: var(--c-prim-dim); }
         .tag { font-family: var(--f-code); font-size: 10px; color: var(--c-cyan); border: 1px solid var(--c-cyan); padding: 2px 6px; display: inline-block; margin-bottom: 10px; }
 
-        /* WARP TRIGGER (FIXED Z-INDEX & POINTER EVENTS) */
+        /* BOTTOM NAV BUTTON */
         .warp-trigger {
             position: fixed; bottom: 50px; left: 50%; transform: translateX(-50%);
             display: flex; flex-direction: column; align-items: center; z-index: 500;
             transition: opacity 0.5s; cursor: pointer;
         }
-        
         .warp-btn {
             background: rgba(0,0,0,0.8); border: 1px solid var(--c-prim);
             color: var(--c-prim); font-family: var(--f-head); font-size: 1rem;
             padding: 15px 40px; clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
             transition: 0.3s; text-transform: uppercase; letter-spacing: 2px;
-            pointer-events: auto; /* Force clickable */
+            pointer-events: auto; width: 300px;
         }
         .warp-btn:hover { background: var(--c-prim); color: #000; box-shadow: 0 0 30px var(--c-prim-glow); }
 
@@ -212,7 +212,7 @@
 
     <!-- BOOT -->
     <div id="boot-layer">
-        <div style="font-family:var(--f-head); font-size:2rem; color:white; margin-bottom:1rem;">AERO-OS <span style="color:var(--c-prim)">v11.0</span></div>
+        <div style="font-family:var(--f-head); font-size:2rem; color:white; margin-bottom:1rem;">PORTFOLIO <span style="color:var(--c-prim)">v11.3</span></div>
         <div style="font-family:var(--f-code); color:var(--c-muted); margin-bottom:2rem;">WARP DRIVE INTEGRATED // AUDIO ENABLED</div>
         <button class="init-btn" onclick="bootUp()">INITIALIZE SYSTEM</button>
     </div>
@@ -221,31 +221,31 @@
     <header>
         <div class="brand">NISCHAL <span>RAUT</span></div>
         <div class="hud-stats">
-            <div>SYS: ONLINE</div>
-            <div>WARP: READY</div>
+            <div>STATUS: ONLINE</div>
+            <div>MODE: PROFESSIONAL</div>
             <div id="time">00:00:00</div>
         </div>
     </header>
 
     <aside>
-        <div class="nav-dot active" onclick="warpTo(0)"></div>
-        <div class="nav-dot" onclick="warpTo(1)"></div>
-        <div class="nav-dot" onclick="warpTo(2)"></div>
-        <div class="nav-dot" onclick="warpTo(3)"></div>
-        <div class="nav-dot" onclick="warpTo(4)"></div>
+        <div class="nav-icon active" onclick="warpTo(0)">HOME</div>
+        <div class="nav-icon" onclick="warpTo(1)">SKILLS</div>
+        <div class="nav-icon" onclick="warpTo(2)">PROJECTS</div>
+        <div class="nav-icon" onclick="warpTo(3)">EXP</div>
+        <div class="nav-icon" onclick="warpTo(4)">CONTACT</div>
     </aside>
 
     <footer>
-        > TERMINAL ACTIVE. WAITING FOR INPUT..._
+        > SYSTEM READY. WAITING FOR INPUT..._
     </footer>
 
     <!-- CONTENT SECTORS -->
     
-    <!-- 0. COMMAND (HOME) -->
+    <!-- 0. HOME -->
     <div id="sec-0" class="sector-wrapper active">
         <div class="content-box">
             <div>
-                <div style="font-family:var(--f-code); color:var(--c-prim); margin-bottom:10px;">// PILOT PROFILE</div>
+                <div style="font-family:var(--f-code); color:var(--c-prim); margin-bottom:10px;">AEROSPACE ENGINEER</div>
                 <h1>NISCHAL<br>RAUT</h1>
                 <div class="intro-border">
                     <p>I am an Aerospace Engineering graduate with a strong focus on experimental aerodynamics, wind tunnel design, and unsteady flow analysis. My work centers on translating theoretical models into physical systems, with hands-on experience in gust generation, flow visualization, and aerodynamic testing.</p>
@@ -255,18 +255,19 @@
             <div class="profile-container">
                 <div class="hud-ring r1"></div>
                 <div class="hud-ring r2"></div>
-                <img src="nischal.png" alt="Profile" class="p-img">
+                <img src="profile.jpg" alt="Profile" class="p-img">
             </div>
         </div>
     </div>
 
-    <!-- 1. DATA (SKILLS/ACADEMIC) -->
+    <!-- 1. SKILLS -->
     <div id="sec-1" class="sector-wrapper">
         <div class="content-box full-box">
-            <h2>SYSTEM CAPABILITIES</h2>
+            <h2>TECHNICAL SKILLS</h2>
             <div style="display:grid; grid-template-columns:1fr 1fr; gap:4rem;">
                 <div class="glass-panel">
-                    <h3 style="font-family:var(--f-code); color:var(--c-cyan); margin-bottom:1rem;">// SKILL MATRIX</h3>
+                    <h3 style="font-family:var(--f-code); color:var(--c-cyan); margin-bottom:1rem;">// COMPETENCIES</h3>
+                    
                     <div class="skill-item">
                         <div class="skill-head"><span>CFD (ANSYS)</span><span>70%</span></div>
                         <div class="skill-track"><div class="skill-fill" style="width:70%"></div></div>
@@ -284,10 +285,11 @@
                         <div class="skill-track"><div class="skill-fill" style="width:80%"></div></div>
                     </div>
                 </div>
+
                 <div class="glass-panel" style="text-align:center; border-style:dashed; cursor:pointer;" onclick="unlockVault()">
                     <div style="font-size:3rem; margin-bottom:1rem;">🔒</div>
-                    <h3 style="margin-bottom:1rem;">ACADEMIC VAULT</h3>
-                    <div style="font-family:var(--f-code); color:var(--c-muted);">ENCRYPTED GRADES</div>
+                    <h3 style="margin-bottom:1rem;">ACADEMIC PERFORMANCE</h3>
+                    <div style="font-family:var(--f-code); color:var(--c-muted);">IOE PULCHOWK RECORDS</div>
                     <div id="vault-viz" style="display:none; height:150px; align-items:flex-end; gap:5px; margin-top:20px;"></div>
                     <div id="vault-res" style="display:none; margin-top:10px; font-weight:bold; color:var(--c-prim);">AGGREGATE: 76.71%</div>
                 </div>
@@ -295,10 +297,10 @@
         </div>
     </div>
 
-    <!-- 2. MISSIONS (PROJECTS) -->
+    <!-- 2. PROJECTS -->
     <div id="sec-2" class="sector-wrapper">
         <div class="content-box full-box">
-            <h2>MISSION LOGS</h2>
+            <h2>SELECTED PROJECTS</h2>
             <div class="grid-cards">
                 <div class="card" onclick="openModal('tunnel')">
                     <span class="tag">RESEARCH</span>
@@ -324,10 +326,10 @@
         </div>
     </div>
 
-    <!-- 3. LOG (HISTORY) -->
+    <!-- 3. EXPERIENCE -->
     <div id="sec-3" class="sector-wrapper">
         <div class="content-box full-box">
-            <h2>FLIGHT HISTORY</h2>
+            <h2>PROFESSIONAL EXPERIENCE</h2>
             <div class="glass-panel">
                 <div style="margin-bottom:3rem; border-left:1px solid var(--c-cyan); padding-left:2rem;">
                     <div style="font-family:var(--f-code); font-size:12px; color:var(--c-prim);">DEC 2024 - PRESENT</div>
@@ -351,25 +353,25 @@
         </div>
     </div>
 
-    <!-- 4. COMMS (CONTACT) -->
+    <!-- 4. CONTACT -->
     <div id="sec-4" class="sector-wrapper">
         <div class="content-box full-box">
             <div class="glass-panel" style="text-align:center; max-width:600px; margin:auto;">
-                <h2>ESTABLISH LINK</h2>
+                <h2>GET IN TOUCH</h2>
                 <p>nischalraut6@gmail.com</p>
                 <div style="margin-bottom:2rem;">
                     <a href="https://linkedin.com" target="_blank" class="btn-link">LINKEDIN</a>
                     <a href="https://github.com" target="_blank" class="btn-link">GITHUB</a>
                 </div>
-                <button class="warp-btn" onclick="warpTo(0)">RETURN TO COMMAND</button>
+                <button class="warp-btn" onclick="warpTo(0)">RETURN TO HOME</button>
             </div>
         </div>
     </div>
 
-    <!-- WARP TRIGGER BUTTON -->
+    <!-- WARP TRIGGER BUTTON (Dynamic Label) -->
     <div class="warp-trigger" onclick="nextSector()">
-        <div style="font-family:var(--f-code); font-size:10px; margin-bottom:5px; color:var(--c-muted);">NEXT SECTOR</div>
-        <button class="warp-btn">INITIATE WARP</button>
+        <div style="font-family:var(--f-code); font-size:10px; margin-bottom:5px; color:var(--c-muted);">NAVIGATION</div>
+        <button class="warp-btn" id="warp-label">GO TO SKILLS</button>
     </div>
 
     <!-- MODAL -->
@@ -389,6 +391,7 @@
         */
         const flightState = { speed: 0 };
         let audioCtx;
+        const sectionNames = ["HOME", "SKILLS", "PROJECTS", "EXPERIENCE", "CONTACT"];
 
         function initAudio() {
             audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -398,13 +401,10 @@
             if(!audioCtx) return;
             const osc = audioCtx.createOscillator();
             const gain = audioCtx.createGain();
-            
             osc.frequency.setValueAtTime(100, audioCtx.currentTime);
             osc.frequency.exponentialRampToValueAtTime(12000, audioCtx.currentTime + duration);
-            
             gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
             gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
-
             osc.connect(gain);
             gain.connect(audioCtx.destination);
             osc.start();
@@ -426,7 +426,7 @@
 
         /* 
         ========================================================================
-        2. THREE.JS ENGINE (v9 VISUALS + v10 WARP)
+        2. THREE.JS ENGINE
         ========================================================================
         */
         let scene, camera, renderer, globe, flowField, starField;
@@ -440,13 +440,13 @@
             renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
             renderer.setSize(window.innerWidth, window.innerHeight);
 
-            // 1. Digital Globe (Wireframe) - v9 Style
+            // 1. Globe
             const gGeo = new THREE.IcosahedronGeometry(8, 2);
             const gMat = new THREE.MeshBasicMaterial({ color: 0x112233, wireframe: true, transparent: true, opacity: 0.2 });
             globe = new THREE.Mesh(gGeo, gMat);
             scene.add(globe);
 
-            // 2. Flow Particles - v9 Style
+            // 2. Flow Particles
             const pGeo = new THREE.BufferGeometry();
             const pCount = 2000;
             const pPos = new Float32Array(pCount * 3);
@@ -456,7 +456,7 @@
             flowField = new THREE.Points(pGeo, pMat);
             scene.add(flowField);
 
-            // 3. Starfield - v10 Warp Style (Hidden normally)
+            // 3. Starfield (Hidden normally)
             const sGeo = new THREE.BufferGeometry();
             const sCount = 5000;
             const sPos = new Float32Array(sCount * 3);
@@ -471,11 +471,12 @@
         }
 
         function animate() {
-            // Idle Animation
             globe.rotation.y += 0.002;
             flowField.rotation.y -= 0.001;
+            globe.rotation.x += (window.mouseY * 0.0001 - globe.rotation.x) * 0.05;
+            globe.rotation.y += (window.mouseX * 0.0001 - globe.rotation.y) * 0.05;
 
-            // WARP EFFECT logic
+            // WARP EFFECT
             if(flightState.speed > 0.5) {
                 starField.visible = true;
                 globe.visible = false;
@@ -518,6 +519,11 @@
             warpTo((currentIdx + 1) % totalSec);
         }
 
+        function updateButtonLabel(idx) {
+            const nextIdx = (idx + 1) % totalSec;
+            document.getElementById('warp-label').innerText = `GO TO ${sectionNames[nextIdx]}`;
+        }
+
         function warpTo(idx) {
             if(isWarping || idx === currentIdx) return;
             isWarping = true;
@@ -531,8 +537,8 @@
 
             const oldSec = document.getElementById(`sec-${currentIdx}`);
             const newSec = document.getElementById(`sec-${idx}`);
-            const oldDot = document.querySelectorAll('.nav-dot')[currentIdx];
-            const newDot = document.querySelectorAll('.nav-dot')[idx];
+            const oldDot = document.querySelectorAll('.nav-icon')[currentIdx];
+            const newDot = document.querySelectorAll('.nav-icon')[idx];
 
             oldSec.classList.remove('active');
             if(oldDot) oldDot.classList.remove('active');
@@ -552,8 +558,9 @@
                             isWarping = false;
                             newSec.classList.add('active');
                             if(newDot) newDot.classList.add('active');
-                            document.querySelector('.warp-trigger').style.opacity = 1;
                             currentIdx = idx;
+                            updateButtonLabel(currentIdx);
+                            document.querySelector('.warp-trigger').style.opacity = 1;
                         }
                     });
                 }
@@ -565,14 +572,17 @@
         4. INTERACTIONS
         ========================================================================
         */
-        // Mouse
+        window.mouseX = 0; window.mouseY = 0;
         document.addEventListener('mousemove', e => {
+            window.mouseX = e.clientX - window.innerWidth/2;
+            window.mouseY = e.clientY - window.innerHeight/2;
+            
             const cursor = document.getElementById('cursor');
             const follow = document.getElementById('cursor-follower');
             gsap.to(cursor, { x: e.clientX, y: e.clientY, duration: 0 });
             gsap.to(follow, { x: e.clientX, y: e.clientY, duration: 0.15 });
             
-            if(e.target.tagName === 'BUTTON' || e.target.classList.contains('card') || e.target.classList.contains('nav-dot')) {
+            if(e.target.tagName === 'BUTTON' || e.target.classList.contains('card') || e.target.classList.contains('nav-icon')) {
                 document.body.classList.add('hovering');
             } else {
                 document.body.classList.remove('hovering');
@@ -617,4 +627,3 @@
     </script>
 </body>
 </html>
-
