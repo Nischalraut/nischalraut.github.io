@@ -16,11 +16,7 @@
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@100;400;800&family=Rajdhani:wght@300;500;600;700&family=Syncopate:wght@400;700&display=swap" rel="stylesheet">
 
     <style>
-        /* 
-        ========================================================================
-        CORE VARIABLES
-        ========================================================================
-        */
+        /* CORE VARIABLES */
         :root {
             --c-void: #030405;
             --c-panel: rgba(8, 12, 16, 0.9);
@@ -45,25 +41,19 @@
             width: 100vw; height: 100vh; position: fixed;
         }
 
-        /* 
-        ========================================================================
-        VISUAL LAYERS
-        ========================================================================
-        */
+        /* LAYERS */
         #gl-canvas { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
-        
         .scanlines {
             position: fixed; inset: 0; z-index: 10; pointer-events: none;
             background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,0) 50%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0.3));
             background-size: 100% 4px; opacity: 0.4;
         }
-        
         .vignette {
             position: fixed; inset: 0; z-index: 9; pointer-events: none;
             background: radial-gradient(circle, transparent 40%, #000 130%);
         }
 
-        /* CURSOR (Hidden on Touch) */
+        /* CURSOR (Desktop Only) */
         #cursor {
             position: fixed; top: 0; left: 0; width: 20px; height: 20px;
             border: 1px solid var(--c-prim); transform: translate(-50%, -50%) rotate(45deg);
@@ -77,18 +67,13 @@
             opacity: 0.5; transition: 0.1s ease-out;
         }
         body.hovering #cursor { width: 50px; height: 50px; background: rgba(255,255,255,0.1); }
-        
         @media (hover: none) { #cursor, #cursor-follower { display: none; } }
 
-        /* 
-        ========================================================================
-        HUD LAYOUT
-        ========================================================================
-        */
+        /* HUD LAYOUT */
         header {
             position: fixed; top: 0; left: 0; width: 100%; height: var(--head-h);
             display: flex; justify-content: space-between; align-items: center;
-            padding: 0 3rem; background: rgba(3, 4, 5, 0.9); border-bottom: 1px solid var(--c-border);
+            padding: 0 3rem; background: rgba(3, 4, 5, 0.95); border-bottom: 1px solid var(--c-border);
             z-index: 100; backdrop-filter: blur(10px);
         }
         .brand { font-family: var(--f-head); font-size: 1.5rem; letter-spacing: 2px; }
@@ -108,39 +93,32 @@
         }
         .nav-icon:hover, .nav-icon.active { color: var(--c-prim); border-left: 2px solid var(--c-prim); }
 
-        footer {
-            position: fixed; bottom: 0; left: var(--nav-w); right: 0; height: 30px;
-            background: rgba(0,0,0,0.9); border-top: 1px solid var(--c-border);
-            display: flex; align-items: center; padding: 0 20px; z-index: 100;
-            font-family: var(--f-code); font-size: 10px; color: var(--c-prim);
-        }
-
-        /* 
-        ========================================================================
-        CONTENT SECTORS
-        ========================================================================
-        */
+        /* SECTORS (SCROLLING LOGIC) */
         .sector-wrapper {
-            position: absolute; top: var(--head-h); left: var(--nav-w); right: 0; bottom: 30px;
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            position: absolute; top: 0; left: var(--nav-w); right: 0; bottom: 0;
+            display: flex; flex-direction: column;
             opacity: 0; pointer-events: none; transform: scale(1.2); transition: 0.1s;
-            padding: 2rem; overflow-y: auto; overflow-x: hidden;
+            overflow-y: auto; overflow-x: hidden;
+            -webkit-overflow-scrolling: touch; /* Smooth mobile scroll */
         }
         .sector-wrapper.active { opacity: 1; pointer-events: auto; transform: scale(1); }
 
+        /* CONTENT SPACING */
         .content-box {
-            width: 100%; max-width: 1200px; padding: 2rem;
+            width: 100%; max-width: 1200px; margin: 0 auto;
+            min-height: 100vh; /* Ensure full height */
+            padding: calc(var(--head-h) + 2rem) 2rem 4rem 2rem; /* Clear Header */
             display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 4rem; align-items: center;
-            padding-bottom: 100px; /* Space for warp button */
         }
         .full-box { grid-template-columns: 1fr; max-width: 1100px; }
 
+        /* TYPOGRAPHY */
         h1 { font-family: var(--f-head); font-size: 4rem; line-height: 0.9; margin-bottom: 1rem; color: #fff; }
         h2 { font-family: var(--f-head); font-size: 2.5rem; margin-bottom: 2rem; color: var(--c-prim); }
         p { font-size: 1.1rem; line-height: 1.7; color: var(--c-text); margin-bottom: 1.5rem; }
         .intro-border { border-left: 3px solid var(--c-prim); padding-left: 2rem; background: linear-gradient(90deg, var(--c-prim-dim), transparent); }
 
-        /* Profile */
+        /* PROFILE */
         .profile-container { position: relative; width: 350px; height: 350px; margin: auto; }
         .p-img { width: 100%; height: 100%; object-fit: cover; clip-path: polygon(20% 0%, 80% 0%, 100% 20%, 100% 80%, 80% 100%, 20% 100%, 0% 80%, 0% 20%); filter: grayscale(0.5); }
         .hud-ring {
@@ -151,22 +129,20 @@
         .r2 { top: -20%; left: -20%; width: 140%; height: 140%; animation-direction: reverse; }
         @keyframes rotate { to { transform: rotate(360deg); } }
 
-        /* Panels */
+        /* ELEMENTS */
         .glass-panel {
             background: var(--c-panel); border: 1px solid var(--c-border); padding: 3rem;
             backdrop-filter: blur(10px); position: relative; height: 100%;
         }
-        .glass-panel::before {
-            content: ''; position: absolute; top:0; left:0; width:4px; height:100%; background: var(--c-prim);
-        }
+        .glass-panel::before { content: ''; position: absolute; top:0; left:0; width:4px; height:100%; background: var(--c-prim); }
 
-        /* Skills */
+        /* SKILLS */
         .skill-item { margin-bottom: 1.5rem; }
         .skill-head { display: flex; justify-content: space-between; font-family: var(--f-code); font-size: 12px; margin-bottom: 5px; }
         .skill-track { width: 100%; height: 4px; background: rgba(255,255,255,0.1); }
         .skill-fill { height: 100%; background: var(--c-prim); box-shadow: 0 0 10px var(--c-prim); }
 
-        /* Cards */
+        /* PROJECTS */
         .grid-cards { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2rem; }
         .card {
             background: rgba(255,255,255,0.03); border: 1px solid var(--c-border); padding: 2rem;
@@ -175,7 +151,7 @@
         .card:hover { transform: translateY(-5px); border-color: var(--c-prim); background: rgba(252,61,33,0.1); }
         .tag { font-family: var(--f-code); font-size: 10px; color: var(--c-cyan); border: 1px solid var(--c-cyan); padding: 2px 6px; display: inline-block; margin-bottom: 10px; }
 
-        /* Timeline */
+        /* TIMELINE */
         .timeline-box { position: relative; padding-left: 2rem; border-left: 1px solid var(--c-muted); margin-bottom: 2rem; }
         .timeline-box::before { content:''; position: absolute; top:0; left:-4px; width:7px; height:7px; background:var(--c-prim); border-radius:50%; }
         .t-date { font-family: var(--f-code); font-size: 12px; color: var(--c-prim); margin-bottom: 5px; }
@@ -187,18 +163,18 @@
         .warp-trigger {
             position: fixed; bottom: 50px; left: 50%; transform: translateX(-50%);
             display: flex; flex-direction: column; align-items: center; z-index: 500;
-            transition: opacity 0.5s; cursor: pointer;
+            transition: opacity 0.5s; cursor: pointer; width: 300px; max-width: 90%;
         }
         .warp-btn {
-            background: rgba(0,0,0,0.8); border: 1px solid var(--c-prim);
+            background: rgba(0,0,0,0.9); border: 1px solid var(--c-prim);
             color: var(--c-prim); font-family: var(--f-head); font-size: 1rem;
             padding: 15px 40px; clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
             transition: 0.3s; text-transform: uppercase; letter-spacing: 2px;
-            pointer-events: auto; width: 300px;
+            pointer-events: auto; width: 100%;
         }
         .warp-btn:hover { background: var(--c-prim); color: #000; box-shadow: 0 0 30px var(--c-prim-glow); }
 
-        /* AUTO BOOT LOADER */
+        /* BOOT SCREEN */
         #boot-layer {
             position: fixed; inset: 0; background: #000; z-index: 9999;
             display: flex; flex-direction: column; justify-content: center; align-items: center;
@@ -241,26 +217,40 @@
 
         /* 
         ========================================================================
-        MOBILE OPTIMIZATION
+        MOBILE OPTIMIZATION (CRITICAL FIXES)
         ========================================================================
         */
         @media (max-width: 768px) {
             :root { --nav-w: 0px; --head-h: 60px; }
             
-            /* Orientation Change */
-            .content-box { display: flex; flex-direction: column-reverse; padding: 1rem; padding-bottom: 8rem; }
+            /* RESET LAYOUT FOR MOBILE */
+            .sector-wrapper { 
+                left: 0; /* Full width */
+                padding: 0;
+            }
+            
+            .content-box { 
+                display: flex; flex-direction: column-reverse; 
+                padding: 80px 1.5rem 140px 1.5rem; /* SAFE AREA PADDING */
+                gap: 2rem;
+                min-height: auto; /* Allow natural height */
+            }
             .full-box { display: block; }
             
-            /* Profile moves to top */
-            .profile-container { order: 2; width: 280px; height: 280px; margin-bottom: 2rem; }
-            
+            /* Typography Scale */
             h1 { font-size: 2.5rem; text-align: center; }
             h2 { font-size: 1.8rem; }
+            p { font-size: 1rem; }
+
+            /* Profile Fix */
+            .profile-container { 
+                width: 260px; height: 260px; order: 2; margin-bottom: 1rem;
+            }
             
-            /* Grids become stacks */
+            /* Stack Grids */
             .grid-cards, .mobile-stack { grid-template-columns: 1fr !important; gap: 2rem; }
             
-            /* Nav becomes bottom bar */
+            /* Bottom Nav Bar */
             aside {
                 width: 100%; height: 60px; top: auto; bottom: 0; flex-direction: row;
                 border-right: none; border-top: 1px solid var(--c-border); background: #000;
@@ -271,17 +261,16 @@
             }
             .nav-icon.active { border-left: none; border-bottom: 2px solid var(--c-prim); }
             
-            /* Warp Button Higher */
+            /* Warp Button Safety Area */
             .warp-trigger { bottom: 80px; width: 90%; }
-            .warp-btn { width: 100%; padding: 12px; font-size: 0.9rem; }
             
-            /* Modal Adjustments */
-            .modal-box { width: 95%; padding: 1.5rem; }
-            .gallery-container { height: 250px; }
-            
-            /* Hide HUD Stats */
+            /* Hide Desktop Elements */
             .hud-stats { display: none; }
             footer { display: none; }
+            
+            /* Modal Fix */
+            .modal-box { width: 95%; padding: 1.5rem; }
+            .gallery-container { height: 250px; }
         }
 
     </style>
@@ -299,8 +288,8 @@
 
     <!-- BOOT (AUTO) -->
     <div id="boot-layer">
-        <div style="font-family:var(--f-head); font-size:2rem; color:white;">AERO-OS <span style="color:var(--c-prim)">v12.3</span></div>
-        <div style="font-family:var(--f-code); color:var(--c-muted); margin-top:10px;">MOBILE OPTIMIZED</div>
+        <div style="font-family:var(--f-head); font-size:2rem; color:white;">AERO-OS <span style="color:var(--c-prim)">v12.4</span></div>
+        <div style="font-family:var(--f-code); color:var(--c-muted); margin-top:10px;">MOBILE FIELD PATCHED</div>
         <div class="loader-bar"><div class="loader-fill" id="load-prog"></div></div>
     </div>
 
