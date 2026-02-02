@@ -254,8 +254,8 @@
     .data-item label { display: block; font-size: 0.8em; color: var(--text-muted); text-transform: uppercase; }
     .data-item span { font-family: var(--font-tech); font-weight: 700; color: var(--text-main); font-size: 1.1em; }
 
-    .btn { padding: 0.8em 2em; background: var(--accent); color: white; border: none; border-radius: 50px; font-weight: 600; cursor: pointer; transition: 0.3s; display: inline-block; margin-top: 1em; }
-    .btn:hover { transform: translateY(-2px); filter: brightness(1.1); }
+    .btn { padding: 0.8em 2em; background: var(--accent); color: white; border: none; border-radius: 50px; font-weight: 600; cursor: pointer; transition: 0.3s; display: inline-block; margin-top: 1em; text-decoration: none; }
+    .btn:hover { transform: translateY(-2px); filter: brightness(1.1); color:white; }
     .btn-outline { background: transparent; border: 1px solid var(--border); color: var(--text-main); margin-left: 10px; }
     .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
 
@@ -449,8 +449,10 @@
           <textarea rows="5" placeholder="Transmission..." style="width:100%; padding:1em; border-radius:8px; border:1px solid var(--border); background:rgba(0,0,0,0.2); color:inherit;"></textarea>
           <button class="btn" type="button" onclick="alert('Message Sent')">Send</button>
         </form>
-        <div style="margin-top:2em; font-size:1.5em; display:flex; justify-content:center; gap:1em;">
-           <a href="https://linkedin.com" target="_blank">🔗</a> <!-- Add your actual link -->
+        
+        <div style="margin-top:2em; border-top:1px solid var(--border); padding-top:2em; display:flex; gap:1em; justify-content:center;">
+           <a href="https://www.linkedin.com/in/nischal-raut-1b2227314/" target="_blank" class="btn btn-outline" style="margin:0; text-decoration:none;">LinkedIn</a>
+           <a href="https://github.com/Nischalraut" target="_blank" class="btn btn-outline" style="margin:0; text-decoration:none;">GitHub</a>
         </div>
       </div>
     </section>
