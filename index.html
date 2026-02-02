@@ -1,363 +1,723 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Nischal Raut | Aerospace Engineer</title>
-
-  <!-- Dynamic Favicon -->
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23FC3D21'/%3E%3Ctext x='50%25' y='50%25' dy='.35em' fill='white' font-family='sans-serif' font-weight='bold' font-size='32' text-anchor='middle'%3EN%3C/text%3E%3C/svg%3E">
-
-  <!-- Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&family=Poppins:wght@400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
-
-  <style>
-    :root {
-      /* Palette */
-      --bg-body: #0B0D17;
-      --bg-surface: rgba(30, 35, 45, 0.6);
-      --bg-panel: #151922;
-      --text-main: #F1F5F9;
-      --text-muted: #94A3B8;
-      --accent: #FC3D21;
-      --accent-dim: rgba(252, 61, 33, 0.2);
-      --border: rgba(255, 255, 255, 0.08);
-      
-      /* Typography */
-      --font-head: 'Poppins', sans-serif;
-      --font-body: 'Nunito', sans-serif;
-      --font-tech: 'JetBrains Mono', monospace;
-      
-      /* Nav Height */
-      --nav-height: 80px;
-    }
-
-    [data-theme="light"] {
-      --bg-body: #E0F2FE;
-      --bg-surface: rgba(255, 255, 255, 0.85);
-      --bg-panel: #FFFFFF;
-      --text-main: #0F172A;
-      --text-muted: #475569;
-      --accent: #DC2626;
-      --accent-dim: rgba(220, 38, 38, 0.1);
-      --border: rgba(0, 0, 0, 0.08);
-    }
-
-    * { margin:0; padding:0; box-sizing:border-box; scroll-behavior: smooth; }
-
-    body {
-      font-family: var(--font-body);
-      background: var(--bg-body);
-      color: var(--text-main);
-      overflow-x: hidden;
-      min-height: 100vh;
-      transition: background-color 1s ease, color 1s ease;
-    }
-
-    /* 
-     * -----------------------------------------------------------
-     * 1. BACKGROUND LAYERS (Fixed)
-     * -----------------------------------------------------------
-     */
-    .bg-layer { position: fixed; inset: 0; z-index: -2; pointer-events: none; overflow: hidden; }
-    #airflow-canvas { position: fixed; inset: 0; z-index: -1; pointer-events: none; }
-
-    /* DARK MODE SCENE */
-    .space-scene {
-      position: absolute; inset: 0;
-      background: radial-gradient(circle at bottom, #1e1b4b 0%, #000000 90%);
-      opacity: 0; transition: opacity 1s;
-    }
-    [data-theme="dark"] .space-scene { opacity: 1; }
-
-    .stars {
-      position: absolute; inset: 0;
-      background-image: radial-gradient(2px 2px at 20px 30px, #eee, transparent),
-                        radial-gradient(1px 1px at 90px 40px, #fff, transparent);
-      background-size: 500px 500px; opacity: 0.5; animation: starMove 100s linear infinite;
-    }
-    .planet-ring {
-      position: absolute; top: 15%; right: 10%; width: 140px; height: 140px; border-radius: 50%;
-      background: radial-gradient(circle at 30% 30%, #7c3aed, #4c1d95);
-      box-shadow: inset -10px -10px 30px rgba(0,0,0,0.8);
-    }
-    .planet-ring::after {
-      content:''; position: absolute; top: 50%; left: 50%; width: 220px; height: 60px; border-radius: 50%;
-      border: 6px solid rgba(255,255,255,0.1); border-top: 6px solid rgba(255,255,255,0.5);
-      transform: translate(-50%, -50%) rotate(-25deg);
-    }
-    .planet-red {
-      position: absolute; bottom: 20%; left: 8%; width: 90px; height: 90px; border-radius: 50%;
-      background: radial-gradient(circle at 30% 30%, #fda4af, #be123c);
-      box-shadow: inset -8px -8px 20px rgba(0,0,0,0.9);
-    }
-    .meteor {
-      position: absolute; width: 150px; height: 2px;
-      background: linear-gradient(90deg, white, transparent);
-      transform: rotate(45deg); opacity: 0;
-    }
-    .m1 { animation: meteorFall 7s infinite 2s; top: -10%; left: 20%; }
-    .m2 { animation: meteorFall 10s infinite 6s; top: -10%; left: 70%; width: 100px; }
-
-    /* LIGHT MODE SCENE */
-    .sky-scene {
-      position: absolute; inset: 0;
-      background: linear-gradient(to bottom, #BAE6FD, #F0F9FF);
-      opacity: 0; transition: opacity 1s;
-    }
-    [data-theme="light"] .sky-scene { opacity: 1; }
-
-    .cloud {
-      position: absolute; background: white; border-radius: 50px;
-      filter: blur(8px); opacity: 0.7; animation: cloudDrift linear infinite;
-    }
-    .c1 { width: 180px; height: 70px; top: 15%; left: -200px; animation-duration: 50s; }
-    .c2 { width: 300px; height: 100px; top: 35%; left: -400px; animation-duration: 70s; opacity: 0.5; }
-
-    .plane-container {
-      position: absolute; top: 18%; left: -200px; width: 120px; opacity: 0.6;
-      animation: planeFly 40s linear infinite;
-    }
-    .plane-svg { width: 100%; fill: #475569; }
-
-    /* Rocket (8s Interval) */
-    .rocket-wrapper {
-      position: absolute; bottom: -150px; left: 50%; transform: translateX(-50%);
-      width: 30px; height: 80px;
-      animation: rocketLaunch 8s ease-in-out infinite;
-    }
-    .rocket-body {
-      width: 100%; height: 100%; background: linear-gradient(to right, #CBD5E1, #94A3B8);
-      border-radius: 50% 50% 4px 4px; position: relative; z-index: 2;
-    }
-    .rocket-window {
-      position: absolute; top: 20px; left: 50%; transform: translateX(-50%);
-      width: 12px; height: 12px; background: #38BDF8; border-radius: 50%; border: 2px solid #fff;
-    }
-    .rocket-fin { position: absolute; bottom: 0; width: 14px; height: 25px; background: #EF4444; z-index: 1; }
-    .fin-l { left: -10px; border-radius: 100% 0 0 0; }
-    .fin-r { right: -10px; border-radius: 0 100% 0 0; }
-    .fire {
-      position: absolute; top: 100%; left: 4px; width: 22px; height: 40px;
-      background: linear-gradient(to bottom, #F59E0B, transparent);
-      border-radius: 0 0 10px 10px; filter: blur(3px); animation: burn 0.1s infinite alternate;
-    }
-
-    @keyframes starMove { from {transform: translateY(0);} to {transform: translateY(-500px);} }
-    @keyframes meteorFall { 0% {opacity:0; transform:translate(0,0) rotate(45deg);} 10% {opacity:1;} 20% {opacity:0; transform:translate(400px, 400px) rotate(45deg);} 100% {opacity:0;} }
-    @keyframes cloudDrift { to { transform: translateX(120vw); } }
-    @keyframes planeFly { 0% { left: -15%; } 100% { left: 115%; } }
-    @keyframes rocketLaunch { 0% { bottom: -150px; opacity: 1; transform: translateX(-50%) scale(0.8); } 15% { bottom: 110vh; opacity: 1; transform: translateX(-50%) scale(0.8); } 20% { opacity: 0; bottom: 110vh; } 100% { opacity: 0; bottom: 110vh; } }
-    @keyframes burn { from {height: 40px; opacity:0.8;} to {height: 60px; opacity:1;} }
-
-    /* 
-     * -----------------------------------------------------------
-     * 2. UI & NAV
-     * -----------------------------------------------------------
-     */
-    nav {
-      position: fixed; top: 0; width: 100%; height: var(--nav-height);
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 0 3em; z-index: 1000;
-      backdrop-filter: blur(12px); background: rgba(var(--bg-body), 0.1);
-      border-bottom: 1px solid var(--border);
-    }
-    .brand { font-family: var(--font-head); font-weight: 800; font-size: 1.5em; cursor: pointer; }
-    nav ul { display: flex; gap: 2em; list-style: none; }
-    nav ul li a { color: var(--text-main); font-weight: 600; opacity: 0.7; position: relative; transition: 0.3s; }
-    nav ul li a:hover { opacity: 1; color: var(--accent); }
-    .theme-switch { cursor: pointer; padding: 0.5em; font-size: 1.2em; }
-
-    /* Main Container */
-    .container { max-width: 1200px; margin: 0 auto; padding: 0 2em; }
-    section { padding: 6em 0; position: relative; }
-
-    /* 
-     * -----------------------------------------------------------
-     * 3. SECTION CONTENT
-     * -----------------------------------------------------------
-     */
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nischal Raut | Aerospace Engineer | SYSTEM: ONLINE</title>
     
-    /* HERO: Split Layout */
-    #hero {
-      min-height: 100vh;
-      display: flex; align-items: center;
-      padding-top: var(--nav-height);
-    }
-    .hero-grid {
-      display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 4em; align-items: center;
-    }
-    
-    .hero-text h1 { font-family: var(--font-head); font-size: 3.5em; font-weight: 800; line-height: 1.1; margin-bottom: 0.2em; }
-    .hero-text h2 { font-size: 1.5em; color: var(--text-muted); font-weight: 600; margin-bottom: 1.5em; font-family: var(--font-tech); color: var(--accent); }
-    
-    .intro-text { line-height: 1.8; margin-bottom: 1.5em; color: var(--text-muted); text-align: justify; }
-    
-    .hero-img-box {
-      position: relative; width: 350px; height: 350px; margin: auto;
-    }
-    .profile-pic {
-      width: 100%; height: 100%; border-radius: 50%;
-      border: 4px solid var(--accent); padding: 6px; object-fit: cover;
-      background: var(--bg-body); transition: transform 0.5s ease;
-      animation: floatImg 6s ease-in-out infinite;
-    }
-    @keyframes floatImg { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-15px)} }
+    <!-- Dynamic Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='8' fill='%23FC3D21'/%3E%3Cpath d='M32 8 L54 56 L32 46 L10 56 Z' fill='white'/%3E%3C/svg%3E">
 
-    /* SKILLS & RADAR */
-    .skills-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3em; align-items: center; }
-    .content-box { background: var(--bg-surface); backdrop-filter: blur(10px); padding: 2.5em; border-radius: 16px; border: 1px solid var(--border); }
-    
-    .radar-container { text-align: center; }
-    .radar-svg { width: 100%; max-width: 350px; height: auto; overflow: visible; }
-    .radar-poly { fill: var(--accent-dim); stroke: var(--accent); stroke-width: 2; }
-    .radar-axis { stroke: var(--text-muted); stroke-width: 1; stroke-dasharray: 4; opacity: 0.5; }
-    .radar-label { font-size: 12px; fill: var(--text-main); font-family: var(--font-tech); text-anchor: middle; }
+    <!-- Fonts: Sci-Fi & Clean -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;500;800&family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
 
-    /* EXPERIENCE */
-    .timeline { border-left: 2px solid var(--accent); padding-left: 2em; margin-left: 1em; }
-    .timeline-item { position: relative; margin-bottom: 3em; }
-    .timeline-item::before { content:''; position: absolute; left: -2.6em; top: 5px; width: 16px; height: 16px; background: var(--accent); border-radius: 50%; }
-    .job-title { font-size: 1.3em; font-weight: 700; color: var(--text-main); }
-    .company { font-weight: 600; color: var(--accent); font-family: var(--font-head); }
-    
-    /* PROJECTS */
-    .section-title { font-family: var(--font-head); font-size: 2.5em; margin-bottom: 1em; text-align: center; }
-    .project-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2em; }
-    .p-card { background: var(--bg-surface); padding: 0; border-radius: 16px; border: 1px solid var(--border); overflow: hidden; transition: transform 0.3s; cursor: pointer; }
-    .p-card:hover { transform: translateY(-8px); border-color: var(--accent); }
-    .p-img { width: 100%; height: 180px; background: #222; object-fit: cover; display: flex; align-items: center; justify-content: center; font-size: 3em; }
-    .p-img img { width: 100%; height: 100%; object-fit: cover; }
-    .p-content { padding: 1.5em; }
-    .p-tag { font-size: 0.75em; letter-spacing: 1px; color: var(--accent); font-weight: 700; text-transform: uppercase; }
+    <!-- Styles -->
+    <style>
+        :root {
+            --c-accent: #FC3D21;
+            --c-accent-glow: rgba(252, 61, 33, 0.6);
+            --c-dark: #050508;
+            --c-panel: rgba(10, 15, 25, 0.75);
+            --c-text: #E0E6ED;
+            --c-muted: #8492A6;
+            --c-grid: rgba(255, 255, 255, 0.05);
+            
+            --f-head: 'Orbitron', sans-serif;
+            --f-body: 'Rajdhani', sans-serif;
+            --f-code: 'JetBrains Mono', monospace;
 
-    /* ACADEMIC VAULT (Card style) */
-    .vault-card {
-      background: var(--bg-surface); border: 2px dashed var(--border); border-radius: 16px;
-      padding: 3em; text-align: center; cursor: pointer; transition: 0.3s;
-    }
-    .vault-card:hover { border-color: var(--accent); background: rgba(252,61,33,0.05); }
+            --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+        }
 
-    /* CONTACT */
-    .social-links { display: flex; gap: 1em; justify-content: center; margin-top: 2em; }
-    
-    /* UTILS */
-    .btn { padding: 0.8em 2em; background: var(--accent); color: white; border: none; border-radius: 50px; font-weight: 600; cursor: pointer; transition: 0.3s; display: inline-block; text-decoration: none; }
-    .btn:hover { transform: translateY(-2px); filter: brightness(1.1); color: white; }
-    .btn-outline { background: transparent; border: 1px solid var(--border); color: var(--text-main); }
-    .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+        * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; /* Custom Cursor */ }
 
-    /* MODAL (Common for Projects & Academic) */
-    .modal-overlay {
-      position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(10px);
-      z-index: 2000; opacity: 0; pointer-events: none; display: flex; align-items: center; justify-content: center;
-      transition: opacity 0.3s;
-    }
-    .modal-overlay.active { opacity: 1; pointer-events: all; }
-    .modal-box {
-      background: var(--bg-panel); width: 90%; max-width: 700px; max-height: 80vh; overflow-y: auto;
-      border: 1px solid var(--accent); border-radius: 12px; padding: 2em; position: relative;
-    }
-    .modal-close { position: absolute; top: 15px; right: 20px; font-size: 1.5em; cursor: pointer; }
-    
-    /* Academic Graph specific */
-    .graph-display { display: flex; height: 350px; margin-top: 2em; align-items: flex-end; gap: 10px; }
-    .bar-col { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 100%; }
-    .bar { width: 100%; background: linear-gradient(to top, var(--accent), #f97316); border-radius: 6px 6px 0 0; position: relative; height: 0; transition: height 1s ease; opacity: 0.9; }
-    .bar-val { position: absolute; top: -25px; width: 100%; text-align: center; font-weight: bold; font-size: 0.8em; }
+        body {
+            background: var(--c-dark);
+            color: var(--c-text);
+            font-family: var(--f-body);
+            overflow: hidden; /* 3D Scene handles scrolling */
+            height: 100vh;
+            width: 100vw;
+        }
 
-    /* Responsive */
-    @media(max-width: 900px) { .hero-grid, .skills-grid { grid-template-columns: 1fr; } .hero-img-box { order: -1; width: 250px; height: 250px; } }
-    @media(max-width: 768px) { nav { padding: 0 1.5em; } nav ul { display: none; } .brand { display: block; } h1 { font-size: 2.5em; } }
-  </style>
+        /* --- 1. CANVAS & VIGNETTE --- */
+        #webgl {
+            position: fixed; top: 0; left: 0; outline: none; z-index: 1;
+        }
+        .vignette {
+            position: fixed; inset: 0; z-index: 2; pointer-events: none;
+            background: radial-gradient(circle, transparent 50%, black 140%);
+        }
+        .scanline {
+            position: fixed; inset: 0; z-index: 2; pointer-events: none;
+            background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,0) 50%, rgba(0,0,0,0.1) 50%, rgba(0,0,0,0.1));
+            background-size: 100% 4px;
+            opacity: 0.3;
+        }
+
+        /* --- 2. CUSTOM CURSOR (AERODYNAMIC TRAIL) --- */
+        #cursor {
+            position: fixed; top: 0; left: 0; width: 20px; height: 20px;
+            border: 2px solid var(--c-accent); border-radius: 50%;
+            transform: translate(-50%, -50%); z-index: 9999; pointer-events: none;
+            mix-blend-mode: difference; transition: width 0.3s, height 0.3s;
+        }
+        #cursor-dot {
+            position: fixed; top: 0; left: 0; width: 4px; height: 4px;
+            background: white; border-radius: 50%;
+            transform: translate(-50%, -50%); z-index: 9999; pointer-events: none;
+        }
+        body:hover #cursor { width: 40px; height: 40px; border-color: white; opacity: 0.5; }
+
+        /* --- 3. LOADING SCREEN (BIOS BOOT) --- */
+        #loader {
+            position: fixed; inset: 0; background: #000; z-index: 5000;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            font-family: var(--f-code); color: var(--c-accent);
+        }
+        .loader-text { font-size: 14px; margin-bottom: 10px; text-shadow: 0 0 10px var(--c-accent); }
+        .progress-bar { width: 300px; height: 4px; background: #333; position: relative; }
+        .progress-fill { position: absolute; left: 0; top: 0; height: 100%; width: 0%; background: var(--c-accent); transition: width 0.2s; }
+
+        /* --- 4. HUD UI OVERLAY --- */
+        #ui-layer {
+            position: fixed; inset: 0; z-index: 10; pointer-events: none;
+            display: grid; grid-template-rows: 80px 1fr 60px;
+            padding: 2rem;
+        }
+        
+        /* Nav */
+        nav {
+            pointer-events: auto; display: flex; justify-content: space-between; align-items: center;
+            border-bottom: 1px solid var(--c-grid); padding-bottom: 1rem;
+        }
+        .brand {
+            font-family: var(--f-head); font-weight: 900; font-size: 24px; letter-spacing: 2px;
+            color: white; text-transform: uppercase;
+        }
+        .brand span { color: var(--c-accent); }
+        .nav-links { display: flex; gap: 2rem; list-style: none; }
+        .nav-item {
+            font-family: var(--f-code); font-size: 12px; cursor: pointer; position: relative;
+            color: var(--c-muted); transition: 0.3s; text-transform: uppercase;
+        }
+        .nav-item:hover, .nav-item.active { color: var(--c-accent); text-shadow: 0 0 8px var(--c-accent-glow); }
+        .nav-item::before {
+            content: '['; margin-right: 5px; opacity: 0; transition: 0.3s;
+        }
+        .nav-item::after {
+            content: ']'; margin-left: 5px; opacity: 0; transition: 0.3s;
+        }
+        .nav-item:hover::before, .nav-item:hover::after { opacity: 1; }
+
+        /* --- 5. CONTENT SECTIONS (DOM Overlays) --- */
+        .page-section {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            width: 80%; max-width: 1200px; height: 80%;
+            display: none; pointer-events: none; opacity: 0;
+            transition: opacity 0.5s var(--ease-out), transform 0.5s var(--ease-out);
+        }
+        .page-section.active {
+            display: flex; pointer-events: auto; opacity: 1;
+        }
+
+        /* HERO CONTENT */
+        #hero-section { align-items: center; justify-content: flex-start; }
+        .hero-content {
+            max-width: 600px;
+            background: linear-gradient(90deg, var(--c-panel) 0%, rgba(0,0,0,0) 100%);
+            padding: 3rem; border-left: 4px solid var(--c-accent);
+            backdrop-filter: blur(10px);
+        }
+        h1 {
+            font-family: var(--f-head); font-size: 4rem; line-height: 0.9; margin-bottom: 1rem;
+            text-transform: uppercase; background: linear-gradient(to right, #fff, #888);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        .roles { font-family: var(--f-code); color: var(--c-accent); font-size: 1.2rem; margin-bottom: 2rem; }
+        .bio { line-height: 1.6; font-size: 1.1rem; color: var(--c-muted); margin-bottom: 2rem; }
+        
+        /* Buttons */
+        .btn {
+            display: inline-flex; align-items: center; padding: 12px 30px;
+            background: rgba(252, 61, 33, 0.1); border: 1px solid var(--c-accent);
+            color: var(--c-accent); font-family: var(--f-head); font-weight: 700;
+            text-transform: uppercase; letter-spacing: 2px;
+            transition: 0.4s; clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
+        }
+        .btn:hover { background: var(--c-accent); color: #000; box-shadow: 0 0 20px var(--c-accent-glow); }
+
+        /* PANEL STYLES (Glassmorphism) */
+        .panel {
+            background: var(--c-panel); border: 1px solid rgba(255,255,255,0.1);
+            backdrop-filter: blur(20px); border-radius: 4px; padding: 2rem;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+            overflow-y: auto; max-height: 100%;
+            scrollbar-width: thin; scrollbar-color: var(--c-accent) #111;
+        }
+        
+        /* GRID LAYOUTS */
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; height: 100%; }
+        .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; }
+
+        /* SKILLS STYLING */
+        .skill-bar-container { margin-bottom: 1.5rem; }
+        .skill-meta { display: flex; justify-content: space-between; margin-bottom: 5px; font-family: var(--f-code); font-size: 12px; }
+        .skill-track { width: 100%; height: 6px; background: rgba(255,255,255,0.1); }
+        .skill-fill { height: 100%; background: var(--c-accent); width: 0%; transition: width 1s ease 0.5s; box-shadow: 0 0 10px var(--c-accent); }
+        
+        /* PROJECT CARDS (Holographic) */
+        .proj-card {
+            border: 1px solid rgba(255,255,255,0.1); padding: 1.5rem; transition: 0.3s;
+            background: linear-gradient(180deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0) 100%);
+            position: relative; overflow: hidden;
+        }
+        .proj-card::before {
+            content:''; position: absolute; top:0; left:0; width: 2px; height: 0%; background: var(--c-accent); transition: 0.3s;
+        }
+        .proj-card:hover { transform: translateY(-5px); border-color: rgba(255,255,255,0.3); }
+        .proj-card:hover::before { height: 100%; }
+        .proj-tag { font-family: var(--f-code); color: var(--c-accent); font-size: 10px; margin-bottom: 10px; display: block; }
+        .proj-title { font-family: var(--f-head); font-size: 1.2rem; margin-bottom: 0.5rem; }
+        .proj-desc { font-size: 0.9rem; color: var(--c-muted); line-height: 1.5; }
+
+        /* TIMELINE */
+        .timeline-item { border-left: 2px solid var(--c-accent); padding-left: 1.5rem; margin-bottom: 2rem; position: relative; }
+        .timeline-item::after {
+            content:''; position: absolute; left: -6px; top: 0; width: 10px; height: 10px; background: #000; border: 2px solid var(--c-accent);
+        }
+        
+        /* ACADEMIC VAULT */
+        .lock-overlay {
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            height: 300px; border: 1px dashed var(--c-accent); color: var(--c-accent);
+            font-family: var(--f-code); text-align: center;
+        }
+        .graph-bars { display: flex; align-items: flex-end; gap: 10px; height: 300px; display: none; }
+        .graph-col { flex: 1; background: rgba(252, 61, 33, 0.2); transition: height 1s; position: relative; }
+        .graph-col:hover { background: var(--c-accent); }
+        .graph-tooltip { 
+            position: absolute; top: -25px; left: 50%; transform: translateX(-50%);
+            font-family: var(--f-code); font-size: 10px; color: white; opacity: 0; transition: 0.2s;
+        }
+        .graph-col:hover .graph-tooltip { opacity: 1; }
+
+        /* --- 6. FOOTER HUD --- */
+        .hud-footer {
+            display: flex; justify-content: space-between; align-items: flex-end;
+            font-family: var(--f-code); font-size: 10px; color: var(--c-muted);
+            border-top: 1px solid var(--c-grid); padding-top: 1rem; pointer-events: auto;
+        }
+        .socials a { color: var(--c-text); margin-right: 15px; text-decoration: none; transition: 0.3s; }
+        .socials a:hover { color: var(--c-accent); }
+        .status { display: flex; gap: 10px; align-items: center; }
+        .status-dot { width: 8px; height: 8px; background: #0f0; border-radius: 50%; box-shadow: 0 0 5px #0f0; animation: blink 2s infinite; }
+        
+        @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+        /* --- 7. MODAL (Detail View) --- */
+        #detail-modal {
+            position: fixed; inset: 0; z-index: 200; background: rgba(0,0,0,0.8);
+            display: flex; align-items: center; justify-content: center;
+            opacity: 0; pointer-events: none; transition: 0.3s; backdrop-filter: blur(5px);
+        }
+        #detail-modal.open { opacity: 1; pointer-events: auto; }
+        .modal-content {
+            width: 600px; background: #111; border: 1px solid var(--c-accent); padding: 2rem;
+            position: relative; box-shadow: 0 0 50px rgba(252,61,33,0.2);
+        }
+        .close-modal { position: absolute; top: 10px; right: 15px; cursor: pointer; font-size: 24px; color: var(--c-accent); }
+
+        /* Media Queries */
+        @media (max-width: 900px) {
+            .grid-2 { grid-template-columns: 1fr; }
+            h1 { font-size: 2.5rem; }
+            .nav-links { display: none; } /* Simplified for mobile */
+        }
+    </style>
 </head>
 <body>
 
-  <!-- Backgrounds -->
-  <canvas id="airflow-canvas"></canvas>
-  <div class="bg-layer">
-    <div class="space-scene">
-      <div class="stars"></div>
-      <div class="planet-ring"></div>
-      <div class="planet-red"></div>
-      <div class="meteor m1"></div>
-      <div class="meteor m2"></div>
-    </div>
-    <div class="sky-scene">
-      <div class="cloud c1"></div>
-      <div class="cloud c2"></div>
-      <div class="plane-container">
-        <svg class="plane-svg" viewBox="0 0 576 512">
-          <path d="M482.3 192c34.2 0 93.7 29 93.7 64c0 36-59.5 64-93.7 64l-116.6 0L265.2 495.9c-5.7 10-16.3 16.1-27.8 16.1l-56.2 0c-10.6 0-18.3-10.2-15.4-20.4l49-171.6L112 320 68.8 377.6c-3 4-7.8 6.4-12.8 6.4l-42 0c-7.8 0-14-6.3-14-14c0-1.3 .2-2.6 .5-3.9L32 256 .5 145.9c-.4-1.3-.5-2.6-.5-3.9c0-7.7 6.2-14 14-14l42 0c5 0 9.8 2.4 12.8 6.4L112 192l102.9 0-49-171.6C162.9 10.2 170.6 0 181.2 0l56.2 0c11.5 0 22.1 6.1 27.8 16.1L365.7 192l116.6 0z"/>
-        </svg>
-      </div>
-      <div class="rocket-wrapper">
-        <div class="rocket-body">
-          <div class="rocket-window"></div>
-          <div class="rocket-fin fin-l"></div>
-          <div class="rocket-fin fin-r"></div>
-        </div>
-        <div class="fire"></div>
-      </div>
-    </div>
-  </div>
+    <!-- VISUAL LAYERS -->
+    <div class="vignette"></div>
+    <div class="scanline"></div>
+    <canvas id="webgl"></canvas>
+    
+    <!-- CURSOR -->
+    <div id="cursor"></div>
+    <div id="cursor-dot"></div>
 
-  <!-- Nav -->
-  <nav>
-    <div class="brand">NR<span style="color:var(--accent)">.</span></div>
-    <ul>
-      <li><a href="#hero">About</a></li>
-      <li><a href="#skills">Skills</a></li>
-      <li><a href="#experience">History</a></li>
-      <li><a href="#projects">Work</a></li>
-      <li><a href="#academic">Academic</a></li>
-      <li><a href="#contact">Contact</a></li>
-    </ul>
-    <div class="theme-switch" id="themeBtn">🌓</div>
-  </nav>
-
-  <!-- HERO -->
-  <header id="hero">
-    <div class="container hero-grid">
-      <div class="hero-text">
-        <h1>Nischal Raut</h1>
-        <h2>Aerospace Engineer</h2>
-        <div class="intro-text">
-          <p>I am an Aerospace Engineering graduate with a strong focus on experimental aerodynamics, wind tunnel design, and unsteady flow analysis. My work centers on translating theoretical models into physical systems, with hands-on experience in gust generation, flow visualization, and aerodynamic testing.</p>
-          <br>
-          <p>I have worked extensively with tools such as ANSYS, MATLAB, SolidWorks, and LaTeX to support both experimental and analytical investigations. Through academic projects and industry exposure, I have developed a methodical approach to problem-solving—grounded in validation, data interpretation, and engineering practicality.</p>
-          <br>
-          <p>I am particularly interested in aerodynamic experimentation, UAV systems, and research-driven engineering environments where rigorous analysis and real-world constraints intersect. This website highlights my projects, experience, and technical work, reflecting both my skills and my approach to engineering.</p>
-        </div>
-        <a href="#contact" class="btn">Get in Touch</a>
-      </div>
-      <div class="hero-img-box">
-        <img src="profile.jpg" alt="Profile" class="profile-pic">
-      </div>
+    <!-- LOADING SCREEN -->
+    <div id="loader">
+        <div class="loader-text">INITIALIZING SYSTEMS...</div>
+        <div class="progress-bar"><div class="progress-fill" id="progress"></div></div>
+        <div class="loader-text" style="margin-top: 10px; font-size: 10px;">LOADING CFD SHADERS // GENERATING GEOMETRY</div>
     </div>
-  </header>
 
-  <!-- SKILLS -->
-  <section id="skills">
-    <div class="container">
-      <h2 class="section-title">Technical Matrix</h2>
-      <div class="skills-grid">
-        <div class="content-box">
-          <h3>Core Competencies</h3>
-          <p>My expertise lies at the intersection of Digital Simulation and Physical Testing. I leverage CFD to predict flow behavior and Wind Tunnels to validate it.</p>
-          <ul style="margin-left:1.5em; line-height:1.8;">
-            <li><strong>Aerodynamics:</strong> Subsonic Wind Tunnel Testing, Gust Response.</li>
-            <li><strong>Simulation:</strong> ANSYS Fluent (Meshing, Turbulence Models).</li>
-            <li><strong>Design:</strong> CATIA V5, SolidWorks, AutoCAD.</li>
-            <li><strong>Avionics:</strong> UAV Integration, Photogrammetry.</li>
-          </ul>
+    <!-- UI LAYER -->
+    <div id="ui-layer">
+        
+        <!-- NAVIGATION -->
+        <nav>
+            <div class="brand">NISCHAL<span>.RAUT</span></div>
+            <ul class="nav-links">
+                <li class="nav-item active" data-target="hero">Command</li>
+                <li class="nav-item" data-target="about">Telemetry</li>
+                <li class="nav-item" data-target="projects">Missions</li>
+                <li class="nav-item" data-target="experience">Flight Log</li>
+                <li class="nav-item" data-target="contact">Comms</li>
+            </ul>
+            <div style="font-family:var(--f-code); font-size:10px; color:var(--c-accent);">SYS: NOMINAL</div>
+        </nav>
+
+        <!-- SECTIONS CONTAINER -->
+        <div id="main-interface" style="position: relative; width: 100%; height: 100%;">
+            
+            <!-- 1. HERO SECTION -->
+            <section id="hero" class="page-section active">
+                <div class="hero-content">
+                    <div style="font-family:var(--f-code); color:var(--c-accent); margin-bottom:10px;">// PILOT PROFILE</div>
+                    <h1>Nischal Raut</h1>
+                    <div class="roles" id="typewriter">Aerospace Engineer</div>
+                    <p class="bio">
+                        Merging Computational Fluid Dynamics with Experimental Aerodynamics. 
+                        Specializing in Wind Tunnel testing, UAV systems, and Avionics integration.
+                    </p>
+                    <div style="display:flex; gap: 1rem;">
+                        <button class="btn" onclick="navTo('projects')">Initialize Portfolio</button>
+                        <button class="btn" style="filter: grayscale(1); opacity:0.7;" onclick="navTo('contact')">Establish Link</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 2. ABOUT & SKILLS -->
+            <section id="about" class="page-section">
+                <div class="grid-2">
+                    <div class="panel">
+                        <h2 style="font-family:var(--f-head); margin-bottom:1rem;">Philosophy</h2>
+                        <p style="margin-bottom:1rem; color:var(--c-muted); line-height:1.6;">
+                            Engineering is the art of negotiating with physics. My methodology bridges the gap between digital simulation (ANSYS/MATLAB) and physical validation (Wind Tunnel/Flight Test).
+                        </p>
+                        <h3 style="font-family:var(--f-head); color:var(--c-accent); margin-top:2rem;">Interests</h3>
+                        <ul style="list-style:none; margin-top:10px; display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
+                            <li style="background:rgba(255,255,255,0.05); padding:10px;">RC Aviation (Scratch Build)</li>
+                            <li style="background:rgba(255,255,255,0.05); padding:10px;">Sci-Fi Literature</li>
+                            <li style="background:rgba(255,255,255,0.05); padding:10px;">Drone Photography</li>
+                            <li style="background:rgba(255,255,255,0.05); padding:10px;">Space Tech Analysis</li>
+                        </ul>
+                    </div>
+                    <div class="panel">
+                        <h2 style="font-family:var(--f-head); margin-bottom:1.5rem;">System Capacities</h2>
+                        
+                        <!-- Skill Bars -->
+                        <div class="skill-bar-container">
+                            <div class="skill-meta"><span>CFD & Analysis (ANSYS, Math)</span><span>70%</span></div>
+                            <div class="skill-track"><div class="skill-fill" style="width:70%"></div></div>
+                        </div>
+                        <div class="skill-bar-container">
+                            <div class="skill-meta"><span>CAD & Design (CATIA, SolidWorks)</span><span>80%</span></div>
+                            <div class="skill-track"><div class="skill-fill" style="width:80%"></div></div>
+                        </div>
+                        <div class="skill-bar-container">
+                            <div class="skill-meta"><span>Programming (Python, C, MATLAB)</span><span>60%</span></div>
+                            <div class="skill-track"><div class="skill-fill" style="width:60%"></div></div>
+                        </div>
+                        <div class="skill-bar-container">
+                            <div class="skill-meta"><span>Experimental (Wind Tunnel, Fab)</span><span>80%</span></div>
+                            <div class="skill-track"><div class="skill-fill" style="width:80%"></div></div>
+                        </div>
+
+                        <div style="margin-top:2rem; padding:1rem; border:1px dashed var(--c-accent); font-family:var(--f-code); font-size:12px; color:var(--c-accent);">
+                            ACADEMIC VAULT: IOE PULCHOWK
+                            <div id="academic-lock" class="lock-overlay" style="height:100px; margin-top:10px; cursor:pointer;" onclick="unlockAcademic()">
+                                [ CLICK TO DECRYPT GRADES ]
+                            </div>
+                            <div id="academic-graph" class="graph-bars" style="height:100px; margin-top:10px;">
+                                <!-- Injected via JS -->
+                            </div>
+                            <div id="agg-score" style="display:none; text-align:center; margin-top:5px;">AGGREGATE: 76.71%</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 3. PROJECTS -->
+            <section id="projects" class="page-section">
+                <div class="panel" style="height:100%;">
+                    <h2 style="font-family:var(--f-head); margin-bottom:2rem;">Mission Log</h2>
+                    <div class="grid-3">
+                        
+                        <div class="proj-card" onclick="openModal('tunnel')">
+                            <span class="proj-tag">RESEARCH // EXPERIMENTAL</span>
+                            <div class="proj-title">Subsonic Wind Tunnel</div>
+                            <div class="proj-desc">Design and fabrication of open-jet tunnel with gust generator. Validated 0.88% Turbulent Intensity.</div>
+                        </div>
+
+                        <div class="proj-card" onclick="openModal('b52')">
+                            <span class="proj-tag">DESIGN // CONCEPTUAL</span>
+                            <div class="proj-title">B-52 Air Launch</div>
+                            <div class="proj-desc">Study of using B-52 as carrier for satellite launch vehicles to optimize LEO insertion.</div>
+                        </div>
+
+                        <div class="proj-card" onclick="openModal('glider')">
+                            <span class="proj-tag">FABRICATION // UAV</span>
+                            <div class="proj-title">Styrofoam Glider</div>
+                            <div class="proj-desc">Scratch-built RC aircraft using hot-wire foam cutting. Flight tested with Al spars.</div>
+                        </div>
+
+                        <div class="proj-card" onclick="openModal('f15')">
+                            <span class="proj-tag">SIMULATION // CFD</span>
+                            <div class="proj-title">F-15 Flow Analysis</div>
+                            <div class="proj-desc">Supersonic flow simulation (Mach 2.5) analyzing shock diamonds and drag coefficients.</div>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+
+            <!-- 4. EXPERIENCE -->
+            <section id="experience" class="page-section">
+                <div class="panel" style="max-width:800px; margin:0 auto;">
+                    <h2 style="font-family:var(--f-head); margin-bottom:2rem;">Flight History</h2>
+                    
+                    <div class="timeline-item">
+                        <div style="font-family:var(--f-head); font-size:1.2rem; color:var(--c-accent);">AIRBUS INDIA</div>
+                        <div style="font-family:var(--f-code); font-size:0.9rem; margin-bottom:0.5rem;">Associate Engineer - Integration Test | Dec 2024 - Present</div>
+                        <p style="color:var(--c-muted);">Integration testing of avionics subsystems. Leveraging data analytics for flight test campaigns and test automation.</p>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div style="font-family:var(--f-head); font-size:1.2rem; color:white;">AIRBUS INDIA</div>
+                        <div style="font-family:var(--f-code); font-size:0.9rem; margin-bottom:0.5rem;">Intern - System Testing | July 2024 - Nov 2024</div>
+                        <p style="color:var(--c-muted);">Supported System V&V. Performed functional testing on simulation benches and defect tracking.</p>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div style="font-family:var(--f-head); font-size:1.2rem; color:white;">AIRLIFT TECHNOLOGY</div>
+                        <div style="font-family:var(--f-code); font-size:0.9rem; margin-bottom:0.5rem;">Engineering Intern | 2024</div>
+                        <p style="color:var(--c-muted);">Led drone mapping for Kathmandu Metro. 3D Terrain modeling via photogrammetry.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 5. CONTACT -->
+            <section id="contact" class="page-section">
+                <div class="panel" style="max-width:600px; margin: 0 auto; text-align: center;">
+                    <h2 style="font-family:var(--f-head);">Establish Link</h2>
+                    <p style="margin-bottom:2rem; color:var(--c-muted);">nischalraut6@gmail.com</p>
+                    
+                    <div style="display:flex; justify-content:center; gap:1rem; margin-bottom:2rem;">
+                         <a href="https://www.linkedin.com/in/nischal-raut-1b2227314/" target="_blank" class="btn">LINKEDIN</a>
+                         <a href="https://github.com/Nischalraut" target="_blank" class="btn">GITHUB</a>
+                    </div>
+
+                    <form onsubmit="event.preventDefault(); alert('Transmission Sent');" style="text-align:left;">
+                        <input type="text" placeholder="CALLSIGN (NAME)" style="width:100%; padding:15px; background:rgba(0,0,0,0.3); border:1px solid var(--c-grid); color:white; margin-bottom:10px; font-family:var(--f-code);">
+                        <input type="email" placeholder="FREQUENCY (EMAIL)" style="width:100%; padding:15px; background:rgba(0,0,0,0.3); border:1px solid var(--c-grid); color:white; margin-bottom:10px; font-family:var(--f-code);">
+                        <textarea rows="5" placeholder="MESSAGE DATA..." style="width:100%; padding:15px; background:rgba(0,0,0,0.3); border:1px solid var(--c-grid); color:white; margin-bottom:10px; font-family:var(--f-code);"></textarea>
+                        <button class="btn" style="width:100%;">TRANSMIT</button>
+                    </form>
+                </div>
+            </section>
+
         </div>
-        <div class="radar-container content-box">
-          <svg class="radar-svg" viewBox="0 0 100 100">
-            <circle cx="50" cy="50" r="40" stroke="var(--border)" fill="none" stroke-dasharray="2"/>
-            <circle cx="50" cy="50" r="20" stroke="var(--border)" fill="none" stroke-dasharray="2"/>
-            <line x1="50" y1="50" x2="50" y2="10" class="radar-axis"/>
-            <line x1="50" y1="50" x2="90" y2="50" class="radar-axis"/>
-            <line x1="50" y1="50" x2="50" y2="90" class="radar-axis"/>
-            <line x1="50" y1="50" x2="10" y2="50" class="radar-axis"/>
+
+        <!-- FOOTER HUD -->
+        <div class="hud-footer">
+            <div class="socials">
+                <span>LOCATION: BANGALORE, IN</span>
+            </div>
+            <div class="status">
+                <span>SERVER: ONLINE</span>
+                <div class="status-dot"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL POPUP -->
+    <div id="detail-modal">
+        <div class="modal-content">
+            <div class="close-modal" onclick="closeModal()">×</div>
+            <h2 id="m-title" style="font-family:var(--f-head); color:var(--c-accent);">TITLE</h2>
+            <div id="m-specs" style="display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin:1rem 0; font-family:var(--f-code); font-size:12px;"></div>
+            <p id="m-desc" style="line-height:1.6; color:var(--c-muted);"></p>
+        </div>
+    </div>
+
+    <!-- SCRIPTS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    
+    <script>
+        /* 
+        -----------------------------------------------------------------
+        1. SYSTEM INITIALIZATION & TYPEWRITER
+        -----------------------------------------------------------------
+        */
+        const loader = document.getElementById('loader');
+        const progress = document.getElementById('progress');
+        
+        // Simulating heavy asset loading
+        let loadVal = 0;
+        const loadInt = setInterval(() => {
+            loadVal += Math.random() * 10;
+            if(loadVal >= 100) {
+                loadVal = 100;
+                clearInterval(loadInt);
+                gsap.to(loader, { opacity: 0, duration: 1, delay: 0.5, onComplete: () => loader.style.display = 'none' });
+                initThreeJS(); // Start 3D engine
+            }
+            progress.style.width = loadVal + '%';
+        }, 100);
+
+        // Typewriter Effect
+        const roles = ["AEROSPACE ENGINEER", "UAV SPECIALIST", "CFD ANALYST", "AVIONICS INTEGRATOR"];
+        let rIdx = 0, cIdx = 0, isDel = false;
+        function type() {
+            const el = document.getElementById('typewriter');
+            const txt = roles[rIdx];
+            el.innerHTML = txt.substring(0, cIdx) + "<span class='blink'>_</span>";
+            
+            if(!isDel) {
+                if(cIdx < txt.length) { cIdx++; setTimeout(type, 100); }
+                else { isDel = true; setTimeout(type, 2000); }
+            } else {
+                if(cIdx > 0) { cIdx--; setTimeout(type, 50); }
+                else { isDel = false; rIdx = (rIdx+1)%roles.length; setTimeout(type, 500); }
+            }
+        }
+        setTimeout(type, 3000);
+
+        /* 
+        -----------------------------------------------------------------
+        2. THREE.JS ENGINE (Background Particles & Flow Field)
+        -----------------------------------------------------------------
+        */
+        function initThreeJS() {
+            const canvas = document.querySelector('#webgl');
+            const scene = new THREE.Scene();
+            // Fog for depth
+            scene.fog = new THREE.FogExp2(0x050508, 0.002);
+
+            const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
+            camera.position.z = 30;
+
+            const renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+            // --- PARTICLE SYSTEM (CFD Simulation Look) ---
+            const particlesCnt = 3000;
+            const posArray = new Float32Array(particlesCnt * 3);
+            
+            for(let i=0; i < particlesCnt * 3; i++) {
+                posArray[i] = (Math.random() - 0.5) * 100; // Spread wide
+            }
+
+            const material = new THREE.PointsMaterial({
+                size: 0.15,
+                color: 0xFC3D21, // Accent color
+                transparent: true,
+                opacity: 0.8,
+                blending: THREE.AdditiveBlending
+            });
+
+            const geometry = new THREE.BufferGeometry();
+            geometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+            
+            const particlesMesh = new THREE.Points(geometry, material);
+            scene.add(particlesMesh);
+
+            // --- WIREFRAME GEOMETRY (Abstract Aero Shapes) ---
+            const geoRing = new THREE.TorusGeometry(15, 0.1, 16, 100);
+            const matRing = new THREE.MeshBasicMaterial({ color: 0x444444, wireframe: true, transparent: true, opacity: 0.3 });
+            const ring1 = new THREE.Mesh(geoRing, matRing);
+            const ring2 = new THREE.Mesh(geoRing, matRing);
+            ring2.rotation.x = Math.PI / 2;
+            scene.add(ring1);
+            scene.add(ring2);
+
+            // --- INTERACTIVITY ---
+            let mouseX = 0;
+            let mouseY = 0;
+            
+            window.addEventListener('mousemove', (e) => {
+                mouseX = e.clientX;
+                mouseY = e.clientY;
+                
+                // Custom Cursor movement
+                const cursor = document.getElementById('cursor');
+                const cursorDot = document.getElementById('cursor-dot');
+                cursor.style.left = mouseX + 'px';
+                cursor.style.top = mouseY + 'px';
+                cursorDot.style.left = mouseX + 'px';
+                cursorDot.style.top = mouseY + 'px';
+
+                // 3D Parallax
+                const xRatio = (e.clientX / window.innerWidth - 0.5) * 2;
+                const yRatio = (e.clientY / window.innerHeight - 0.5) * 2;
+                
+                gsap.to(particlesMesh.rotation, {
+                    y: xRatio * 0.5,
+                    x: -yRatio * 0.5,
+                    duration: 2
+                });
+                
+                gsap.to(ring1.rotation, { x: yRatio, y: xRatio, duration: 3 });
+            });
+
+            // --- ANIMATION LOOP ---
+            const clock = new THREE.Clock();
+
+            function tick() {
+                const elapsedTime = clock.getElapsedTime();
+
+                // Rotate abstract shapes
+                ring1.rotation.z = elapsedTime * 0.1;
+                ring2.rotation.z = elapsedTime * -0.1;
+
+                // Animate Particles (Flow)
+                particlesMesh.rotation.y = elapsedTime * 0.05;
+                
+                // Wave effect on particles
+                const positions = particlesMesh.geometry.attributes.position.array;
+                for(let i=0; i<particlesCnt; i++) {
+                    const i3 = i*3;
+                    const x = geometry.attributes.position.array[i3];
+                    // Simple sine wave simulation
+                    geometry.attributes.position.array[i3 + 1] += Math.sin(elapsedTime + x) * 0.01; 
+                }
+                particlesMesh.geometry.attributes.position.needsUpdate = true;
+
+                renderer.render(scene, camera);
+                window.requestAnimationFrame(tick);
+            }
+            tick();
+
+            // Resize handling
+            window.addEventListener('resize', () => {
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(window.innerWidth, window.innerHeight);
+            });
+        }
+
+        /* 
+        -----------------------------------------------------------------
+        3. NAVIGATION LOGIC (SPA)
+        -----------------------------------------------------------------
+        */
+        const navItems = document.querySelectorAll('.nav-item');
+        const sections = document.querySelectorAll('.page-section');
+
+        // Function to navigate
+        window.navTo = (targetId) => {
+            // Update Nav UI
+            navItems.forEach(item => {
+                item.classList.remove('active');
+                if(item.dataset.target === targetId) item.classList.add('active');
+            });
+
+            // Transition Sections
+            const current = document.querySelector('.page-section.active');
+            const target = document.getElementById(targetId);
+
+            if(current && current !== target) {
+                gsap.to(current, { opacity: 0, scale: 0.95, duration: 0.5, onComplete: () => {
+                    current.classList.remove('active');
+                    target.classList.add('active');
+                    gsap.fromTo(target, { opacity: 0, scale: 1.05 }, { opacity: 1, scale: 1, duration: 0.5 });
+                }});
+            }
+        }
+
+        // Click listeners for nav
+        navItems.forEach(item => {
+            item.addEventListener('click', () => {
+                navTo(item.dataset.target);
+            });
+        });
+
+        /* 
+        -----------------------------------------------------------------
+        4. ACADEMIC UNLOCK SYSTEM
+        -----------------------------------------------------------------
+        */
+        const marks = [
+            {s:'1st', v:59.68}, {s:'2nd', v:67.43}, {s:'3rd', v:65.29}, {s:'4th', v:69.14},
+            {s:'5th', v:78.4}, {s:'6th', v:83.75}, {s:'7th', v:86.15}, {s:'8th', v:89.2}
+        ];
+
+        window.unlockAcademic = () => {
+            const lock = document.getElementById('academic-lock');
+            const graph = document.getElementById('academic-graph');
+            const agg = document.getElementById('agg-score');
+            
+            // Glitch effect unlock
+            lock.innerText = "DECRYPTING...";
+            setTimeout(() => {
+                lock.style.display = 'none';
+                graph.style.display = 'flex';
+                agg.style.display = 'block';
+
+                graph.innerHTML = marks.map(m => `
+                    <div class="graph-col" style="height:0%" data-h="${m.v}%">
+                        <div class="graph-tooltip">${m.s}: ${m.v}%</div>
+                    </div>
+                `).join('');
+
+                // Animate bars
+                setTimeout(() => {
+                    document.querySelectorAll('.graph-col').forEach(bar => {
+                        bar.style.height = bar.getAttribute('data-h');
+                    });
+                }, 100);
+            }, 800);
+        }
+
+        /* 
+        -----------------------------------------------------------------
+        5. PROJECT MODAL SYSTEM
+        -----------------------------------------------------------------
+        */
+        const projectData = {
+            tunnel: {
+                title: "Subsonic Wind Tunnel",
+                specs: "<span>Section: 1.2m x 0.52m</span><span>Max V: 10 m/s</span><span>Sensor: Hot-wire</span><span>Status: COMPLETE</span>",
+                desc: "Designed and fabricated an open-jet wind tunnel featuring a custom gust generator with oscillating vanes. The system was validated experimentally to achieve a turbulence intensity of 0.88%, providing a controlled environment for unsteady aerodynamic analysis."
+            },
+            b52: {
+                title: "B-52 Air Launch Study",
+                specs: "<span>Alt: 60,000 ft</span><span>Payload: 28,000 lbs</span><span>Orbit: LEO</span><span>Delta-V: Optimized</span>",
+                desc: "A feasibility study analyzing the retrofit of the B-52 Stratofortress as an air-launch carrier for small satellites. Calculations demonstrated a significant reduction in Delta-V requirements compared to traditional ground launches."
+            },
+            glider: {
+                title: "Styrofoam RC Glider",
+                specs: "<span>Span: 1.3m</span><span>Mat: XPS Foam</span><span>Spar: Aluminum</span><span>Control: 4-CH</span>",
+                desc: "End-to-end fabrication of a remote-controlled glider. Utilized XFLR5 for airfoil selection and stability analysis. Construction involved hot-wire foam cutting and reinforcement with hollow aluminum spars."
+            },
+            f15: {
+                title: "F-15 CFD Analysis",
+                specs: "<span>Mach: 2.5</span><span>Solver: ANSYS</span><span>Model: K-Epsilon</span><span>Mesh: Polyhedral</span>",
+                desc: "Computational Fluid Dynamics simulation of supersonic flow over an F-15 Eagle. The study focused on visualizing shock diamonds at the nozzle exit and calculating drag coefficients under high-speed conditions."
+            }
+        };
+
+        window.openModal = (id) => {
+            const modal = document.getElementById('detail-modal');
+            const data = projectData[id];
+            
+            document.getElementById('m-title').innerText = data.title;
+            document.getElementById('m-specs').innerHTML = data.specs;
+            document.getElementById('m-desc').innerText = data.desc;
+            
+            modal.classList.add('open');
+        }
+
+        window.closeModal = () => {
+            document.getElementById('detail-modal').classList.remove('open');
+        }
+    </script>
+</body>
+</html>
