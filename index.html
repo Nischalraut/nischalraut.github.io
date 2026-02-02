@@ -2,504 +2,457 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NISCHAL RAUT | FLIGHT DECK | V4.0</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>NISCHAL RAUT | FLIGHT COMMAND | v9.0</title>
     
-    <!-- FAVICON -->
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpolygon points='50,10 90,90 50,75 10,90' fill='%23FC3D21'/%3E%3C/svg%3E">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M50 10 L90 90 L50 70 L10 90 Z' fill='%23FC3D21'/%3E%3C/svg%3E">
 
-    <!-- CORE LIBRARIES -->
+    <!-- LIBRARIES -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-    <!-- Text Splitting Lib -->
-    <script src="https://unpkg.com/split-type"></script>
-
+    
     <!-- FONTS -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@100;400;700&family=Rajdhani:wght@300;500;700&family=Syncopate:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@100;300;500;800&family=Rajdhani:wght@300;500;600;700&family=Syncopate:wght@400;700&display=swap" rel="stylesheet">
 
     <style>
         /* 
-        ====================================================================
-        SYSTEM CONFIGURATION (CSS VARIABLES)
-        ====================================================================
+        ========================================================================
+        1. CORE SYSTEM ARCHITECTURE (CSS VARS)
+        ========================================================================
         */
         :root {
-            /* Palette - Void & Safety Orange */
-            --c-void: #05070a;
-            --c-panel-bg: rgba(10, 15, 20, 0.7);
-            --c-panel-border: rgba(255, 255, 255, 0.1);
+            /* Color Palette */
+            --void: #030406;
+            --panel: rgba(10, 15, 20, 0.75);
+            --border: rgba(255, 255, 255, 0.08);
             
-            --c-accent: #FC3D21; 
-            --c-accent-glow: rgba(252, 61, 33, 0.5);
-            --c-accent-dim: rgba(252, 61, 33, 0.1);
-
-            --c-hud: #00F0FF;
-            --c-hud-dim: rgba(0, 240, 255, 0.1);
-
-            --c-text: #E0E6ED;
-            --c-muted: #94A3B8;
-
-            /* Dimensions */
-            --header-h: 80px;
-            --sidebar-w: 60px;
+            --prim: #FC3D21; /* Aerospace Red */
+            --prim-dim: rgba(252, 61, 33, 0.15);
+            --prim-glow: rgba(252, 61, 33, 0.6);
             
-            /* Typography */
-            --font-display: 'Syncopate', sans-serif;
-            --font-ui: 'Rajdhani', sans-serif;
-            --font-code: 'JetBrains Mono', monospace;
+            --sec: #00F0FF; /* HUD Cyan */
+            --sec-dim: rgba(0, 240, 255, 0.1);
+            
+            --text: #E2E8F0;
+            --muted: #64748B;
+            
+            /* Dimensions & Z-Index */
+            --nav-w: 80px;
+            --z-bg: 0;
+            --z-ui: 100;
+            --z-modal: 1000;
+            --z-boot: 9999;
+            
+            /* Fonts */
+            --f-head: 'Syncopate', sans-serif;
+            --f-body: 'Rajdhani', sans-serif;
+            --f-code: 'JetBrains Mono', monospace;
         }
 
-        /* RESET */
+        /* 
+        ========================================================================
+        2. GLOBAL RESET & UTILS
+        ========================================================================
+        */
         * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; user-select: none; }
         
         body {
-            background: var(--c-void);
-            color: var(--c-text);
-            font-family: var(--f-ui);
-            overflow: hidden;
-            height: 100vh;
-            width: 100vw;
+            background-color: var(--void); color: var(--text);
+            font-family: var(--f-body); overflow: hidden;
+            width: 100vw; height: 100vh;
         }
 
-        /* SCROLLBAR */
-        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar { width: 4px; }
         ::-webkit-scrollbar-track { background: #000; }
-        ::-webkit-scrollbar-thumb { background: var(--c-accent); }
+        ::-webkit-scrollbar-thumb { background: var(--prim); }
+
+        .glitch-text { position: relative; display: inline-block; }
+        .glitch-text::before, .glitch-text::after {
+            content: attr(data-text); position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: var(--void);
+        }
+        .glitch-text::before { left: 2px; text-shadow: -1px 0 red; clip: rect(24px, 550px, 90px, 0); animation: glitch-anim-2 3s infinite linear alternate-reverse; }
+        .glitch-text::after { left: -2px; text-shadow: -1px 0 blue; clip: rect(85px, 550px, 140px, 0); animation: glitch-anim 2.5s infinite linear alternate-reverse; }
+        @keyframes glitch-anim { 0% { clip: rect(10px, 9999px, 30px, 0); } 100% { clip: rect(80px, 9999px, 100px, 0); } }
+        @keyframes glitch-anim-2 { 0% { clip: rect(60px, 9999px, 80px, 0); } 100% { clip: rect(10px, 9999px, 50px, 0); } }
 
         /* 
-        ====================================================================
-        VISUAL FX LAYERS (CRT, VIGNETTE)
-        ====================================================================
+        ========================================================================
+        3. CANVAS & LAYOUT
+        ========================================================================
         */
-        .vfx-layer { position: fixed; inset: 0; pointer-events: none; z-index: 50; }
+        #canvas-layer { position: fixed; inset: 0; z-index: var(--z-bg); opacity: 0; transition: opacity 2s ease; }
         
-        .scanlines {
-            background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,0) 50%, rgba(0,0,0,0.2) 50%, rgba(0,0,0,0.2));
-            background-size: 100% 4px;
-            opacity: 0.3;
-        }
-        
-        .noise {
-            opacity: 0.04;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='1'/%3E%3C/svg%3E");
-            animation: noiseAnim 0.2s infinite;
-        }
-        
-        @keyframes noiseAnim { 0% {transform: translate(0,0)} 100% {transform: translate(5px, 5px)} }
-
-        /* 
-        ====================================================================
-        3D CANVAS LAYER
-        ====================================================================
-        */
-        #webgl {
-            position: fixed; inset: 0; z-index: 0;
-            opacity: 0; transition: opacity 2s ease;
+        #scanlines {
+            position: fixed; inset: 0; pointer-events: none; z-index: 50;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            background-size: 100% 2px, 3px 100%; pointer-events: none;
         }
 
-        /* 
-        ====================================================================
-        CUSTOM CURSOR
-        ====================================================================
-        */
         #cursor {
-            position: fixed; top: 0; left: 0; width: 30px; height: 30px;
-            border: 1px solid var(--c-hud); border-radius: 50%;
+            position: fixed; top: 0; left: 0; width: 20px; height: 20px;
+            border: 1px solid var(--sec); transform: translate(-50%, -50%) rotate(45deg);
+            pointer-events: none; z-index: 10000; transition: width 0.2s, height 0.2s; mix-blend-mode: exclusion;
+        }
+        #cursor-follower {
+            position: fixed; top: 0; left: 0; width: 40px; height: 40px;
+            border: 1px dashed var(--prim); border-radius: 50%;
             transform: translate(-50%, -50%); pointer-events: none; z-index: 9999;
-            transition: width 0.2s, height 0.2s, background 0.2s;
-            mix-blend-mode: difference;
+            transition: 0.1s ease-out; opacity: 0.5;
         }
-        #cursor::after {
-            content: ''; position: absolute; top: 50%; left: 50%; width: 4px; height: 4px;
-            background: var(--c-accent); border-radius: 50%; transform: translate(-50%, -50%);
-        }
-        /* Active State */
-        body.active-hover #cursor {
-            width: 60px; height: 60px;
-            border-color: var(--c-accent);
-            border-style: dashed;
-            animation: spinCursor 4s linear infinite;
-        }
-        @keyframes spinCursor { to {transform: translate(-50%, -50%) rotate(360deg);} }
+        
+        body.hover-active #cursor { width: 50px; height: 50px; background: rgba(0, 240, 255, 0.1); border-color: var(--prim); }
 
         /* 
-        ====================================================================
-        BOOT SCREEN (SOUND INITIALIZER)
-        ====================================================================
+        ========================================================================
+        4. BOOT SEQUENCE UI
+        ========================================================================
         */
-        #boot-screen {
-            position: fixed; inset: 0; background: #000; z-index: 10000;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            font-family: var(--font-code); color: var(--c-accent);
+        #boot-layer {
+            position: fixed; inset: 0; background: #000; z-index: var(--z-boot);
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            font-family: var(--f-code); color: var(--prim);
         }
+        .boot-log { font-size: 12px; margin-bottom: 20px; opacity: 0.7; height: 100px; overflow: hidden; width: 300px; border-left: 1px solid var(--prim); padding-left: 10px; }
         .boot-btn {
-            border: 1px solid var(--c-accent); padding: 20px 40px;
-            background: transparent; color: var(--c-accent);
-            font-family: var(--font-display); font-size: 1.2rem; cursor: pointer;
-            transition: 0.3s; margin-top: 2rem;
-            position: relative; overflow: hidden;
+            padding: 15px 40px; border: 1px solid var(--prim); color: var(--prim); background: transparent;
+            font-family: var(--f-head); font-size: 1.2rem; cursor: pointer; letter-spacing: 2px;
+            position: relative; overflow: hidden; transition: 0.3s;
         }
-        .boot-btn:hover { background: var(--c-accent); color: #000; box-shadow: 0 0 30px var(--c-accent-glow); }
+        .boot-btn::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: var(--prim); transition: 0.3s; z-index: -1; }
+        .boot-btn:hover { color: #000; box-shadow: 0 0 30px var(--prim-glow); }
+        .boot-btn:hover::before { left: 0; }
 
         /* 
-        ====================================================================
-        HUD LAYOUT
-        ====================================================================
+        ========================================================================
+        5. MAIN INTERFACE
+        ========================================================================
         */
         header {
-            position: fixed; top: 0; left: 0; width: 100%; height: var(--header-h);
-            border-bottom: 1px solid var(--c-panel-border);
+            position: fixed; top: 0; left: 0; width: 100%; height: 80px;
             display: flex; justify-content: space-between; align-items: center;
-            padding: 0 3rem; background: rgba(5, 7, 10, 0.8); backdrop-filter: blur(10px);
-            z-index: 100;
+            padding: 0 3rem; background: rgba(3, 4, 6, 0.8); backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border); z-index: 100;
         }
-        .brand { font-family: var(--font-display); font-size: 1.5rem; letter-spacing: 2px; }
-        .brand span { color: var(--c-accent); }
-        
-        .hud-status {
-            font-family: var(--font-code); font-size: 10px; color: var(--c-hud);
-            display: flex; gap: 20px;
-        }
-        .status-item { display: flex; align-items: center; gap: 5px; }
-        .blink { animation: blinker 1s infinite; width: 6px; height: 6px; background: var(--c-accent); border-radius: 50%; }
-        @keyframes blinker { 50% { opacity: 0; } }
+        .brand { font-family: var(--f-head); font-size: 1.5rem; letter-spacing: 2px; color: #fff; }
+        .brand span { color: var(--prim); }
+        .top-stats { display: flex; gap: 20px; font-family: var(--f-code); font-size: 10px; color: var(--muted); }
+        .stat-box { display: flex; flex-direction: column; align-items: flex-end; }
+        .stat-val { color: var(--sec); font-weight: bold; }
 
-        aside {
-            position: fixed; top: var(--header-h); left: 0; bottom: 0; width: var(--sidebar-w);
-            border-right: 1px solid var(--c-panel-border);
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-            gap: 2rem; background: rgba(5, 7, 10, 0.5); z-index: 90;
+        nav {
+            position: fixed; top: 80px; left: 0; bottom: 0; width: var(--nav-w);
+            border-right: 1px solid var(--border); background: rgba(3, 4, 6, 0.6);
+            display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 3rem;
+            z-index: 90;
         }
-        .nav-dot {
-            width: 10px; height: 10px; border: 1px solid var(--c-muted); transform: rotate(45deg);
-            transition: 0.3s; cursor: pointer;
+        .nav-item {
+            writing-mode: vertical-rl; text-orientation: mixed; transform: rotate(180deg);
+            font-family: var(--f-code); font-size: 10px; color: var(--muted); cursor: pointer;
+            letter-spacing: 2px; transition: 0.3s; padding: 10px 0;
         }
-        .nav-dot.active, .nav-dot:hover { background: var(--c-accent); border-color: var(--c-accent); box-shadow: 0 0 10px var(--c-accent); }
+        .nav-item:hover, .nav-item.active { color: var(--prim); text-shadow: 0 0 8px var(--prim); border-left: 2px solid var(--prim); }
 
-        /* 
-        ====================================================================
-        MAIN SCROLL AREA
-        ====================================================================
-        */
-        main {
-            position: fixed; top: var(--header-h); left: var(--sidebar-w); right: 0; bottom: 0;
-            overflow-y: auto; overflow-x: hidden; scroll-behavior: smooth; z-index: 10;
+        #viewport {
+            position: fixed; top: 80px; left: var(--nav-w); right: 0; bottom: 0;
+            overflow-y: auto; scroll-behavior: smooth;
         }
+
         section {
-            min-height: 100vh; padding: 4rem;
-            display: flex; flex-direction: column; justify-content: center;
-            position: relative;
+            min-height: 100vh; padding: 4rem 6rem;
+            display: flex; flex-direction: column; justify-content: center; position: relative;
         }
 
-        /* HERO SECTION */
-        .hero-layout { display: grid; grid-template-columns: 1.5fr 1fr; gap: 4rem; align-items: center; }
+        /* HERO */
+        .hero-grid { display: grid; grid-template-columns: 1.5fr 1fr; gap: 4rem; align-items: center; }
+        h1 { font-family: var(--f-head); font-size: 5vw; line-height: 0.9; color: #fff; margin-bottom: 1.5rem; }
+        .hero-intro { 
+            font-size: 1.1rem; line-height: 1.7; color: var(--text); border-left: 3px solid var(--prim); padding-left: 2rem; 
+            background: linear-gradient(90deg, rgba(252,61,33,0.05), transparent); margin-bottom: 2rem;
+        }
         
-        h1 {
-            font-family: var(--font-display); font-size: 5vw; line-height: 0.9;
-            color: #fff; margin-bottom: 2rem; text-transform: uppercase;
-        }
-        .hero-intro {
-            font-family: var(--font-ui); font-size: 1.1rem; line-height: 1.8;
-            color: var(--c-text); border-left: 3px solid var(--c-accent);
-            padding-left: 2rem; background: linear-gradient(90deg, var(--c-accent-dim), transparent);
-        }
-
-        /* PROFILE FRAME (THEMED) */
-        .profile-container {
-            position: relative; width: 400px; height: 400px; margin: auto;
-        }
-        .profile-img {
-            width: 100%; height: 100%; object-fit: cover;
-            clip-path: polygon(20% 0%, 80% 0%, 100% 20%, 100% 80%, 80% 100%, 20% 100%, 0% 80%, 0% 20%);
-            filter: grayscale(0.6) contrast(1.2); transition: 0.5s;
-        }
-        .profile-container:hover .profile-img { filter: grayscale(0); }
-        
-        /* Rotating HUD Rings */
+        /* PROFILE HUD */
+        .profile-wrapper { position: relative; width: 350px; height: 350px; margin: auto; }
+        .p-img { width: 100%; height: 100%; object-fit: cover; clip-path: polygon(10% 0, 100% 0, 100% 90%, 90% 100%, 0 100%, 0 10%); filter: grayscale(0.8) contrast(1.2); }
         .hud-ring {
-            position: absolute; top: -10%; left: -10%; width: 120%; height: 120%;
-            border: 1px dashed var(--c-hud); border-radius: 50%;
-            animation: rotate 20s linear infinite; pointer-events: none;
+            position: absolute; border-radius: 50%; border: 1px dashed var(--sec);
+            opacity: 0.5; animation: spin 20s linear infinite; pointer-events: none;
         }
-        .hud-ring:nth-child(2) {
-            width: 130%; height: 130%; top: -15%; left: -15%;
-            border: 1px solid var(--c-accent-dim); border-left: transparent;
-            animation: rotate 30s linear infinite reverse;
-        }
-        @keyframes rotate { to { transform: rotate(360deg); } }
+        .r1 { top: -10%; left: -10%; width: 120%; height: 120%; border-color: var(--prim); animation-duration: 30s; }
+        .r2 { top: -20%; left: -20%; width: 140%; height: 140%; border-style: dotted; animation-direction: reverse; }
+        @keyframes spin { to { transform: rotate(360deg); } }
 
-        /* SKILLS & RADAR */
-        .panel-box {
-            background: var(--c-panel-bg); border: 1px solid var(--c-panel-border);
-            padding: 3rem; backdrop-filter: blur(10px); margin-bottom: 2rem;
-            position: relative;
+        /* PANELS & CARDS */
+        .glass-panel {
+            background: var(--panel); border: 1px solid var(--border); padding: 3rem;
+            backdrop-filter: blur(12px); position: relative; overflow: hidden;
         }
-        .panel-box::before {
-            content: ''; position: absolute; top:0; left:0; width: 4px; height: 100%; background: var(--c-accent);
+        .glass-panel::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%; background: var(--prim);
         }
         
-        .skill-row { display: flex; justify-content: space-between; margin-bottom: 1rem; font-family: var(--font-code); font-size: 12px; }
-        .bar-bg { width: 100%; height: 6px; background: rgba(255,255,255,0.1); }
-        .bar-fill { height: 100%; background: var(--c-hud); width: 0; transition: 1s ease; box-shadow: 0 0 10px var(--c-hud); }
-
-        /* PROJECTS (MISSION LOGS) */
-        .grid-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; }
+        .grid-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; margin-top: 2rem; }
         .card {
-            background: rgba(255,255,255,0.03); border: 1px solid var(--c-panel-border);
-            padding: 2rem; transition: 0.3s; cursor: pointer; position: relative; overflow: hidden;
+            background: rgba(255,255,255,0.02); border: 1px solid var(--border); padding: 2rem;
+            transition: 0.3s; position: relative;
         }
-        .card:hover {
-            border-color: var(--c-accent); transform: translateY(-5px);
-            background: rgba(252,61,33,0.05);
-        }
-        .card-tag {
-            font-family: var(--font-code); font-size: 10px; color: var(--c-accent);
-            border: 1px solid var(--c-accent-dim); padding: 4px 8px; display: inline-block; margin-bottom: 1rem;
-        }
-        .card h3 { font-family: var(--font-display); font-size: 1.2rem; margin-bottom: 1rem; }
+        .card:hover { transform: translateY(-5px); border-color: var(--prim); box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        .card-tag { font-family: var(--f-code); color: var(--prim); font-size: 10px; border: 1px solid var(--prim-dim); padding: 3px 6px; }
+        .card h3 { font-family: var(--f-head); font-size: 1.2rem; margin: 1rem 0; color: #fff; }
 
-        /* EXPERIENCE LOGS */
-        .log-item {
-            border-left: 2px solid var(--c-accent); padding-left: 2rem; margin-bottom: 3rem;
-            position: relative;
+        /* TIMELINE */
+        .log-item { border-left: 1px solid var(--sec); padding-left: 2rem; margin-bottom: 3rem; position: relative; }
+        .log-item::before { content: ''; position: absolute; left: -3px; top: 0; width: 5px; height: 5px; background: var(--sec); }
+        .log-date { font-family: var(--f-code); color: var(--sec); font-size: 12px; margin-bottom: 5px; }
+        
+        /* FOOTER */
+        #terminal {
+            position: fixed; bottom: 0; left: var(--nav-w); width: calc(100% - var(--nav-w));
+            height: 30px; background: rgba(0,0,0,0.9); border-top: 1px solid var(--border);
+            display: flex; align-items: center; padding: 0 20px; font-family: var(--f-code);
+            font-size: 10px; color: var(--prim); z-index: 100;
         }
-        .log-item::after {
-            content:''; position: absolute; left:-5px; top:0; width:8px; height:8px; background:#000; border:1px solid var(--c-accent);
-        }
-        .log-date { font-family: var(--font-code); color: var(--c-accent); font-size: 12px; margin-bottom: 5px; }
 
         /* MODAL */
-        #modal-overlay {
-            position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: var(--z-modal);
-            display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none;
-            transition: 0.3s; backdrop-filter: blur(5px);
+        #modal {
+            position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: var(--z-modal);
+            display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: 0.3s;
         }
-        #modal-overlay.active { opacity: 1; pointer-events: auto; }
-        .modal-body {
-            width: 800px; max-height: 80vh; overflow-y: auto; background: #080a0c;
-            border: 1px solid var(--c-accent); padding: 3rem; position: relative;
-            box-shadow: 0 0 40px rgba(252,61,33,0.2);
-        }
+        #modal.open { opacity: 1; pointer-events: auto; }
+        .modal-content { width: 800px; max-height: 80vh; background: #050505; border: 1px solid var(--prim); padding: 3rem; position: relative; overflow-y: auto; }
+        .close-modal { position: absolute; top: 20px; right: 20px; color: var(--prim); cursor: pointer; font-family: var(--f-code); }
 
         /* BUTTONS */
         .btn {
-            display: inline-block; padding: 12px 30px; border: 1px solid var(--c-accent);
-            color: var(--c-accent); font-family: var(--font-ui); font-weight: 700;
-            text-transform: uppercase; margin-top: 2rem; transition: 0.3s; text-decoration: none;
+            display: inline-flex; align-items: center; justify-content: center;
+            padding: 12px 30px; background: transparent; border: 1px solid var(--prim);
+            color: var(--prim); font-family: var(--f-head); letter-spacing: 1px;
+            font-size: 0.9rem; text-decoration: none; transition: 0.3s; margin-top: 1rem;
         }
-        .btn:hover { background: var(--c-accent); color: #000; box-shadow: 0 0 20px var(--c-accent-glow); }
+        .btn:hover { background: var(--prim); color: #000; box-shadow: 0 0 20px var(--prim-glow); }
 
     </style>
 </head>
 <body>
 
-    <!-- AUDIO ENGINE (HIDDEN) -->
-    <!-- Audio Context is created via JS -->
+    <!-- AUDIO CONTEXT (Hidden) -->
+    <!-- Initialized via JS -->
 
-    <!-- VISUAL FX -->
-    <div class="vfx-layer">
-        <div class="scanlines"></div>
-        <div class="noise"></div>
-    </div>
+    <!-- BACKGROUND LAYERS -->
+    <div id="scanlines"></div>
+    <canvas id="canvas-layer"></canvas>
 
-    <!-- 3D BACKGROUND -->
-    <canvas id="webgl"></canvas>
-
-    <!-- CURSOR -->
+    <!-- CURSORS -->
     <div id="cursor"></div>
+    <div id="cursor-follower"></div>
 
     <!-- BOOT SCREEN -->
-    <div id="boot-screen">
-        <div style="margin-bottom:20px; text-align:center;">
-            <div>AERO-OS KERNEL v4.0.2</div>
-            <div>AUDIO DRIVER REQUIRED</div>
-        </div>
-        <button class="boot-btn" onclick="initializeSystem()">INITIALIZE SYSTEM</button>
+    <div id="boot-layer">
+        <div style="font-family:var(--f-head); font-size:2rem; margin-bottom:20px; color:#fff;">AERO-OS <span style="color:var(--prim)">KERNEL</span></div>
+        <div class="boot-log" id="boot-text"></div>
+        <button class="boot-btn" onclick="initSystem()">INITIALIZE FLIGHT DECK</button>
     </div>
 
-    <!-- HUD -->
+    <!-- UI -->
     <header>
-        <div class="brand">NISCHAL<span>.RAUT</span></div>
-        <div class="hud-status">
-            <div class="status-item"><div class="blink"></div> ONLINE</div>
-            <div class="status-item">AUDIO: ENABLED</div>
-            <div class="status-item">LOC: BANGALORE</div>
+        <div class="brand">NISCHAL <span>RAUT</span></div>
+        <div class="top-stats">
+            <div class="stat-box"><span class="stat-val" id="fps">60</span><span>FPS</span></div>
+            <div class="stat-box"><span class="stat-val" id="time">00:00</span><span>ZULU</span></div>
+            <div class="stat-box"><span class="stat-val" style="color:var(--prim)">SECURE</span><span>NET</span></div>
         </div>
     </header>
 
-    <aside>
-        <div class="nav-dot" onclick="scrollToSec('hero')"></div>
-        <div class="nav-dot" onclick="scrollToSec('profile')"></div>
-        <div class="nav-dot" onclick="scrollToSec('projects')"></div>
-        <div class="nav-dot" onclick="scrollToSec('history')"></div>
-        <div class="nav-dot" onclick="scrollToSec('comms')"></div>
-    </aside>
+    <nav>
+        <div class="nav-item active" onclick="scrollToSec('home')">COMMAND</div>
+        <div class="nav-item" onclick="scrollToSec('profile')">PROFILE</div>
+        <div class="nav-item" onclick="scrollToSec('missions')">MISSIONS</div>
+        <div class="nav-item" onclick="scrollToSec('logs')">LOGS</div>
+        <div class="nav-item" onclick="scrollToSec('comms')">COMMS</div>
+    </nav>
 
-    <!-- CONTENT -->
+    <!-- MAIN CONTENT -->
     <main id="viewport">
         
-        <!-- SECTION: HERO -->
-        <section id="hero">
-            <div class="hero-layout">
+        <!-- HOME SECTION -->
+        <section id="home">
+            <div class="hero-grid">
                 <div>
-                    <h1 class="glitch-text">NISCHAL<br>RAUT</h1>
+                    <div style="font-family:var(--f-code); color:var(--sec); margin-bottom:1rem;">// PILOT IDENTIFIED</div>
+                    <h1 class="glitch-text" data-text="NISCHAL RAUT">NISCHAL<br>RAUT</h1>
                     <div class="hero-intro">
-                        <p>I am an Aerospace Engineering graduate with a strong focus on experimental aerodynamics, wind tunnel design, and unsteady flow analysis. My work centers on translating theoretical models into physical systems, with hands-on experience in gust generation, flow visualization, and aerodynamic testing.</p>
-                        <br>
-                        <p>I have worked extensively with tools such as ANSYS, MATLAB, SolidWorks, and LaTeX to support both experimental and analytical investigations. Through academic projects and industry exposure, I have developed a methodical approach to problem-solving—grounded in validation, data interpretation, and engineering practicality.</p>
-                        <br>
-                        <p>I am particularly interested in aerodynamic experimentation, UAV systems, and research-driven engineering environments where rigorous analysis and real-world constraints intersect.</p>
+                        Iam an Aerospace Engineering graduate with a strong focus on experimental aerodynamics, wind tunnel design, and unsteady flow analysis. My work centers on translating theoretical models into physical systems, with hands-on experience in gust generation, flow visualization, and aerodynamic testing.<br><br>
+                        I have worked extensively with tools such as ANSYS, MATLAB, SolidWorks, and LaTeX to support both experimental and analytical investigations. Through academic projects and industry exposure, I have developed a methodical approach to problem-solving—grounded in validation, data interpretation, and engineering practicality.
                     </div>
-                    <a href="#comms" class="btn" onmouseenter="playHover()" onclick="playClick()">ESTABLISH COMMS</a>
+                    <div style="display:flex; gap: 20px;">
+                        <a href="#comms" class="btn" onmouseenter="hoverSound()">ESTABLISH LINK</a>
+                        <a href="#missions" class="btn" style="border-color:var(--muted); color:var(--muted);" onmouseenter="hoverSound()">VIEW DATA</a>
+                    </div>
                 </div>
-                
-                <!-- THEMED PROFILE IMAGE -->
-                <div class="profile-container">
-                    <div class="hud-ring"></div>
-                    <div class="hud-ring"></div>
-                    <img src="nischal.png" alt="Pilot Profile" class="profile-img">
+                <div class="profile-wrapper">
+                    <div class="hud-ring r1"></div>
+                    <div class="hud-ring r2"></div>
+                    <img src="profile.jpg" class="p-img" alt="Pilot Image">
                 </div>
             </div>
         </section>
 
-        <!-- SECTION: PROFILE -->
+        <!-- PROFILE SECTION -->
         <section id="profile">
-            <h2 style="font-family:var(--font-display); font-size:3rem; margin-bottom:2rem;">SYSTEM CAPABILITIES</h2>
-            
-            <div class="panel-box">
-                <h3 style="font-family:var(--font-code); color:var(--c-accent); margin-bottom:1.5rem;">// TECHNICAL SKILL MATRIX</h3>
+            <div class="glass-panel">
+                <h2 style="font-family:var(--f-head); font-size:2rem; margin-bottom:2rem;">SYSTEM CAPABILITIES</h2>
                 
-                <div class="skill-row"><span>CFD & ANALYSIS (ANSYS)</span><span>70%</span></div>
-                <div class="skill-bar"><div class="bar-fill" style="width:70%"></div></div><br>
-                
-                <div class="skill-row"><span>CAD & DESIGN (CATIA/SOLIDWORKS)</span><span>80%</span></div>
-                <div class="skill-bar"><div class="bar-fill" style="width:80%"></div></div><br>
-                
-                <div class="skill-row"><span>PROGRAMMING (PYTHON/C/MATLAB)</span><span>60%</span></div>
-                <div class="skill-bar"><div class="bar-fill" style="width:60%"></div></div><br>
-                
-                <div class="skill-row"><span>EXPERIMENTAL (WIND TUNNEL/UAV)</span><span>80%</span></div>
-                <div class="skill-bar"><div class="bar-fill" style="width:80%"></div></div>
-            </div>
+                <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 4rem;">
+                    <div>
+                        <h3 style="font-family:var(--f-code); color:var(--sec); margin-bottom:1rem;">// SKILL MATRIX</h3>
+                        <div style="margin-bottom:1.5rem;">
+                            <div style="display:flex; justify-content:space-between; font-family:var(--f-code); font-size:12px; margin-bottom:5px;">
+                                <span>CFD & ANALYSIS (ANSYS)</span><span>70%</span>
+                            </div>
+                            <div style="width:100%; height:4px; background:rgba(255,255,255,0.1);"><div style="width:70%; height:100%; background:var(--prim); box-shadow:0 0 10px var(--prim);"></div></div>
+                        </div>
+                        <div style="margin-bottom:1.5rem;">
+                            <div style="display:flex; justify-content:space-between; font-family:var(--f-code); font-size:12px; margin-bottom:5px;">
+                                <span>CAD & DESIGN (CATIA)</span><span>80%</span>
+                            </div>
+                            <div style="width:100%; height:4px; background:rgba(255,255,255,0.1);"><div style="width:80%; height:100%; background:var(--prim); box-shadow:0 0 10px var(--prim);"></div></div>
+                        </div>
+                        <div style="margin-bottom:1.5rem;">
+                            <div style="display:flex; justify-content:space-between; font-family:var(--f-code); font-size:12px; margin-bottom:5px;">
+                                <span>PROGRAMMING (PYTHON/C)</span><span>60%</span>
+                            </div>
+                            <div style="width:100%; height:4px; background:rgba(255,255,255,0.1);"><div style="width:60%; height:100%; background:var(--prim); box-shadow:0 0 10px var(--prim);"></div></div>
+                        </div>
+                        <div style="margin-bottom:1.5rem;">
+                            <div style="display:flex; justify-content:space-between; font-family:var(--f-code); font-size:12px; margin-bottom:5px;">
+                                <span>EXPERIMENTAL (WIND TUNNEL)</span><span>80%</span>
+                            </div>
+                            <div style="width:100%; height:4px; background:rgba(255,255,255,0.1);"><div style="width:80%; height:100%; background:var(--prim); box-shadow:0 0 10px var(--prim);"></div></div>
+                        </div>
+                    </div>
 
-            <!-- ACADEMIC VAULT -->
-            <div class="panel-box" style="border-style:dashed;">
-                <div id="vault-lock" style="text-align:center;">
-                    <div style="font-size:3rem;">🔒</div>
-                    <h3>ACADEMIC DATA ENCRYPTED</h3>
-                    <button class="btn" onclick="decryptVault()">DECRYPT RECORD</button>
+                    <div>
+                        <h3 style="font-family:var(--f-code); color:var(--sec); margin-bottom:1rem;">// ACADEMIC VAULT</h3>
+                        <div style="border:1px dashed var(--muted); padding:2rem; text-align:center; background:rgba(0,0,0,0.2);">
+                            <div style="font-size:3rem; margin-bottom:1rem;">🔒</div>
+                            <div style="font-family:var(--f-head); margin-bottom:1rem;">ENCRYPTED DATA</div>
+                            <button class="btn" onclick="unlockVault()" onmouseenter="hoverSound()">DECRYPT GRADES</button>
+                            <div id="grade-chart" style="display:none; height:150px; margin-top:20px; align-items:flex-end; gap:10px;"></div>
+                            <div id="grade-agg" style="display:none; margin-top:10px; font-family:var(--f-head); color:var(--sec);">AGGREGATE: 76.71%</div>
+                        </div>
+                    </div>
                 </div>
-                <div id="vault-open" style="display:none; height:200px; align-items:flex-end; gap:10px;">
-                    <!-- JS Injected Bars -->
-                </div>
-                <div id="vault-score" style="display:none; text-align:center; margin-top:1rem; font-family:var(--font-display); color:var(--c-accent);">AGGREGATE: 76.71%</div>
             </div>
         </section>
 
-        <!-- SECTION: PROJECTS -->
-        <section id="projects">
-            <h2 style="font-family:var(--font-display); font-size:3rem; margin-bottom:2rem;">MISSION LOGS</h2>
+        <!-- MISSIONS SECTION -->
+        <section id="missions">
+            <h2 style="font-family:var(--f-head); font-size:3rem; margin-bottom:2rem;">MISSION LOGS</h2>
             <div class="grid-cards">
-                
-                <div class="card" onclick="openMission('tunnel')" onmouseenter="playHover()">
+                <div class="card" onclick="openModal('tunnel')" onmouseenter="hoverSound()">
                     <span class="card-tag">RESEARCH</span>
                     <h3>SUBSONIC WIND TUNNEL</h3>
-                    <p style="color:var(--c-muted);">Design and fabrication of open-jet tunnel with gust generator.</p>
+                    <p style="color:var(--muted); font-size:0.9rem;">Design and development of an open-jet wind tunnel with active gust generator.</p>
                 </div>
-
-                <div class="card" onclick="openMission('b52')" onmouseenter="playHover()">
-                    <span class="card-tag">CONCEPTUAL</span>
+                <div class="card" onclick="openModal('b52')" onmouseenter="hoverSound()">
+                    <span class="card-tag">DESIGN</span>
                     <h3>B-52 AIR LAUNCH</h3>
-                    <p style="color:var(--c-muted);">Study of retrofitting B-52 as smallsat carrier.</p>
+                    <p style="color:var(--muted); font-size:0.9rem;">Conceptual study for satellite launch carrier.</p>
                 </div>
-
-                <div class="card" onclick="openMission('glider')" onmouseenter="playHover()">
+                <div class="card" onclick="openModal('glider')" onmouseenter="hoverSound()">
                     <span class="card-tag">FABRICATION</span>
                     <h3>STYROFOAM GLIDER</h3>
-                    <p style="color:var(--c-muted);">Scratch-built RC aircraft. XFLR5 Analysis.</p>
+                    <p style="color:var(--muted); font-size:0.9rem;">Scratch-built RC aircraft with XFLR5 analysis.</p>
                 </div>
-
-                <div class="card" onclick="openMission('f15')" onmouseenter="playHover()">
+                <div class="card" onclick="openModal('f15')" onmouseenter="hoverSound()">
                     <span class="card-tag">CFD SIM</span>
                     <h3>F-15 FLOW ANALYSIS</h3>
-                    <p style="color:var(--c-muted);">Supersonic flow simulation (Mach 2.5).</p>
+                    <p style="color:var(--muted); font-size:0.9rem;">Supersonic flow simulation (Mach 2.5).</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- LOGS SECTION -->
+        <section id="logs">
+            <div class="glass-panel" style="max-width:800px; margin:0 auto;">
+                <h2 style="font-family:var(--f-head); margin-bottom:3rem;">FLIGHT HISTORY</h2>
+                
+                <div class="log-item">
+                    <div class="log-date">DEC 2024 - PRESENT</div>
+                    <div style="font-family:var(--f-head); font-size:1.2rem;">ASSOCIATE ENGINEER</div>
+                    <div style="color:var(--prim); margin-bottom:0.5rem;">AIRBUS INDIA - INTEGRATION TEST & ANALYTICS</div>
+                    <p style="color:var(--muted); font-size:0.9rem;">Integration testing of avionics subsystems. Leveraging data analytics to optimize flight test campaigns and automating testing workflows.</p>
                 </div>
 
+                <div class="log-item">
+                    <div class="log-date">JULY 2024 - NOV 2024</div>
+                    <div style="font-family:var(--f-head); font-size:1.2rem;">INTERN - SYSTEM TESTING</div>
+                    <div style="color:var(--prim); margin-bottom:0.5rem;">AIRBUS INDIA</div>
+                    <p style="color:var(--muted); font-size:0.9rem;">Supported system Verification & Validation (V&V). Performed functional testing on simulation benches and analyzed test logs.</p>
+                </div>
+
+                <div class="log-item">
+                    <div class="log-date">2024</div>
+                    <div style="font-family:var(--f-head); font-size:1.2rem;">ENGINEERING INTERN</div>
+                    <div style="color:var(--prim); margin-bottom:0.5rem;">AIRLIFT TECHNOLOGY</div>
+                    <p style="color:var(--muted); font-size:0.9rem;">Led drone mapping initiatives for Kathmandu Metro. Processed photogrammetry data for 3D terrain models.</p>
+                </div>
             </div>
         </section>
 
-        <!-- SECTION: HISTORY -->
-        <section id="history">
-            <h2 style="font-family:var(--font-display); font-size:3rem; margin-bottom:2rem;">FLIGHT HISTORY</h2>
-            
-            <div class="log-item">
-                <div class="log-date">DEC 2024 - PRESENT</div>
-                <h3>ASSOCIATE ENGINEER - INTEGRATION TEST</h3>
-                <div style="color:var(--c-accent); margin-bottom:1rem;">AIRBUS INDIA</div>
-                <p style="color:var(--c-muted); max-width:600px;">Responsible for integration testing of avionics subsystems. Leveraging data analytics to optimize flight test campaigns and automating testing workflows.</p>
-            </div>
-
-            <div class="log-item">
-                <div class="log-date">JULY 2024 - NOV 2024</div>
-                <h3>INTERN - SYSTEM TESTING</h3>
-                <div style="color:var(--c-accent); margin-bottom:1rem;">AIRBUS INDIA</div>
-                <p style="color:var(--c-muted); max-width:600px;">Supported system V&V. Performed functional testing on simulation benches and analyzed test logs.</p>
-            </div>
-
-            <div class="log-item">
-                <div class="log-date">2024</div>
-                <h3>ENGINEERING INTERN</h3>
-                <div style="color:var(--c-accent); margin-bottom:1rem;">AIRLIFT TECHNOLOGY</div>
-                <p style="color:var(--c-muted); max-width:600px;">Led drone mapping initiatives for Kathmandu Metro. Processed photogrammetry data for 3D terrain models.</p>
-            </div>
-        </section>
-
-        <!-- SECTION: COMMS -->
+        <!-- COMMS SECTION -->
         <section id="comms">
-            <div class="panel-box" style="width:100%; max-width:600px; margin:auto;">
-                <h2 style="font-family:var(--font-display); margin-bottom:2rem;">ESTABLISH LINK</h2>
-                <div style="display:flex; gap:1rem; margin-bottom:2rem;">
-                    <a href="https://www.linkedin.com/in/nischal-raut-1b2227314/" target="_blank" class="btn" style="flex:1; margin:0; text-align:center;">LINKEDIN</a>
-                    <a href="https://github.com/Nischalraut" target="_blank" class="btn" style="flex:1; margin:0; text-align:center;">GITHUB</a>
+            <div class="glass-panel" style="max-width:600px; margin:0 auto; text-align:center;">
+                <h2 style="font-family:var(--f-head); margin-bottom:2rem;">ESTABLISH LINK</h2>
+                <div style="display:flex; gap:1rem; justify-content:center; margin-bottom:2rem;">
+                    <a href="https://www.linkedin.com/in/nischal-raut-1b2227314/" target="_blank" class="btn" onmouseenter="hoverSound()">LINKEDIN</a>
+                    <a href="https://github.com/Nischalraut" target="_blank" class="btn" onmouseenter="hoverSound()">GITHUB</a>
                 </div>
-                <form>
-                    <input type="text" placeholder="CALLSIGN" style="width:100%; padding:15px; margin-bottom:10px; background:rgba(0,0,0,0.3); border:1px solid var(--c-panel-border); color:white;">
-                    <input type="email" placeholder="FREQUENCY (EMAIL)" style="width:100%; padding:15px; margin-bottom:10px; background:rgba(0,0,0,0.3); border:1px solid var(--c-panel-border); color:white;">
-                    <textarea rows="5" placeholder="TRANSMISSION DATA..." style="width:100%; padding:15px; margin-bottom:10px; background:rgba(0,0,0,0.3); border:1px solid var(--c-panel-border); color:white;"></textarea>
-                    <button class="btn" style="width:100%; margin:0;" onclick="event.preventDefault(); alert('SENT'); playClick()">TRANSMIT</button>
+                <form onsubmit="event.preventDefault(); alert('TRANSMISSION SENT'); clickSound();">
+                    <input type="text" placeholder="CALLSIGN" style="width:100%; padding:15px; margin-bottom:10px; background:rgba(0,0,0,0.3); border:1px solid var(--border); color:white; font-family:var(--f-code);">
+                    <input type="email" placeholder="FREQUENCY (EMAIL)" style="width:100%; padding:15px; margin-bottom:10px; background:rgba(0,0,0,0.3); border:1px solid var(--border); color:white; font-family:var(--f-code);">
+                    <textarea rows="5" placeholder="DATA PACKET..." style="width:100%; padding:15px; margin-bottom:10px; background:rgba(0,0,0,0.3); border:1px solid var(--border); color:white; font-family:var(--f-code);"></textarea>
+                    <button class="btn" style="width:100%;">TRANSMIT</button>
                 </form>
             </div>
         </section>
 
     </main>
 
-    <!-- MISSION MODAL -->
-    <div id="modal-overlay">
-        <div class="modal-body">
-            <div style="position:absolute; top:20px; right:20px; cursor:pointer;" onclick="closeModal()">[ CLOSE ]</div>
-            <h2 id="m-title" style="color:var(--c-accent); font-family:var(--font-display);">TITLE</h2>
-            <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin:2rem 0; font-family:var(--font-code);">
-                <div><small>SPEC 01</small><div id="m-s1">--</div></div>
-                <div><small>SPEC 02</small><div id="m-s2">--</div></div>
-                <div><small>SPEC 03</small><div id="m-s3">--</div></div>
-                <div><small>STATUS</small><div style="color:var(--c-hud);">COMPLETED</div></div>
+    <!-- FOOTER TERMINAL -->
+    <div id="terminal">> SYSTEM READY. WAITING FOR INPUT..._</div>
+
+    <!-- MODAL -->
+    <div id="modal">
+        <div class="modal-content">
+            <div class="close-modal" onclick="closeModal()">[ CLOSE ]</div>
+            <h2 id="m-title" style="color:var(--prim); font-family:var(--f-head); margin-bottom:1rem;">TITLE</h2>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-bottom:2rem; border-bottom:1px solid var(--border); padding-bottom:1rem; font-family:var(--f-code);">
+                <div><small class="text-muted">SPEC 01</small><div id="m-s1"></div></div>
+                <div><small class="text-muted">SPEC 02</small><div id="m-s2"></div></div>
+                <div><small class="text-muted">SPEC 03</small><div id="m-s3"></div></div>
+                <div><small class="text-muted">STATUS</small><div style="color:var(--sec)">COMPLETED</div></div>
             </div>
-            <p id="m-desc" style="line-height:1.8; color:var(--c-muted);">...</p>
+            <p id="m-desc" style="line-height:1.7; color:var(--muted);"></p>
         </div>
     </div>
 
-    <!-- JAVASCRIPT ENGINE -->
+    <!-- 
+    ========================================================================
+    6. JAVASCRIPT LOGIC CORE
+    ========================================================================
+    -->
     <script>
-        /* --- AUDIO ENGINE --- */
-        const AudioEngine = {
+        /* --- AUDIO SYNTHESIZER --- */
+        const AudioSys = {
             ctx: null,
             init: function() {
                 window.AudioContext = window.AudioContext || window.webkitAudioContext;
                 this.ctx = new AudioContext();
+                this.createAmbientDrone();
             },
-            playTone: function(freq, type, duration) {
+            playTone: function(freq, type, dur) {
                 if(!this.ctx) return;
                 const osc = this.ctx.createOscillator();
                 const gain = this.ctx.createGain();
@@ -508,159 +461,219 @@
                 osc.connect(gain);
                 gain.connect(this.ctx.destination);
                 osc.start();
-                gain.gain.exponentialRampToValueAtTime(0.00001, this.ctx.currentTime + duration);
-                osc.stop(this.ctx.currentTime + duration);
+                gain.gain.exponentialRampToValueAtTime(0.00001, this.ctx.currentTime + dur);
+                osc.stop(this.ctx.currentTime + dur);
+            },
+            createAmbientDrone: function() {
+                // Low frequency engine hum
+                const osc = this.ctx.createOscillator();
+                const gain = this.ctx.createGain();
+                osc.frequency.value = 50;
+                osc.type = 'sawtooth';
+                gain.gain.value = 0.02;
+                
+                // Lowpass filter to muffle it
+                const filter = this.ctx.createBiquadFilter();
+                filter.type = 'lowpass';
+                filter.frequency.value = 120;
+
+                osc.connect(filter);
+                filter.connect(gain);
+                gain.connect(this.ctx.destination);
+                osc.start();
             }
         };
 
-        function playHover() { AudioEngine.playTone(800, 'sine', 0.05); }
-        function playClick() { AudioEngine.playTone(300, 'square', 0.1); }
-        function playBoot() { 
-            AudioEngine.playTone(100, 'sawtooth', 0.5); 
-            setTimeout(() => AudioEngine.playTone(600, 'sine', 1), 300);
+        function hoverSound() { AudioSys.playTone(800, 'sine', 0.05); logTerm("HOVER INTERACTION DETECTED"); }
+        function clickSound() { AudioSys.playTone(300, 'square', 0.1); logTerm("COMMAND EXECUTED"); }
+        function bootSound() { 
+            AudioSys.playTone(100, 'sawtooth', 0.5); 
+            setTimeout(() => AudioSys.playTone(400, 'sine', 0.5), 200);
+            setTimeout(() => AudioSys.playTone(800, 'sine', 1.0), 400);
         }
 
-        /* --- SYSTEM INITIALIZATION --- */
-        function initializeSystem() {
-            AudioEngine.init();
-            playBoot();
+        /* --- TERMINAL LOGGER --- */
+        function logTerm(msg) {
+            const term = document.getElementById('terminal');
+            term.innerText = `> ${msg}_`;
+            setTimeout(() => term.innerText = "> SYSTEM READY. WAITING FOR INPUT..._", 3000);
+        }
+
+        /* --- BOOT SEQUENCE --- */
+        function typeLog(text, i) {
+            const log = document.getElementById('boot-text');
+            const line = document.createElement('div');
+            line.textContent = `> ${text}`;
+            log.appendChild(line);
+            log.scrollTop = log.scrollHeight;
+        }
+
+        function initSystem() {
+            const btn = document.querySelector('.boot-btn');
+            btn.style.display = 'none';
             
-            const bootScreen = document.getElementById('boot-screen');
-            gsap.to(bootScreen, {
-                yPercent: -100,
-                duration: 1.5,
-                ease: "power4.inOut",
-                onComplete: () => {
-                    document.getElementById('webgl').style.opacity = 1;
-                    initThreeJS();
-                }
+            const steps = [
+                "INITIALIZING AUDIO CORE...",
+                "LOADING AERO_DYNAMICS MODULE...",
+                "CONNECTING TO SATELLITE FEED...",
+                "DECRYPTING PILOT DATA...",
+                "ACCESS GRANTED."
+            ];
+
+            let delay = 0;
+            steps.forEach((step, i) => {
+                setTimeout(() => typeLog(step), delay);
+                delay += 400;
             });
+
+            setTimeout(() => {
+                AudioSys.init();
+                bootSound();
+                gsap.to('#boot-layer', { yPercent: -100, duration: 1, ease: 'power4.inOut' });
+                document.getElementById('canvas-layer').style.opacity = 1;
+                initThreeJS();
+            }, delay + 500);
         }
 
-        /* --- THREE.JS SHADERS & PARTICLES --- */
+        /* --- THREE.JS SCENE (Volumetric Globe + Particles) --- */
         function initThreeJS() {
-            const canvas = document.querySelector('#webgl');
+            const canvas = document.getElementById('canvas-layer');
             const scene = new THREE.Scene();
             const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
-            camera.position.z = 15;
-            
-            const renderer = new THREE.WebGLRenderer({ canvas, alpha:true, antialias:true });
+            camera.position.z = 30;
+
+            const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
             renderer.setSize(window.innerWidth, window.innerHeight);
 
-            // Particles
-            const particlesGeo = new THREE.BufferGeometry();
-            const particlesCnt = 3000;
+            // 1. Particle Field (Wind Tunnel Effect)
+            const particlesCnt = 4000;
             const posArray = new Float32Array(particlesCnt * 3);
-            for(let i=0; i<particlesCnt*3; i++) {
-                posArray[i] = (Math.random()-0.5) * 50;
+            const speedArray = new Float32Array(particlesCnt);
+            for(let i=0; i<particlesCnt; i++) {
+                posArray[i*3] = (Math.random() - 0.5) * 100;
+                posArray[i*3+1] = (Math.random() - 0.5) * 60;
+                posArray[i*3+2] = (Math.random() - 0.5) * 60;
+                speedArray[i] = Math.random();
             }
-            particlesGeo.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
-            const particlesMat = new THREE.PointsMaterial({
-                size: 0.05,
-                color: 0xFC3D21,
-                transparent: true,
-                opacity: 0.8
-            });
-            const particlesMesh = new THREE.Points(particlesGeo, particlesMat);
-            scene.add(particlesMesh);
+            const pGeo = new THREE.BufferGeometry();
+            pGeo.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+            const pMat = new THREE.PointsMaterial({ size: 0.1, color: 0xFC3D21, transparent: true, opacity: 0.6 });
+            const pMesh = new THREE.Points(pGeo, pMat);
+            scene.add(pMesh);
 
-            // Exhaust Shader Sphere
-            const sphereGeo = new THREE.SphereGeometry(5, 32, 32);
-            const sphereMat = new THREE.MeshBasicMaterial({ color: 0x000, wireframe: true, transparent: true, opacity: 0.1 });
-            const sphere = new THREE.Mesh(sphereGeo, sphereMat);
-            scene.add(sphere);
+            // 2. Wireframe Globe
+            const gGeo = new THREE.IcosahedronGeometry(12, 2);
+            const gMat = new THREE.MeshBasicMaterial({ color: 0x112233, wireframe: true, transparent: true, opacity: 0.2 });
+            const globe = new THREE.Mesh(gGeo, gMat);
+            scene.add(globe);
 
-            // Animation
+            // Animation Loop
             const clock = new THREE.Clock();
-            const tick = () => {
+            function animate() {
                 const t = clock.getElapsedTime();
-                sphere.rotation.y = t * 0.1;
-                particlesMesh.rotation.y = -t * 0.05;
                 
-                // Mouse Parallax
-                sphere.rotation.x += (window.mouseY * 0.0001 - sphere.rotation.x) * 0.1;
-                sphere.rotation.y += (window.mouseX * 0.0001 - sphere.rotation.y) * 0.1;
+                globe.rotation.y = t * 0.05;
+                pMesh.rotation.y = -t * 0.02; // Counter rotation
+                
+                // Interactive tilt
+                globe.rotation.x += (window.mouseY * 0.0001 - globe.rotation.x) * 0.05;
+                globe.rotation.y += (window.mouseX * 0.0001 - globe.rotation.y) * 0.05;
 
                 renderer.render(scene, camera);
-                requestAnimationFrame(tick);
-            };
-            tick();
+                requestAnimationFrame(animate);
+            }
+            animate();
+
+            // Resize
+            window.addEventListener('resize', () => {
+                camera.aspect = window.innerWidth/window.innerHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(window.innerWidth, window.innerHeight);
+            });
         }
 
-        /* --- MOUSE TRACKER --- */
+        /* --- MOUSE & UI INTERACTION --- */
         window.mouseX = 0; window.mouseY = 0;
         document.addEventListener('mousemove', (e) => {
             window.mouseX = e.clientX - window.innerWidth/2;
             window.mouseY = e.clientY - window.innerHeight/2;
             
             const cursor = document.getElementById('cursor');
-            cursor.style.left = e.clientX + 'px';
-            cursor.style.top = e.clientY + 'px';
+            const follower = document.getElementById('cursor-follower');
             
-            // Interaction Check
+            gsap.to(cursor, { x: e.clientX, y: e.clientY, duration: 0 });
+            gsap.to(follower, { x: e.clientX, y: e.clientY, duration: 0.1 });
+
+            // Hover States
             const target = e.target;
-            if(target.tagName === 'A' || target.tagName === 'BUTTON' || target.classList.contains('card') || target.classList.contains('nav-dot')) {
-                document.body.classList.add('active-hover');
+            if(target.tagName === 'A' || target.tagName === 'BUTTON' || target.classList.contains('nav-item') || target.classList.contains('card')) {
+                document.body.classList.add('hover-active');
             } else {
-                document.body.classList.remove('active-hover');
+                document.body.classList.remove('hover-active');
             }
         });
 
-        /* --- SCROLL NAVIGATION --- */
+        /* --- NAVIGATION --- */
         function scrollToSec(id) {
             document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
-            playClick();
+            clickSound();
+            logTerm(`NAVIGATING TO SECTOR: ${id.toUpperCase()}`);
         }
 
-        /* --- VAULT LOGIC --- */
+        /* --- DATA & MODALS --- */
         const marks = [
             {s:'1st', v:59.68}, {s:'2nd', v:67.43}, {s:'3rd', v:65.29}, {s:'4th', v:69.14},
             {s:'5th', v:78.4}, {s:'6th', v:83.75}, {s:'7th', v:86.15}, {s:'8th', v:89.2}
         ];
-        function decryptVault() {
-            playClick();
-            document.getElementById('vault-lock').style.display = 'none';
-            const graph = document.getElementById('vault-open');
-            graph.style.display = 'flex';
-            document.getElementById('vault-score').style.display = 'block';
+        
+        function unlockVault() {
+            clickSound();
+            document.querySelector('#profile .btn').style.display = 'none';
+            const chart = document.getElementById('grade-chart');
+            const agg = document.getElementById('grade-agg');
+            chart.style.display = 'flex';
+            agg.style.display = 'block';
             
-            graph.innerHTML = marks.map(m => `
-                <div style="flex:1; background:var(--c-accent); opacity:0.8; height:0%; transition:height 1s ease; position:relative;" data-h="${m.v}%">
-                    <span style="position:absolute; top:-20px; left:50%; transform:translateX(-50%); color:white; font-size:10px;">${m.v}</span>
+            chart.innerHTML = marks.map(m => `
+                <div style="flex:1; background:var(--prim); opacity:0.8; height:0%; transition:height 1s ease; position:relative;" data-h="${m.v}%">
+                    <span style="position:absolute; top:-20px; left:50%; transform:translateX(-50%); font-size:10px; color:#fff; font-family:var(--f-code);">${m.v}</span>
                 </div>
             `).join('');
 
             setTimeout(() => {
-                const bars = graph.querySelectorAll('div');
-                bars.forEach(b => b.style.height = b.getAttribute('data-h'));
+                chart.querySelectorAll('div').forEach(bar => bar.style.height = bar.getAttribute('data-h'));
             }, 100);
         }
 
-        /* --- MODAL LOGIC --- */
         const projectData = {
-            tunnel: { t: "SUBSONIC WIND TUNNEL", s1: "1.2m x 0.52m", s2: "10 m/s Max V", s3: "Hot-wire", d: "Design and Development of a Subsonic Wind Tunnel with a Gust Generator Featuring Oscillating Vanes. Validated flow quality experimentally." },
-            b52: { t: "B-52 AIR LAUNCH", s1: "60,000 ft", s2: "28k lbs Load", s3: "LEO Orbit", d: "Feasibility study of retrofitting B-52 Stratofortress for air-launching small satellites, significantly reducing Delta-V requirements." },
-            glider: { t: "STYROFOAM GLIDER", s1: "1.3m Span", s2: "XPS Foam", s3: "Al Spar", d: "Scratch-built RC aircraft using hot-wire foam cutting techniques. Aerodynamic analysis performed in XFLR5." },
+            tunnel: { t: "SUBSONIC WIND TUNNEL", s1: "1.2m x 0.52m", s2: "10 m/s Max V", s3: "Hot-wire", d: "Design and Development of a Subsonic Wind Tunnel with a Gust Generator Featuring Oscillating Vanes. Validated flow quality experimentally to 0.88% Turbulent Intensity." },
+            b52: { t: "B-52 AIR LAUNCH", s1: "60,000 ft", s2: "28k lbs Load", s3: "LEO Orbit", d: "Feasibility study of retrofitting B-52 Stratofortress for air-launching small satellites, significantly reducing Delta-V requirements compared to ground launch." },
+            glider: { t: "STYROFOAM GLIDER", s1: "1.3m Span", s2: "XPS Foam", s3: "Al Spar", d: "Scratch-built RC aircraft using hot-wire foam cutting techniques. Aerodynamic analysis performed in XFLR5 for airfoil selection and stability." },
             f15: { t: "F-15 CFD", s1: "Mach 2.5", s2: "ANSYS Fluent", s3: "Poly Mesh", d: "Computational Fluid Dynamics simulation of supersonic flow over an F-15 Eagle. The study focused on visualizing shock diamonds at the nozzle exit and calculating drag coefficients." }
         };
 
-        function openMission(id) {
-            playClick();
+        function openModal(id) {
+            clickSound();
             const data = projectData[id];
             document.getElementById('m-title').innerText = data.t;
             document.getElementById('m-s1').innerText = data.s1;
             document.getElementById('m-s2').innerText = data.s2;
             document.getElementById('m-s3').innerText = data.s3;
             document.getElementById('m-desc').innerText = data.d;
-            document.getElementById('modal-overlay').classList.add('active');
+            document.getElementById('modal').classList.add('open');
         }
 
         function closeModal() {
-            playClick();
-            document.getElementById('modal-overlay').classList.remove('active');
+            clickSound();
+            document.getElementById('modal').classList.remove('open');
         }
+
+        // Clock
+        setInterval(() => {
+            const now = new Date();
+            document.getElementById('time').innerText = now.toISOString().substr(11, 8);
+        }, 1000);
 
     </script>
 </body>
 </html>
-
