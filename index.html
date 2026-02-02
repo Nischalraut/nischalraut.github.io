@@ -8,34 +8,39 @@
   <!-- Dynamic Favicon -->
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23FC3D21'/%3E%3Ctext x='50%25' y='50%25' dy='.35em' fill='white' font-family='sans-serif' font-weight='bold' font-size='32' text-anchor='middle'%3EN%3C/text%3E%3C/svg%3E">
 
-  <!-- Fonts: Poppins (Headings) & Nunito (Body) -->
+  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&family=Poppins:wght@400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
 
   <style>
     :root {
-      /* Colors */
+      /* Palette */
       --bg-body: #0B0D17;
       --bg-surface: rgba(30, 35, 45, 0.6);
+      --bg-panel: #151922;
       --text-main: #F1F5F9;
       --text-muted: #94A3B8;
       --accent: #FC3D21;
+      --accent-dim: rgba(252, 61, 33, 0.2);
       --border: rgba(255, 255, 255, 0.08);
       
       /* Typography */
       --font-head: 'Poppins', sans-serif;
       --font-body: 'Nunito', sans-serif;
+      --font-tech: 'JetBrains Mono', monospace;
       
-      /* Animation Speeds */
+      /* Animation */
       --page-trans: 0.6s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     [data-theme="light"] {
       --bg-body: #E0F2FE;
       --bg-surface: rgba(255, 255, 255, 0.8);
+      --bg-panel: #FFFFFF;
       --text-main: #0F172A;
       --text-muted: #475569;
       --accent: #DC2626;
+      --accent-dim: rgba(220, 38, 38, 0.1);
       --border: rgba(0, 0, 0, 0.08);
     }
 
@@ -52,14 +57,17 @@
 
     /* 
      * -----------------------------------------------------------
-     * 1. BACKGROUND ANIMATION LAYER
+     * 1. BACKGROUND LAYERS & ANIMATION
      * -----------------------------------------------------------
      */
-    .bg-layer {
-      position: fixed; inset: 0; z-index: -1; pointer-events: none; overflow: hidden;
+    .bg-layer { position: fixed; inset: 0; z-index: -2; pointer-events: none; overflow: hidden; }
+    
+    /* Interactive Canvas for Mouse Turbulence */
+    #airflow-canvas {
+      position: fixed; inset: 0; z-index: -1; pointer-events: none;
     }
 
-    /* DARK MODE: Space, Planets, Meteors */
+    /* DARK MODE */
     .space-scene {
       position: absolute; inset: 0;
       background: radial-gradient(circle at bottom, #1e1b4b 0%, #000000 90%);
@@ -69,45 +77,35 @@
 
     .stars {
       position: absolute; inset: 0;
-      background-image: 
-        radial-gradient(1px 1px at 10% 10%, white, transparent),
-        radial-gradient(1px 1px at 20% 40%, white, transparent),
-        radial-gradient(2px 2px at 50% 50%, white, transparent);
-      background-size: 600px 600px;
-      opacity: 0.5; animation: starMove 120s linear infinite;
+      background-image: radial-gradient(2px 2px at 20px 30px, #eee, transparent),
+                        radial-gradient(2px 2px at 40px 70px, #fff, transparent),
+                        radial-gradient(1px 1px at 90px 40px, #fff, transparent);
+      background-size: 500px 500px; opacity: 0.5; animation: starMove 100s linear infinite;
     }
-
     .planet-ring {
-      position: absolute; top: 15%; right: 10%;
-      width: 140px; height: 140px; border-radius: 50%;
+      position: absolute; top: 15%; right: 10%; width: 140px; height: 140px; border-radius: 50%;
       background: radial-gradient(circle at 30% 30%, #7c3aed, #4c1d95);
       box-shadow: inset -10px -10px 30px rgba(0,0,0,0.8);
     }
     .planet-ring::after {
-      content:''; position: absolute; top: 50%; left: 50%;
-      width: 220px; height: 60px; border-radius: 50%;
-      border: 6px solid rgba(255,255,255,0.1);
-      border-top: 6px solid rgba(255,255,255,0.5);
+      content:''; position: absolute; top: 50%; left: 50%; width: 220px; height: 60px; border-radius: 50%;
+      border: 6px solid rgba(255,255,255,0.1); border-top: 6px solid rgba(255,255,255,0.5);
       transform: translate(-50%, -50%) rotate(-25deg);
     }
-
     .planet-red {
-      position: absolute; bottom: 20%; left: 8%;
-      width: 90px; height: 90px; border-radius: 50%;
+      position: absolute; bottom: 20%; left: 8%; width: 90px; height: 90px; border-radius: 50%;
       background: radial-gradient(circle at 30% 30%, #fda4af, #be123c);
       box-shadow: inset -8px -8px 20px rgba(0,0,0,0.9);
     }
-
     .meteor {
-      position: absolute; top: -100px; left: 50%;
-      width: 150px; height: 2px;
+      position: absolute; width: 150px; height: 2px;
       background: linear-gradient(90deg, white, transparent);
       transform: rotate(45deg); opacity: 0;
     }
-    .m1 { animation: meteorFall 7s infinite 2s; left: 20%; }
-    .m2 { animation: meteorFall 10s infinite 6s; left: 70%; width: 100px; }
+    .m1 { animation: meteorFall 7s infinite 2s; top: -10%; left: 20%; }
+    .m2 { animation: meteorFall 10s infinite 6s; top: -10%; left: 70%; width: 100px; }
 
-    /* LIGHT MODE: Sky, Plane, Rocket */
+    /* LIGHT MODE */
     .sky-scene {
       position: absolute; inset: 0;
       background: linear-gradient(to bottom, #BAE6FD, #F0F9FF);
@@ -142,187 +140,134 @@
       position: absolute; top: 20px; left: 50%; transform: translateX(-50%);
       width: 12px; height: 12px; background: #38BDF8; border-radius: 50%; border: 2px solid #fff;
     }
-    .rocket-fin {
-      position: absolute; bottom: 0; width: 14px; height: 25px; background: #EF4444; z-index: 1;
-    }
+    .rocket-fin { position: absolute; bottom: 0; width: 14px; height: 25px; background: #EF4444; z-index: 1; }
     .fin-l { left: -10px; border-radius: 100% 0 0 0; }
     .fin-r { right: -10px; border-radius: 0 100% 0 0; }
     .fire {
       position: absolute; top: 100%; left: 4px; width: 22px; height: 40px;
       background: linear-gradient(to bottom, #F59E0B, transparent);
-      border-radius: 0 0 10px 10px; filter: blur(3px);
-      animation: burn 0.1s infinite alternate;
+      border-radius: 0 0 10px 10px; filter: blur(3px); animation: burn 0.1s infinite alternate;
     }
 
     @keyframes starMove { from {transform: translateY(0);} to {transform: translateY(-500px);} }
     @keyframes meteorFall { 0% {opacity:0; transform:translate(0,0) rotate(45deg);} 10% {opacity:1;} 20% {opacity:0; transform:translate(400px, 400px) rotate(45deg);} 100% {opacity:0;} }
     @keyframes cloudDrift { to { transform: translateX(120vw); } }
     @keyframes planeFly { 0% { left: -15%; } 100% { left: 115%; } }
-    @keyframes rocketLaunch {
-      0% { bottom: -150px; opacity: 1; transform: translateX(-50%) scale(0.8); }
-      15% { bottom: 110vh; opacity: 1; transform: translateX(-50%) scale(0.8); }
-      20% { bottom: 110vh; opacity: 0; }
-      100% { bottom: 110vh; opacity: 0; }
-    }
+    @keyframes rocketLaunch { 0% { bottom: -150px; opacity: 1; transform: translateX(-50%) scale(0.8); } 15% { bottom: 110vh; opacity: 1; transform: translateX(-50%) scale(0.8); } 20% { opacity: 0; bottom: 110vh; } 100% { opacity: 0; bottom: 110vh; } }
     @keyframes burn { from {height: 40px; opacity:0.8;} to {height: 60px; opacity:1;} }
 
     /* 
      * -----------------------------------------------------------
-     * 2. UI & NAVIGATION
+     * 2. UI & NAV
      * -----------------------------------------------------------
      */
     nav {
       position: fixed; top: 0; width: 100%; height: 80px;
       display: flex; align-items: center; justify-content: space-between;
       padding: 0 3em; z-index: 1000;
-      backdrop-filter: blur(10px);
-      background: rgba(var(--bg-body), 0.1);
+      backdrop-filter: blur(12px); background: rgba(var(--bg-body), 0.1);
       border-bottom: 1px solid var(--border);
     }
     .brand { font-family: var(--font-head); font-weight: 800; font-size: 1.5em; cursor: pointer; }
     nav ul { display: flex; gap: 2em; list-style: none; }
-    nav ul li {
-      cursor: pointer; font-weight: 600; opacity: 0.7; position: relative;
-      transition: 0.3s;
-    }
+    nav ul li { cursor: pointer; font-weight: 600; opacity: 0.7; position: relative; transition: 0.3s; }
     nav ul li:hover, nav ul li.active { opacity: 1; color: var(--accent); }
-    nav ul li.active::after {
-      content: ''; position: absolute; bottom: -5px; left: 0; width: 100%; height: 2px; background: var(--accent);
+    nav ul li.active::after { content: ''; position: absolute; bottom: -5px; left: 0; width: 100%; height: 2px; background: var(--accent); }
+    .theme-switch { cursor: pointer; padding: 0.5em; font-size: 1.2em; }
+
+    main { padding-top: 100px; min-height: 100vh; width: 100%; position: relative; }
+    .page-view {
+      display: none; max-width: 1000px; margin: 0 auto; padding: 2em;
+      opacity: 0; transform: translateY(20px); transition: opacity 0.5s ease, transform 0.5s ease;
     }
-    
-    .theme-switch { cursor: pointer; padding: 0.5em; border-radius: 50%; background: var(--bg-surface); }
+    .page-view.active-view { display: block; opacity: 1; transform: translateY(0); animation: fadeUp 0.6s ease forwards; }
+    @keyframes fadeUp { from {opacity:0; transform:translateY(20px);} to {opacity:1; transform:translateY(0);} }
 
     /* 
      * -----------------------------------------------------------
-     * 3. PAGE ARCHITECTURE (View Swapping)
+     * 3. PAGE CONTENT STYLES
      * -----------------------------------------------------------
      */
-    main {
-      padding-top: 100px; /* offset for nav */
-      min-height: 100vh;
-      width: 100%;
-      position: relative;
-    }
-
-    .page-view {
-      display: none; /* Hidden by default */
-      max-width: 1000px;
-      margin: 0 auto;
-      padding: 2em;
-      opacity: 0;
-      transform: translateY(20px);
-      transition: opacity 0.5s ease, transform 0.5s ease;
-    }
-    .page-view.active-view {
-      display: block;
-      opacity: 1;
-      transform: translateY(0);
-      animation: fadeUp 0.6s ease forwards;
-    }
-
-    @keyframes fadeUp { from {opacity:0; transform:translateY(20px);} to {opacity:1; transform:translateY(0);} }
-
-    /* HOME PAGE */
+    /* HOME */
     .hero-content { text-align: center; padding: 4em 0; }
     .profile-pic {
       width: 180px; height: 180px; border-radius: 50%;
-      border: 4px solid var(--accent); padding: 5px;
-      object-fit: cover; margin-bottom: 2em;
-      background: var(--bg-body);
-      transition: transform 0.3s;
+      border: 4px solid var(--accent); padding: 5px; object-fit: cover; margin-bottom: 2em;
+      background: var(--bg-body); transition: transform 0.3s;
     }
     .profile-pic:hover { transform: scale(1.05); }
     h1 { font-family: var(--font-head); font-size: 3.5em; font-weight: 800; line-height: 1.1; margin-bottom: 0.2em; }
     .tagline { font-size: 1.5em; color: var(--text-muted); font-weight: 600; margin-bottom: 1.5em; }
-    .bio-short { max-width: 600px; margin: 0 auto 2em; line-height: 1.8; color: var(--text-muted); }
     
-    /* ABOUT PAGE */
-    .about-grid { display: grid; grid-template-columns: 1fr; gap: 3em; }
-    .content-box {
-      background: var(--bg-surface); backdrop-filter: blur(10px);
-      padding: 2.5em; border-radius: 16px; border: 1px solid var(--border);
-    }
+    /* ABOUT & RADAR */
+    .about-split { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 3em; }
+    .content-box { background: var(--bg-surface); backdrop-filter: blur(10px); padding: 2.5em; border-radius: 16px; border: 1px solid var(--border); margin-bottom: 2em; }
     h2 { font-family: var(--font-head); font-size: 2em; margin-bottom: 0.8em; color: var(--text-main); }
     h3 { font-family: var(--font-head); font-size: 1.3em; margin-bottom: 0.5em; color: var(--accent); }
     p { margin-bottom: 1.5em; line-height: 1.7; color: var(--text-muted); }
+    
+    /* RADAR CHART SVG */
+    .radar-container { text-align: center; padding: 1em; }
+    .radar-svg { width: 100%; max-width: 350px; height: auto; overflow: visible; }
+    .radar-poly { fill: var(--accent-dim); stroke: var(--accent); stroke-width: 2; }
+    .radar-axis { stroke: var(--text-muted); stroke-width: 1; stroke-dasharray: 4; opacity: 0.5; }
+    .radar-label { font-size: 12px; fill: var(--text-main); font-family: var(--font-tech); text-anchor: middle; }
 
-    /* INTERESTS SECTION */
-    .interests-grid {
-      display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5em; margin-top: 1em;
-    }
-    .interest-card {
-      background: rgba(255,255,255,0.03); padding: 1.5em; border-radius: 12px;
-      text-align: center; border: 1px solid var(--border); transition: 0.3s;
-    }
-    .interest-card:hover { border-color: var(--accent); transform: translateY(-5px); }
-    .int-icon { font-size: 2em; display: block; margin-bottom: 0.5em; }
-
-    /* EXPERIENCE PAGE */
+    /* EXPERIENCE */
     .timeline { border-left: 2px solid var(--accent); padding-left: 2em; margin-left: 1em; }
     .timeline-item { position: relative; margin-bottom: 3em; }
-    .timeline-item::before {
-      content:''; position: absolute; left: -2.6em; top: 5px;
-      width: 16px; height: 16px; background: var(--accent); border-radius: 50%;
-    }
+    .timeline-item::before { content:''; position: absolute; left: -2.6em; top: 5px; width: 16px; height: 16px; background: var(--accent); border-radius: 50%; }
     .job-title { font-size: 1.3em; font-weight: 700; color: var(--text-main); }
     .company { font-weight: 600; color: var(--accent); font-family: var(--font-head); }
-    .duration { font-size: 0.9em; opacity: 0.7; display: block; margin-bottom: 1em; }
-
-    /* ACADEMIC PAGE */
-    .lock-container {
-      text-align: center; padding: 4em; border: 2px dashed var(--border);
-      border-radius: 16px; background: rgba(0,0,0,0.2); margin-top: 2em;
-    }
-    .graph-display {
-      display: none; height: 400px; margin-top: 2em;
-      align-items: flex-end; gap: 10px;
-    }
+    
+    /* ACADEMIC */
+    .lock-container { text-align: center; padding: 4em; border: 2px dashed var(--border); border-radius: 16px; background: rgba(0,0,0,0.2); margin-top: 2em; }
+    .graph-display { display: none; height: 350px; margin-top: 2em; align-items: flex-end; gap: 10px; }
     .bar-col { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 100%; }
-    .bar {
-      width: 100%; background: linear-gradient(to top, var(--accent), #f97316);
-      border-radius: 6px 6px 0 0; position: relative;
-      height: 0; transition: height 1s ease; opacity: 0.9;
-    }
-    .bar:hover { opacity: 1; }
+    .bar { width: 100%; background: linear-gradient(to top, var(--accent), #f97316); border-radius: 6px 6px 0 0; position: relative; height: 0; transition: height 1s ease; opacity: 0.9; }
     .bar-val { position: absolute; top: -25px; width: 100%; text-align: center; font-weight: bold; font-size: 0.8em; }
-    .sem-label { margin-top: 10px; font-size: 0.8em; opacity: 0.7; }
-
-    /* PROJECTS PAGE */
+    
+    /* PROJECTS */
     .project-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2em; }
-    .p-card {
-      background: var(--bg-surface); padding: 0; border-radius: 16px;
-      border: 1px solid var(--border); overflow: hidden;
-      transition: transform 0.3s;
-    }
+    .p-card { background: var(--bg-surface); padding: 0; border-radius: 16px; border: 1px solid var(--border); overflow: hidden; transition: transform 0.3s; cursor: pointer; }
     .p-card:hover { transform: translateY(-8px); border-color: var(--accent); }
-    .p-img { width: 100%; height: 180px; background: #222; object-fit: cover; }
+    .p-img { width: 100%; height: 180px; background: #222; object-fit: cover; display: flex; align-items: center; justify-content: center; font-size: 3em; }
+    .p-img img { width: 100%; height: 100%; object-fit: cover; }
     .p-content { padding: 1.5em; }
     .p-tag { font-size: 0.75em; letter-spacing: 1px; color: var(--accent); font-weight: 700; text-transform: uppercase; }
 
-    /* UTILS */
-    .btn {
-      padding: 0.8em 2em; background: var(--accent); color: white;
-      border: none; border-radius: 50px; font-weight: 600; cursor: pointer;
-      transition: 0.3s; display: inline-block; margin-top: 1em;
+    /* MISSION MODAL */
+    .modal-overlay {
+      position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(10px);
+      z-index: 2000; opacity: 0; pointer-events: none; display: flex; align-items: center; justify-content: center;
+      transition: opacity 0.3s;
     }
+    .modal-overlay.active { opacity: 1; pointer-events: all; }
+    .mission-log {
+      background: var(--bg-panel); width: 90%; max-width: 700px; max-height: 80vh; overflow-y: auto;
+      border: 1px solid var(--accent); border-radius: 12px; padding: 2em;
+      position: relative; box-shadow: 0 0 50px rgba(252, 61, 33, 0.1);
+    }
+    .log-header { border-bottom: 1px solid var(--border); padding-bottom: 1em; margin-bottom: 1.5em; }
+    .log-title { font-family: var(--font-tech); color: var(--accent); font-size: 1.2em; text-transform: uppercase; letter-spacing: 2px; }
+    .data-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5em; margin-bottom: 2em; }
+    .data-item label { display: block; font-size: 0.8em; color: var(--text-muted); text-transform: uppercase; }
+    .data-item span { font-family: var(--font-tech); font-weight: 700; color: var(--text-main); font-size: 1.1em; }
+
+    .btn { padding: 0.8em 2em; background: var(--accent); color: white; border: none; border-radius: 50px; font-weight: 600; cursor: pointer; transition: 0.3s; display: inline-block; margin-top: 1em; }
     .btn:hover { transform: translateY(-2px); filter: brightness(1.1); }
     .btn-outline { background: transparent; border: 1px solid var(--border); color: var(--text-main); margin-left: 10px; }
     .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
 
-    /* Responsive */
-    @media(max-width: 768px) {
-      nav { padding: 0 1.5em; }
-      nav ul { gap: 1em; font-size: 0.9em; }
-      .brand { display: none; } /* Hide brand on mobile to fit menu */
-      h1 { font-size: 2.5em; }
-    }
+    @media(max-width: 900px) { .about-split { grid-template-columns: 1fr; } }
+    @media(max-width: 768px) { nav { padding: 0 1.5em; } nav ul { gap: 1em; font-size: 0.8em; } .brand { display: none; } h1 { font-size: 2.5em; } }
   </style>
 </head>
 <body>
 
   <!-- Backgrounds -->
+  <canvas id="airflow-canvas"></canvas>
   <div class="bg-layer">
-    <!-- Dark Mode -->
     <div class="space-scene">
       <div class="stars"></div>
       <div class="planet-ring"></div>
@@ -330,7 +275,6 @@
       <div class="meteor m1"></div>
       <div class="meteor m2"></div>
     </div>
-    <!-- Light Mode -->
     <div class="sky-scene">
       <div class="cloud c1"></div>
       <div class="cloud c2"></div>
@@ -350,124 +294,106 @@
     </div>
   </div>
 
-  <!-- Navigation -->
+  <!-- Nav -->
   <nav>
     <div class="brand" onclick="switchPage('home')">NR<span style="color:var(--accent)">.</span></div>
     <ul>
       <li onclick="switchPage('home')" id="nav-home" class="active">Home</li>
       <li onclick="switchPage('about')" id="nav-about">About</li>
-      <li onclick="switchPage('experience')" id="nav-experience">Experience</li>
+      <li onclick="switchPage('experience')" id="nav-experience">History</li>
       <li onclick="switchPage('academic')" id="nav-academic">Academic</li>
       <li onclick="switchPage('projects')" id="nav-projects">Projects</li>
     </ul>
-    <div class="theme-switch" id="themeBtn" title="Toggle Mode">🌓</div>
+    <div class="theme-switch" id="themeBtn">🌓</div>
   </nav>
 
-  <!-- MAIN CONTENT CONTAINER -->
   <main>
     
-    <!-- 1. HOME VIEW -->
+    <!-- HOME -->
     <section id="view-home" class="page-view active-view">
       <div class="hero-content">
-        <img src="nischal.png" alt="Profile" class="profile-pic">
+        <img src="profile.jpg" alt="Profile" class="profile-pic">
         <h1>Nischal Raut</h1>
-        <p class="tagline">Aerospace Engineer | UAV Specialist | CFD Analyst</p>
+        <p class="tagline">I am <span id="typewriter" style="color:var(--accent); font-weight:700;"></span></p>
         <p class="bio-short">
-          Bridging the gap between computational theory and flight-ready reality.
-          From wind tunnel experimentation to avionics integration at Airbus India.
+          Bridging the gap between computational theory and flight-ready reality.<br>
+          From wind tunnel experimentation to avionics integration at <strong>Airbus India</strong>.
         </p>
         <div>
-          <button class="btn" onclick="switchPage('projects')">View Portfolio</button>
-          <button class="btn btn-outline" onclick="switchPage('contact')">Contact Me</button>
+          <button class="btn" onclick="switchPage('projects')">Flight Log</button>
+          <button class="btn btn-outline" onclick="switchPage('contact')">Contact</button>
         </div>
       </div>
     </section>
 
-    <!-- 2. ABOUT VIEW (Expanded) -->
+    <!-- ABOUT -->
     <section id="view-about" class="page-view">
-      <div class="about-grid">
-        <div class="content-box">
-          <h2>Philosophy & Approach</h2>
-          <p>
-            Engineering is not merely about solving equations; it is about managing the forces of nature to achieve elegance in motion. My approach combines rigorous mathematical analysis with hands-on experimentation. Whether it's validating a CFD model in a wind tunnel or integrating complex avionics, I thrive in the iterative cycle of <strong>Design, Test, and Analyze</strong>.
-          </p>
-          <p>
-            My journey began with a curiosity about how heavy metal objects could defy gravity, which evolved into a specialized focus on Aerodynamics and System Integration.
-          </p>
+      <div class="about-split">
+        <div>
+          <div class="content-box">
+            <h2>Philosophy</h2>
+            <p>Engineering is about managing the forces of nature. My approach combines rigorous mathematical analysis with hands-on experimentation. I thrive in the cycle of <strong>Design, Test, and Analyze</strong>.</p>
+          </div>
+          <div class="content-box">
+            <h3>Beyond Engineering</h3>
+            <p>Building scratch-built <strong>RC Aircraft</strong> allows me to feel the aerodynamics I calculate. I am also a sci-fi enthusiast and enjoy drone photography.</p>
+          </div>
         </div>
-        
-        <div class="content-box">
-          <h2>Beyond Engineering</h2>
-          <p>
-            When I'm not running simulations or soldering flight controllers, I am deeply immersed in the world of <strong>RC Aviation</strong>. Building and flying my own aircraft gives me an intuitive understanding of flight mechanics that textbooks cannot provide.
-          </p>
-          <h3>Interests</h3>
-          <div class="interests-grid">
-            <div class="interest-card">
-              <span class="int-icon">✈️</span>
-              <strong>RC Aviation</strong>
-              <p style="font-size:0.8em; margin:0;">Scratch building & flying</p>
-            </div>
-            <div class="interest-card">
-              <span class="int-icon">🔭</span>
-              <strong>Astronomy</strong>
-              <p style="font-size:0.8em; margin:0;">Sci-Fi Literature & Space Tech</p>
-            </div>
-            <div class="interest-card">
-              <span class="int-icon">📸</span>
-              <strong>Photography</strong>
-              <p style="font-size:0.8em; margin:0;">Drone Mapping & Landscape</p>
-            </div>
-            <div class="interest-card">
-              <span class="int-icon">🏎</span>
-              <strong>F1 Aerodynamics</strong>
-              <p style="font-size:0.8em; margin:0;">Fluid dynamics in racing</p>
+        <div>
+          <div class="content-box" style="text-align:center;">
+            <h3>Skill Matrix</h3>
+            <div class="radar-container">
+              <!-- SVG generated via JS matches user data: CFD 7, CAD 8, Prog 6, Exp 8 -->
+              <svg class="radar-svg" viewBox="0 0 100 100">
+                <circle cx="50" cy="50" r="40" stroke="var(--border)" fill="none" stroke-dasharray="2"/>
+                <circle cx="50" cy="50" r="20" stroke="var(--border)" fill="none" stroke-dasharray="2"/>
+                <!-- Axes -->
+                <line x1="50" y1="50" x2="50" y2="10" class="radar-axis"/>
+                <line x1="50" y1="50" x2="90" y2="50" class="radar-axis"/>
+                <line x1="50" y1="50" x2="50" y2="90" class="radar-axis"/>
+                <line x1="50" y1="50" x2="10" y2="50" class="radar-axis"/>
+                <!-- Text -->
+                <text x="50" y="8" class="radar-label">CFD (7)</text>
+                <text x="95" y="55" class="radar-label">CAD (8)</text>
+                <text x="50" y="98" class="radar-label">Prog (6)</text>
+                <text x="5" y="55" class="radar-label">Exp (8)</text>
+                <!-- Polygon Data: 7, 8, 6, 8 -->
+                <polygon points="50,22 82,50 50,74 18,50" class="radar-poly" fill-opacity="0.3"/>
+              </svg>
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- 3. EXPERIENCE VIEW -->
+    <!-- EXPERIENCE -->
     <section id="view-experience" class="page-view">
-      <h2 style="margin-bottom:1.5em; text-align:center;">Professional Timeline</h2>
+      <h2 style="text-align:center; margin-bottom:1.5em;">Flight History</h2>
       <div class="timeline">
-        
         <div class="timeline-item">
           <div class="job-title">Associate Engineer - Integration Test & Analytics</div>
           <div class="company">AIRBUS INDIA, Bangalore</div>
-          <span class="duration">Dec 2024 – Present</span>
-          <p>
-            Responsible for the integration testing of avionics subsystems. I leverage data analytics to optimize flight test campaigns, automating procedures to enhance efficiency and reliability in safety-critical systems.
-          </p>
+          <span style="opacity:0.7">Dec 2024 – Present</span>
+          <p style="margin-top:0.5em">Responsible for integration testing of avionics subsystems. Leveraging data analytics to optimize flight test campaigns.</p>
         </div>
-
         <div class="timeline-item">
           <div class="job-title">Intern - System Testing Engineer</div>
           <div class="company">AIRBUS INDIA, Bangalore</div>
-          <span class="duration">July 2024 – Nov 2024</span>
-          <p>
-            Supported system Verification & Validation (V&V). Performed functional testing on simulation benches, analyzed test logs, and contributed to defect tracking and resolution workflows.
-          </p>
+          <span style="opacity:0.7">July 2024 – Nov 2024</span>
+          <p style="margin-top:0.5em">Supported system V&V. Performed functional testing on simulation benches and analyzed test logs.</p>
         </div>
-
         <div class="timeline-item">
           <div class="job-title">Engineering Intern</div>
           <div class="company">AIRLIFT TECHNOLOGY, Nepal</div>
-          <span class="duration">2024</span>
-          <p>
-            Led drone mapping initiatives for Kathmandu Metropolitan City. Processed large-scale photogrammetry data to generate high-fidelity 3D terrain models and orthomosaics.
-          </p>
+          <span style="opacity:0.7">2024</span>
+          <p style="margin-top:0.5em">Led drone mapping for Kathmandu Metro. Processed photogrammetry data for 3D terrain models.</p>
         </div>
-
       </div>
     </section>
 
-    <!-- 4. ACADEMIC VIEW (Vault) -->
+    <!-- ACADEMIC -->
     <section id="view-academic" class="page-view">
       <h2 style="text-align:center;">Academic Vault</h2>
-      <p style="text-align:center;">Institute of Engineering, Pulchowk Campus (2019-2025)</p>
-      
       <div class="lock-container" id="academicLock">
         <div style="font-size:3em; margin-bottom:0.5em;">🔒</div>
         <h3>Restricted Access</h3>
@@ -477,138 +403,200 @@
           <button class="btn btn-outline" onclick="unlockAcademic()">Demo Unlock</button>
         </div>
       </div>
-
-      <div class="graph-display" id="academicGraph">
-        <!-- Bars injected by JS -->
-      </div>
+      <div class="graph-display" id="academicGraph"></div>
       <h3 id="aggScore" style="text-align:center; margin-top:2em; display:none;">Aggregate: <span style="color:var(--accent)">76.71%</span></h3>
     </section>
 
-    <!-- 5. PROJECTS VIEW -->
+    <!-- PROJECTS -->
     <section id="view-projects" class="page-view">
-      <h2 style="margin-bottom:1em;">Featured Projects</h2>
+      <h2 style="margin-bottom:1em;">Project Flight Logs</h2>
       <div class="project-grid">
-        
-        <div class="p-card">
-          <img src="windtunnel1.jpeg" class="p-img" alt="Tunnel">
+        <div class="p-card" onclick="openLog('tunnel')">
+          <div class="p-img"><img src="windtunnel1.jpeg" alt="Tunnel"></div>
           <div class="p-content">
             <span class="p-tag">Research</span>
             <h3>Subsonic Wind Tunnel</h3>
-            <p>Designed and built an open-jet wind tunnel with an active gust generator. Validated 0.88% Turbulent Intensity experimentally.</p>
+            <p>Design and Development of a Subsonic Wind Tunnel with Gust Generator.</p>
           </div>
         </div>
-
-        <div class="p-card">
-          <div class="p-img" style="display:flex; align-items:center; justify-content:center; background:#0c4a6e; font-size:3em;">🚀</div>
+        <div class="p-card" onclick="openLog('b52')">
+          <div class="p-img" style="background:#0c4a6e; color:white;">🚀</div>
           <div class="p-content">
             <span class="p-tag">Design</span>
             <h3>B-52 Air Launch</h3>
-            <p>Conceptual study of using the B-52 as a carrier for small satellite launch vehicles to optimize orbit insertion.</p>
+            <p>Conceptual study of using the B-52 as a carrier for small satellite launch.</p>
           </div>
         </div>
-
-        <div class="p-card">
-          <div class="p-img" style="display:flex; align-items:center; justify-content:center; background:#064e3b; font-size:3em;">✈️</div>
+        <div class="p-card" onclick="openLog('glider')">
+          <div class="p-img" style="background:#064e3b; color:white;">✈️</div>
           <div class="p-content">
             <span class="p-tag">Fabrication</span>
             <h3>Styrofoam Glider</h3>
-            <p>From airfoil selection (XFLR5) to hot-wire foam cutting and flight testing. Achieved stable glide ratio.</p>
+            <p>Scratch-built RC Glider using hot-wire foam cutting and Al spars.</p>
           </div>
         </div>
-
-        <div class="p-card">
-          <div class="p-img" style="display:flex; align-items:center; justify-content:center; background:#450a0a; font-size:3em;">💻</div>
-          <div class="p-content">
-            <span class="p-tag">CFD</span>
-            <h3>F-15 Flow Analysis</h3>
-            <p>Simulated supersonic flow over F-15 Eagle using ANSYS Fluent. Analyzed shock diamonds and drag coefficients.</p>
-          </div>
-        </div>
-
       </div>
     </section>
 
-    <!-- 6. CONTACT VIEW -->
+    <!-- CONTACT -->
     <section id="view-contact" class="page-view">
       <div class="content-box" style="max-width:600px; margin:0 auto; text-align:center;">
-        <h2>Get in Touch</h2>
+        <h2>Establish Comms</h2>
         <p>nischalraut6@gmail.com</p>
         <form style="text-align:left; display:grid; gap:1em;">
-          <input type="text" placeholder="Your Name" style="width:100%; padding:1em; border-radius:8px; border:1px solid var(--border); background:rgba(0,0,0,0.2); color:inherit;">
-          <input type="email" placeholder="Email Address" style="width:100%; padding:1em; border-radius:8px; border:1px solid var(--border); background:rgba(0,0,0,0.2); color:inherit;">
-          <textarea rows="5" placeholder="Message" style="width:100%; padding:1em; border-radius:8px; border:1px solid var(--border); background:rgba(0,0,0,0.2); color:inherit;"></textarea>
-          <button class="btn" type="button" onclick="alert('Message Sent (Demo)')">Send Message</button>
+          <input type="text" placeholder="Callsign (Name)" style="width:100%; padding:1em; border-radius:8px; border:1px solid var(--border); background:rgba(0,0,0,0.2); color:inherit;">
+          <input type="email" placeholder="Frequency (Email)" style="width:100%; padding:1em; border-radius:8px; border:1px solid var(--border); background:rgba(0,0,0,0.2); color:inherit;">
+          <textarea rows="5" placeholder="Transmission..." style="width:100%; padding:1em; border-radius:8px; border:1px solid var(--border); background:rgba(0,0,0,0.2); color:inherit;"></textarea>
+          <button class="btn" type="button" onclick="alert('Message Sent')">Send</button>
         </form>
+        <div style="margin-top:2em; font-size:1.5em; display:flex; justify-content:center; gap:1em;">
+           <a href="https://linkedin.com" target="_blank">🔗</a> <!-- Add your actual link -->
+        </div>
       </div>
     </section>
 
   </main>
 
+  <!-- MISSION MODAL (Dynamic Content) -->
+  <div class="modal-overlay" id="missionModal">
+    <div class="mission-log">
+      <div class="log-header">
+        <div class="log-title">Mission Report <span id="log-id" style="float:right; opacity:0.5;">#001</span></div>
+        <h2 id="log-name" style="margin-top:0.2em;">Project Name</h2>
+      </div>
+      <div class="data-grid">
+        <div class="data-item"><label>Specification 1</label><span id="spec-1">--</span></div>
+        <div class="data-item"><label>Specification 2</label><span id="spec-2">--</span></div>
+        <div class="data-item"><label>Specification 3</label><span id="spec-3">--</span></div>
+        <div class="data-item"><label>Status</label><span style="color:#10B981">COMPLETED</span></div>
+      </div>
+      <p id="log-desc" style="line-height:1.7; color:var(--text-muted);">Description...</p>
+      <button class="btn" style="margin-top:2em; width:100%;" onclick="closeLog()">Close Log</button>
+    </div>
+  </div>
+
   <script>
-    // 1. Theme Logic
+    // 1. MOUSE AIRFLOW EFFECT (Canvas)
+    const canvas = document.getElementById('airflow-canvas');
+    const ctx = canvas.getContext('2d');
+    let width, height;
+    let particles = [];
+
+    function resize() { width = canvas.width = window.innerWidth; height = canvas.height = window.innerHeight; }
+    window.addEventListener('resize', resize);
+    resize();
+
+    class Particle {
+      constructor(x, y) {
+        this.x = x; this.y = y;
+        this.vx = (Math.random() - 0.5) * 2; this.vy = (Math.random() - 0.5) * 2;
+        this.life = 1; this.color = document.documentElement.getAttribute('data-theme') === 'dark' ? '255,255,255' : '0,0,0';
+      }
+      update() {
+        this.x += this.vx; this.y += this.vy;
+        this.life -= 0.02;
+      }
+      draw() {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, 2 * this.life, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(${this.color}, ${this.life * 0.5})`;
+        ctx.fill();
+      }
+    }
+
+    window.addEventListener('mousemove', e => {
+      for(let i=0; i<3; i++) particles.push(new Particle(e.clientX, e.clientY));
+    });
+
+    function animateParticles() {
+      ctx.clearRect(0, 0, width, height);
+      particles.forEach((p, i) => {
+        p.update(); p.draw();
+        if (p.life <= 0) particles.splice(i, 1);
+      });
+      requestAnimationFrame(animateParticles);
+    }
+    animateParticles();
+
+    // 2. TYPEWRITER EFFECT
+    const roles = ["an Aerospace Engineer.", "a UAV Specialist.", "a CFD Analyst.", "an Avionics Integrator."];
+    let roleIdx = 0, charIdx = 0, isDeleting = false;
+    function typeWriter() {
+      const target = document.getElementById('typewriter');
+      if (!target) return;
+      const current = roles[roleIdx];
+      target.textContent = current.substring(0, isDeleting ? charIdx - 1 : charIdx + 1);
+      charIdx += isDeleting ? -1 : 1;
+      let speed = isDeleting ? 50 : 100;
+      if (!isDeleting && charIdx === current.length) { speed = 2000; isDeleting = true; }
+      else if (isDeleting && charIdx === 0) { isDeleting = false; roleIdx = (roleIdx + 1) % roles.length; speed = 500; }
+      setTimeout(typeWriter, speed);
+    }
+    document.addEventListener('DOMContentLoaded', typeWriter);
+
+    // 3. PAGE LOGIC
     const themeBtn = document.getElementById('themeBtn');
     const root = document.documentElement;
+    themeBtn.onclick = () => root.setAttribute('data-theme', root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
 
-    themeBtn.onclick = () => {
-      const curr = root.getAttribute('data-theme');
-      const next = curr === 'dark' ? 'light' : 'dark';
-      root.setAttribute('data-theme', next);
-    };
-
-    // 2. View Swapping Logic (Virtual Multi-Page)
-    function switchPage(pageId) {
-      // Update Nav
-      document.querySelectorAll('nav ul li').forEach(li => li.classList.remove('active'));
-      const navItem = document.getElementById('nav-' + pageId);
-      if(navItem) navItem.classList.add('active');
-
-      // Update View
-      document.querySelectorAll('.page-view').forEach(view => {
-        view.classList.remove('active-view');
-        // Small timeout to allow fade out effect if we added one, but fast switch is usually better for UX
-      });
-      
-      const target = document.getElementById('view-' + pageId);
-      target.classList.add('active-view');
-      
-      window.scrollTo(0, 0);
+    function switchPage(id) {
+      document.querySelectorAll('nav ul li').forEach(l => l.classList.remove('active'));
+      document.getElementById('nav-' + id).classList.add('active');
+      document.querySelectorAll('.page-view').forEach(v => v.classList.remove('active-view'));
+      document.getElementById('view-' + id).classList.add('active-view');
+      window.scrollTo(0,0);
     }
 
-    // 3. Academic Graph Logic
+    // 4. ACADEMIC GRAPH
     const marks = [
-      {s: '1st', v: 59.68}, {s: '2nd', v: 67.43}, 
-      {s: '3rd', v: 65.29}, {s: '4th', v: 69.14}, 
-      {s: '5th', v: 78.4},  {s: '6th', v: 83.75}, 
-      {s: '7th', v: 86.15}, {s: '8th', v: 89.2}
+      {s:'1st', v:59.68}, {s:'2nd', v:67.43}, {s:'3rd', v:65.29}, {s:'4th', v:69.14},
+      {s:'5th', v:78.4}, {s:'6th', v:83.75}, {s:'7th', v:86.15}, {s:'8th', v:89.2}
     ];
-
     function unlockAcademic() {
-      const lock = document.getElementById('academicLock');
+      document.getElementById('academicLock').style.display='none';
       const graph = document.getElementById('academicGraph');
-      const agg = document.getElementById('aggScore');
-
-      lock.style.display = 'none';
-      graph.style.display = 'flex';
-      agg.style.display = 'block';
-
-      // Render
+      graph.style.display='flex';
+      document.getElementById('aggScore').style.display='block';
       graph.innerHTML = marks.map(m => `
-        <div class="bar-col">
-          <div class="bar" style="height:0%" data-h="${m.v}%">
-            <span class="bar-val">${m.v}%</span>
-          </div>
-          <span class="sem-label">${m.s}</span>
-        </div>
+        <div class="bar-col"><div class="bar" style="height:0%" data-h="${m.v}%"><span class="bar-val">${m.v}%</span></div><span class="sem-label">${m.s}</span></div>
       `).join('');
-
-      // Animate
-      setTimeout(() => {
-        document.querySelectorAll('.bar').forEach(b => {
-          b.style.height = b.getAttribute('data-h');
-        });
-      }, 100);
+      setTimeout(() => document.querySelectorAll('.bar').forEach(b => b.style.height = b.getAttribute('data-h')), 100);
     }
+
+    // 5. MISSION MODALS
+    const projects = {
+      tunnel: {
+        title: "Subsonic Wind Tunnel",
+        s1_label: "Test Section", s1_val: "1.2m x 0.52m",
+        s2_label: "Max Speed", s2_val: "10 m/s",
+        s3_label: "Sensor", s3_val: "Hot-wire",
+        desc: "Design and Development of a Subsonic Wind Tunnel with a Gust Generator Featuring Oscillating Vanes. Validated flow quality experimentally."
+      },
+      b52: {
+        title: "B-52 Air Launch",
+        s1_label: "Launch Alt", s1_val: "60,000 ft",
+        s2_label: "Payload", s2_val: "28,000 lbs",
+        s3_label: "Target", s3_val: "LEO",
+        desc: "Feasibility study of retrofitting B-52 Stratofortress for air-launching small satellites, significantly reducing Delta-V requirements."
+      },
+      glider: {
+        title: "Styrofoam Glider",
+        s1_label: "Wingspan", s1_val: "1.3 Meters",
+        s2_label: "Material", s2_val: "XPS Foam",
+        s3_label: "Spar", s3_val: "Aluminium",
+        desc: "Scratch-built RC aircraft using hot-wire foam cutting techniques. Aerodynamic analysis performed in XFLR5."
+      }
+    };
+    function openLog(id) {
+      const p = projects[id];
+      document.getElementById('log-name').textContent = p.title;
+      document.getElementById('spec-1').textContent = p.s1_val; document.getElementById('spec-1').previousElementSibling.textContent = p.s1_label;
+      document.getElementById('spec-2').textContent = p.s2_val; document.getElementById('spec-2').previousElementSibling.textContent = p.s2_label;
+      document.getElementById('spec-3').textContent = p.s3_val; document.getElementById('spec-3').previousElementSibling.textContent = p.s3_label;
+      document.getElementById('log-desc').textContent = p.desc;
+      document.getElementById('missionModal').classList.add('active');
+    }
+    function closeLog() { document.getElementById('missionModal').classList.remove('active'); }
   </script>
 </body>
 </html>
-
