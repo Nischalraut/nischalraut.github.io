@@ -16,17 +16,12 @@
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@100;400;800&family=Rajdhani:wght@300;500;600;700&family=Syncopate:wght@400;700&display=swap" rel="stylesheet">
 
     <style>
-        /* 
-        ========================================================================
-        CORE VARIABLES
-        ========================================================================
-        */
+        /* CORE VARIABLES */
         :root {
             --c-void: #030405;
             --c-panel: rgba(8, 12, 16, 0.9);
             --c-border: rgba(255, 255, 255, 0.1);
             --c-prim: #FC3D21; 
-            --c-prim-dim: rgba(252, 61, 33, 0.15);
             --c-cyan: #00F3FF;
             --c-text: #E0E6ED;
             --c-muted: #64748B;
@@ -45,19 +40,13 @@
             width: 100vw; height: 100vh;
         }
 
-        /* 
-        ========================================================================
-        VISUAL LAYERS
-        ========================================================================
-        */
+        /* VISUAL LAYERS */
         #gl-canvas { position: fixed; inset: 0; z-index: 0; }
-        
         .scanlines {
             position: fixed; inset: 0; z-index: 10; pointer-events: none;
             background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,0) 50%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0.3));
             background-size: 100% 4px; opacity: 0.4;
         }
-        
         .vignette {
             position: fixed; inset: 0; z-index: 9; pointer-events: none;
             background: radial-gradient(circle, transparent 40%, #000 130%);
@@ -78,11 +67,7 @@
         }
         body.hovering #cursor { width: 50px; height: 50px; background: rgba(255,255,255,0.1); }
 
-        /* 
-        ========================================================================
-        HUD LAYOUT
-        ========================================================================
-        */
+        /* HUD LAYOUT */
         header {
             position: fixed; top: 0; left: 0; width: 100%; height: var(--head-h);
             display: flex; justify-content: space-between; align-items: center;
@@ -113,11 +98,7 @@
             font-family: var(--f-code); font-size: 10px; color: var(--c-prim);
         }
 
-        /* 
-        ========================================================================
-        CONTENT SECTORS
-        ========================================================================
-        */
+        /* SECTORS */
         .sector-wrapper {
             position: absolute; top: var(--head-h); left: var(--nav-w); right: 0; bottom: 30px;
             display: flex; flex-direction: column; justify-content: center; align-items: center;
@@ -163,16 +144,16 @@
         .skill-track { width: 100%; height: 4px; background: rgba(255,255,255,0.1); }
         .skill-fill { height: 100%; background: var(--c-prim); box-shadow: 0 0 10px var(--c-prim); }
 
-        /* Projects */
+        /* Cards */
         .grid-cards { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2rem; }
         .card {
             background: rgba(255,255,255,0.03); border: 1px solid var(--c-border); padding: 2rem;
             transition: 0.3s; cursor: pointer;
         }
-        .card:hover { transform: translateY(-5px); border-color: var(--c-prim); background: var(--c-prim-dim); }
+        .card:hover { transform: translateY(-5px); border-color: var(--c-prim); background: rgba(252,61,33,0.1); }
         .tag { font-family: var(--f-code); font-size: 10px; color: var(--c-cyan); border: 1px solid var(--c-cyan); padding: 2px 6px; display: inline-block; margin-bottom: 10px; }
 
-        /* Timeline (Education & Exp) */
+        /* Timeline */
         .timeline-box { position: relative; padding-left: 2rem; border-left: 1px solid var(--c-muted); margin-bottom: 2rem; }
         .timeline-box::before { content:''; position: absolute; top:0; left:-4px; width:7px; height:7px; background:var(--c-prim); border-radius:50%; }
         .t-date { font-family: var(--f-code); font-size: 12px; color: var(--c-prim); margin-bottom: 5px; }
@@ -193,7 +174,7 @@
             transition: 0.3s; text-transform: uppercase; letter-spacing: 2px;
             pointer-events: auto; width: 300px;
         }
-        .warp-btn:hover { background: var(--c-prim); color: #000; box-shadow: 0 0 30px var(--c-prim-glow); }
+        .warp-btn:hover { background: var(--c-prim); color: #000; box-shadow: 0 0 30px var(--c-prim); }
 
         /* AUTO BOOT LOADER */
         #boot-layer {
@@ -203,7 +184,7 @@
         .loader-bar { width: 300px; height: 2px; background: #333; position: relative; margin-top: 20px; }
         .loader-fill { width: 0%; height: 100%; background: var(--c-prim); transition: width 0.1s; box-shadow: 0 0 20px var(--c-prim); }
 
-        /* MODAL & GALLERY */
+        /* MODAL */
         #modal {
             position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 1500;
             display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: 0.3s;
@@ -211,11 +192,12 @@
         #modal.open { opacity: 1; pointer-events: auto; }
         .modal-box { width: 900px; background: #050505; border: 1px solid var(--c-prim); padding: 3rem; max-height: 90vh; overflow-y: auto; }
 
+        /* GALLERY */
         .gallery-container {
-            width: 100%; height: 300px; background: #111; margin-bottom: 2rem; position: relative;
+            width: 100%; height: 400px; background: #111; margin-bottom: 2rem; position: relative;
             display: flex; align-items: center; justify-content: center; border: 1px solid var(--c-border); overflow: hidden;
         }
-        .gallery-img { max-width: 100%; max-height: 100%; display: none; }
+        .gallery-img { max-width: 100%; max-height: 100%; display: none; object-fit: contain; }
         .gallery-img.active { display: block; animation: fadeIn 0.5s; }
         @keyframes fadeIn { from{opacity:0}to{opacity:1} }
         
@@ -250,7 +232,7 @@
 
     <!-- BOOT (AUTO) -->
     <div id="boot-layer">
-        <div style="font-family:var(--f-head); font-size:2rem; color:white;">AERO-OS <span style="color:var(--c-prim)">v12.0</span></div>
+        <div style="font-family:var(--f-head); font-size:2rem; color:white;">AERO-OS <span style="color:var(--c-prim)">v12.1</span></div>
         <div style="font-family:var(--f-code); color:var(--c-muted); margin-top:10px;">LOADING ASSETS...</div>
         <div class="loader-bar"><div class="loader-fill" id="load-prog"></div></div>
     </div>
@@ -293,7 +275,7 @@
             <div class="profile-container">
                 <div class="hud-ring r1"></div>
                 <div class="hud-ring r2"></div>
-                <img src="nischal.png" alt="Profile" class="p-img">
+                <img src="profile.jpg" alt="Profile" class="p-img">
             </div>
         </div>
     </div>
@@ -372,19 +354,19 @@
                 <div class="glass-panel">
                     <h3 style="color:var(--c-prim); margin-bottom:2rem;">PROFESSIONAL EXPERIENCE</h3>
                     <div class="timeline-box">
-                        <div class="t-date">DEC 2025 - PRESENT</div>
+                        <div class="t-date">DEC 2024 - PRESENT</div>
                         <div class="t-title">ASSOCIATE ENGINEER</div>
                         <div class="t-sub">AIRBUS INDIA</div>
                         <div class="t-desc">Integration testing of avionics subsystems. Data analytics for flight test optimization.</div>
                     </div>
                     <div class="timeline-box">
-                        <div class="t-date">JULY 2025 - NOV 2025</div>
+                        <div class="t-date">JULY 2024 - NOV 2024</div>
                         <div class="t-title">SYSTEM TESTING INTERN</div>
                         <div class="t-sub">AIRBUS INDIA</div>
                         <div class="t-desc">System V&V. Functional testing on simulation benches.</div>
                     </div>
                     <div class="timeline-box">
-                        <div class="t-date">NOV 2024 - FEB 2025</div>
+                        <div class="t-date">2024</div>
                         <div class="t-title">ENGINEERING INTERN</div>
                         <div class="t-sub">AIRLIFT TECHNOLOGY</div>
                         <div class="t-desc">Drone mapping for Kathmandu Metropolitan City.</div>
@@ -462,7 +444,7 @@
     <script>
         /* 
         ========================================================================
-        1. AUDIO ENGINE (Auto-Init on Interaction)
+        1. AUDIO ENGINE
         ========================================================================
         */
         let audioCtx;
@@ -474,7 +456,6 @@
             audioEnabled = true;
         }
 
-        // Initialize audio on first click anywhere
         document.addEventListener('click', tryInitAudio, {once:true});
 
         function playWarpSound(duration) {
@@ -704,10 +685,14 @@
         ========================================================================
         */
         const mData = {
-            tunnel: { t:"WIND TUNNEL", d:"Design and Development of Open jet low speed Subsonic Wind Tunnel with integrated Gust Generator featuring Oscillating Vanes. Validated 0.88% TI.", imgs: ["windtunnel2.jpeg", "vane.jpg", "gust.png"] },
-            b52: { t:"B-52 LAUNCH", d:"Feasibility of B-52 as smallsat carrier.", imgs: ["apd1.jpg", "apd2.jpg"] },
-            glider: { t:"UAV GLIDER", d:"Scratch-built RC aircraft.", imgs: ["gl1.jpg", "gl2.jpg"] },
-            f15: { t:"CFD ANALYSIS", d:"Mach 2.5 simulation in ANSYS.", imgs: ["cfd1.jpg", "cfd2.jpg"] }
+            tunnel: { 
+                t:"WIND TUNNEL", 
+                d:"Design of open-jet tunnel. Validated 0.88% TI.",
+                imgs: ["windtunnel2.jpeg", "vane.jpg", "gust.png"] 
+            },
+            b52: { t:"B-52 LAUNCH", d:"Feasibility of B-52 as smallsat carrier.", imgs: [] },
+            glider: { t:"UAV GLIDER", d:"Scratch-built RC aircraft.", imgs: [] },
+            f15: { t:"CFD ANALYSIS", d:"Mach 2.5 simulation in ANSYS.", imgs: [] }
         };
 
         let activeImgs = [];
@@ -719,7 +704,7 @@
             document.getElementById('m-title').innerText = d.t;
             document.getElementById('m-desc').innerText = d.d;
             
-            // Build Gallery with Placeholders
+            // Build Gallery
             activeImgs = d.imgs;
             curSlide = 0;
             renderGallery();
@@ -731,25 +716,23 @@
             const track = document.getElementById('gallery-track');
             track.innerHTML = '';
             
+            if(activeImgs.length === 0) {
+                track.innerHTML = '<div style="color:#555;">NO IMAGES AVAILABLE</div>';
+                return;
+            }
+
             activeImgs.forEach((src, i) => {
-                // Placeholder Logic: Since user doesn't have these files yet, use styled divs
-                const div = document.createElement('div');
-                div.style.display = i === curSlide ? 'flex' : 'none';
-                div.style.width = '100%';
-                div.style.height = '100%';
-                div.style.background = '#222';
-                div.style.color = '#555';
-                div.style.alignItems = 'center';
-                div.style.justifyContent = 'center';
-                div.style.border = '1px solid #333';
-                div.innerText = `PROJECT IMAGE ${i+1} (Replace src: ${src})`;
-                // Use this line if real images exist: 
-                // div.innerHTML = `<img src="${src}" style="max-width:100%; max-height:100%;">`;
-                track.appendChild(div);
+                const img = document.createElement('img');
+                img.src = src;
+                img.style.display = i === curSlide ? 'block' : 'none';
+                img.classList.add('gallery-img');
+                if(i === curSlide) img.classList.add('active');
+                track.appendChild(img);
             });
         }
 
         function moveSlide(dir) {
+            if(activeImgs.length === 0) return;
             curSlide = (curSlide + dir + activeImgs.length) % activeImgs.length;
             renderGallery();
         }
@@ -762,4 +745,3 @@
     </script>
 </body>
 </html>
-
