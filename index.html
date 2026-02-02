@@ -29,13 +29,13 @@
       --font-body: 'Nunito', sans-serif;
       --font-tech: 'JetBrains Mono', monospace;
       
-      /* Animation */
-      --page-trans: 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+      /* Nav Height */
+      --nav-height: 80px;
     }
 
     [data-theme="light"] {
       --bg-body: #E0F2FE;
-      --bg-surface: rgba(255, 255, 255, 0.8);
+      --bg-surface: rgba(255, 255, 255, 0.85);
       --bg-panel: #FFFFFF;
       --text-main: #0F172A;
       --text-muted: #475569;
@@ -44,7 +44,7 @@
       --border: rgba(0, 0, 0, 0.08);
     }
 
-    * { margin:0; padding:0; box-sizing:border-box; }
+    * { margin:0; padding:0; box-sizing:border-box; scroll-behavior: smooth; }
 
     body {
       font-family: var(--font-body);
@@ -57,17 +57,13 @@
 
     /* 
      * -----------------------------------------------------------
-     * 1. BACKGROUND LAYERS & ANIMATION
+     * 1. BACKGROUND LAYERS (Fixed)
      * -----------------------------------------------------------
      */
     .bg-layer { position: fixed; inset: 0; z-index: -2; pointer-events: none; overflow: hidden; }
-    
-    /* Interactive Canvas for Mouse Turbulence */
-    #airflow-canvas {
-      position: fixed; inset: 0; z-index: -1; pointer-events: none;
-    }
+    #airflow-canvas { position: fixed; inset: 0; z-index: -1; pointer-events: none; }
 
-    /* DARK MODE */
+    /* DARK MODE SCENE */
     .space-scene {
       position: absolute; inset: 0;
       background: radial-gradient(circle at bottom, #1e1b4b 0%, #000000 90%);
@@ -78,7 +74,6 @@
     .stars {
       position: absolute; inset: 0;
       background-image: radial-gradient(2px 2px at 20px 30px, #eee, transparent),
-                        radial-gradient(2px 2px at 40px 70px, #fff, transparent),
                         radial-gradient(1px 1px at 90px 40px, #fff, transparent);
       background-size: 500px 500px; opacity: 0.5; animation: starMove 100s linear infinite;
     }
@@ -105,7 +100,7 @@
     .m1 { animation: meteorFall 7s infinite 2s; top: -10%; left: 20%; }
     .m2 { animation: meteorFall 10s infinite 6s; top: -10%; left: 70%; width: 100px; }
 
-    /* LIGHT MODE */
+    /* LIGHT MODE SCENE */
     .sky-scene {
       position: absolute; inset: 0;
       background: linear-gradient(to bottom, #BAE6FD, #F0F9FF);
@@ -162,7 +157,7 @@
      * -----------------------------------------------------------
      */
     nav {
-      position: fixed; top: 0; width: 100%; height: 80px;
+      position: fixed; top: 0; width: 100%; height: var(--nav-height);
       display: flex; align-items: center; justify-content: space-between;
       padding: 0 3em; z-index: 1000;
       backdrop-filter: blur(12px); background: rgba(var(--bg-body), 0.1);
@@ -170,44 +165,51 @@
     }
     .brand { font-family: var(--font-head); font-weight: 800; font-size: 1.5em; cursor: pointer; }
     nav ul { display: flex; gap: 2em; list-style: none; }
-    nav ul li { cursor: pointer; font-weight: 600; opacity: 0.7; position: relative; transition: 0.3s; }
-    nav ul li:hover, nav ul li.active { opacity: 1; color: var(--accent); }
-    nav ul li.active::after { content: ''; position: absolute; bottom: -5px; left: 0; width: 100%; height: 2px; background: var(--accent); }
+    nav ul li a { color: var(--text-main); font-weight: 600; opacity: 0.7; position: relative; transition: 0.3s; }
+    nav ul li a:hover { opacity: 1; color: var(--accent); }
     .theme-switch { cursor: pointer; padding: 0.5em; font-size: 1.2em; }
 
-    main { padding-top: 100px; min-height: 100vh; width: 100%; position: relative; }
-    .page-view {
-      display: none; max-width: 1000px; margin: 0 auto; padding: 2em;
-      opacity: 0; transform: translateY(20px); transition: opacity 0.5s ease, transform 0.5s ease;
-    }
-    .page-view.active-view { display: block; opacity: 1; transform: translateY(0); animation: fadeUp 0.6s ease forwards; }
-    @keyframes fadeUp { from {opacity:0; transform:translateY(20px);} to {opacity:1; transform:translateY(0);} }
+    /* Main Container */
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 2em; }
+    section { padding: 6em 0; position: relative; }
 
     /* 
      * -----------------------------------------------------------
-     * 3. PAGE CONTENT STYLES
+     * 3. SECTION CONTENT
      * -----------------------------------------------------------
      */
-    /* HOME */
-    .hero-content { text-align: center; padding: 4em 0; }
-    .profile-pic {
-      width: 180px; height: 180px; border-radius: 50%;
-      border: 4px solid var(--accent); padding: 5px; object-fit: cover; margin-bottom: 2em;
-      background: var(--bg-body); transition: transform 0.3s;
+    
+    /* HERO: Split Layout */
+    #hero {
+      min-height: 100vh;
+      display: flex; align-items: center;
+      padding-top: var(--nav-height);
     }
-    .profile-pic:hover { transform: scale(1.05); }
-    h1 { font-family: var(--font-head); font-size: 3.5em; font-weight: 800; line-height: 1.1; margin-bottom: 0.2em; }
-    .tagline { font-size: 1.5em; color: var(--text-muted); font-weight: 600; margin-bottom: 1.5em; }
+    .hero-grid {
+      display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 4em; align-items: center;
+    }
     
-    /* ABOUT & RADAR */
-    .about-split { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 3em; }
-    .content-box { background: var(--bg-surface); backdrop-filter: blur(10px); padding: 2.5em; border-radius: 16px; border: 1px solid var(--border); margin-bottom: 2em; }
-    h2 { font-family: var(--font-head); font-size: 2em; margin-bottom: 0.8em; color: var(--text-main); }
-    h3 { font-family: var(--font-head); font-size: 1.3em; margin-bottom: 0.5em; color: var(--accent); }
-    p { margin-bottom: 1.5em; line-height: 1.7; color: var(--text-muted); }
+    .hero-text h1 { font-family: var(--font-head); font-size: 3.5em; font-weight: 800; line-height: 1.1; margin-bottom: 0.2em; }
+    .hero-text h2 { font-size: 1.5em; color: var(--text-muted); font-weight: 600; margin-bottom: 1.5em; font-family: var(--font-tech); color: var(--accent); }
     
-    /* RADAR CHART SVG */
-    .radar-container { text-align: center; padding: 1em; }
+    .intro-text { line-height: 1.8; margin-bottom: 1.5em; color: var(--text-muted); text-align: justify; }
+    
+    .hero-img-box {
+      position: relative; width: 350px; height: 350px; margin: auto;
+    }
+    .profile-pic {
+      width: 100%; height: 100%; border-radius: 50%;
+      border: 4px solid var(--accent); padding: 6px; object-fit: cover;
+      background: var(--bg-body); transition: transform 0.5s ease;
+      animation: floatImg 6s ease-in-out infinite;
+    }
+    @keyframes floatImg { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-15px)} }
+
+    /* SKILLS & RADAR */
+    .skills-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3em; align-items: center; }
+    .content-box { background: var(--bg-surface); backdrop-filter: blur(10px); padding: 2.5em; border-radius: 16px; border: 1px solid var(--border); }
+    
+    .radar-container { text-align: center; }
     .radar-svg { width: 100%; max-width: 350px; height: auto; overflow: visible; }
     .radar-poly { fill: var(--accent-dim); stroke: var(--accent); stroke-width: 2; }
     .radar-axis { stroke: var(--text-muted); stroke-width: 1; stroke-dasharray: 4; opacity: 0.5; }
@@ -220,14 +222,8 @@
     .job-title { font-size: 1.3em; font-weight: 700; color: var(--text-main); }
     .company { font-weight: 600; color: var(--accent); font-family: var(--font-head); }
     
-    /* ACADEMIC */
-    .lock-container { text-align: center; padding: 4em; border: 2px dashed var(--border); border-radius: 16px; background: rgba(0,0,0,0.2); margin-top: 2em; }
-    .graph-display { display: none; height: 350px; margin-top: 2em; align-items: flex-end; gap: 10px; }
-    .bar-col { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 100%; }
-    .bar { width: 100%; background: linear-gradient(to top, var(--accent), #f97316); border-radius: 6px 6px 0 0; position: relative; height: 0; transition: height 1s ease; opacity: 0.9; }
-    .bar-val { position: absolute; top: -25px; width: 100%; text-align: center; font-weight: bold; font-size: 0.8em; }
-    
     /* PROJECTS */
+    .section-title { font-family: var(--font-head); font-size: 2.5em; margin-bottom: 1em; text-align: center; }
     .project-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2em; }
     .p-card { background: var(--bg-surface); padding: 0; border-radius: 16px; border: 1px solid var(--border); overflow: hidden; transition: transform 0.3s; cursor: pointer; }
     .p-card:hover { transform: translateY(-8px); border-color: var(--accent); }
@@ -236,31 +232,44 @@
     .p-content { padding: 1.5em; }
     .p-tag { font-size: 0.75em; letter-spacing: 1px; color: var(--accent); font-weight: 700; text-transform: uppercase; }
 
-    /* MISSION MODAL */
+    /* ACADEMIC VAULT (Card style) */
+    .vault-card {
+      background: var(--bg-surface); border: 2px dashed var(--border); border-radius: 16px;
+      padding: 3em; text-align: center; cursor: pointer; transition: 0.3s;
+    }
+    .vault-card:hover { border-color: var(--accent); background: rgba(252,61,33,0.05); }
+
+    /* CONTACT */
+    .social-links { display: flex; gap: 1em; justify-content: center; margin-top: 2em; }
+    
+    /* UTILS */
+    .btn { padding: 0.8em 2em; background: var(--accent); color: white; border: none; border-radius: 50px; font-weight: 600; cursor: pointer; transition: 0.3s; display: inline-block; text-decoration: none; }
+    .btn:hover { transform: translateY(-2px); filter: brightness(1.1); color: white; }
+    .btn-outline { background: transparent; border: 1px solid var(--border); color: var(--text-main); }
+    .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+
+    /* MODAL (Common for Projects & Academic) */
     .modal-overlay {
       position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(10px);
       z-index: 2000; opacity: 0; pointer-events: none; display: flex; align-items: center; justify-content: center;
       transition: opacity 0.3s;
     }
     .modal-overlay.active { opacity: 1; pointer-events: all; }
-    .mission-log {
+    .modal-box {
       background: var(--bg-panel); width: 90%; max-width: 700px; max-height: 80vh; overflow-y: auto;
-      border: 1px solid var(--accent); border-radius: 12px; padding: 2em;
-      position: relative; box-shadow: 0 0 50px rgba(252, 61, 33, 0.1);
+      border: 1px solid var(--accent); border-radius: 12px; padding: 2em; position: relative;
     }
-    .log-header { border-bottom: 1px solid var(--border); padding-bottom: 1em; margin-bottom: 1.5em; }
-    .log-title { font-family: var(--font-tech); color: var(--accent); font-size: 1.2em; text-transform: uppercase; letter-spacing: 2px; }
-    .data-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5em; margin-bottom: 2em; }
-    .data-item label { display: block; font-size: 0.8em; color: var(--text-muted); text-transform: uppercase; }
-    .data-item span { font-family: var(--font-tech); font-weight: 700; color: var(--text-main); font-size: 1.1em; }
+    .modal-close { position: absolute; top: 15px; right: 20px; font-size: 1.5em; cursor: pointer; }
+    
+    /* Academic Graph specific */
+    .graph-display { display: flex; height: 350px; margin-top: 2em; align-items: flex-end; gap: 10px; }
+    .bar-col { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 100%; }
+    .bar { width: 100%; background: linear-gradient(to top, var(--accent), #f97316); border-radius: 6px 6px 0 0; position: relative; height: 0; transition: height 1s ease; opacity: 0.9; }
+    .bar-val { position: absolute; top: -25px; width: 100%; text-align: center; font-weight: bold; font-size: 0.8em; }
 
-    .btn { padding: 0.8em 2em; background: var(--accent); color: white; border: none; border-radius: 50px; font-weight: 600; cursor: pointer; transition: 0.3s; display: inline-block; margin-top: 1em; text-decoration: none; }
-    .btn:hover { transform: translateY(-2px); filter: brightness(1.1); color:white; }
-    .btn-outline { background: transparent; border: 1px solid var(--border); color: var(--text-main); margin-left: 10px; }
-    .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
-
-    @media(max-width: 900px) { .about-split { grid-template-columns: 1fr; } }
-    @media(max-width: 768px) { nav { padding: 0 1.5em; } nav ul { gap: 1em; font-size: 0.8em; } .brand { display: none; } h1 { font-size: 2.5em; } }
+    /* Responsive */
+    @media(max-width: 900px) { .hero-grid, .skills-grid { grid-template-columns: 1fr; } .hero-img-box { order: -1; width: 250px; height: 250px; } }
+    @media(max-width: 768px) { nav { padding: 0 1.5em; } nav ul { display: none; } .brand { display: block; } h1 { font-size: 2.5em; } }
   </style>
 </head>
 <body>
@@ -296,309 +305,59 @@
 
   <!-- Nav -->
   <nav>
-    <div class="brand" onclick="switchPage('home')">NR<span style="color:var(--accent)">.</span></div>
+    <div class="brand">NR<span style="color:var(--accent)">.</span></div>
     <ul>
-      <li onclick="switchPage('home')" id="nav-home" class="active">Home</li>
-      <li onclick="switchPage('about')" id="nav-about">About</li>
-      <li onclick="switchPage('experience')" id="nav-experience">History</li>
-      <li onclick="switchPage('academic')" id="nav-academic">Academic</li>
-      <li onclick="switchPage('projects')" id="nav-projects">Projects</li>
+      <li><a href="#hero">About</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#experience">History</a></li>
+      <li><a href="#projects">Work</a></li>
+      <li><a href="#academic">Academic</a></li>
+      <li><a href="#contact">Contact</a></li>
     </ul>
     <div class="theme-switch" id="themeBtn">🌓</div>
   </nav>
 
-  <main>
-    
-    <!-- HOME -->
-    <section id="view-home" class="page-view active-view">
-      <div class="hero-content">
-        <img src="profile.jpg" alt="Profile" class="profile-pic">
+  <!-- HERO -->
+  <header id="hero">
+    <div class="container hero-grid">
+      <div class="hero-text">
         <h1>Nischal Raut</h1>
-        <p class="tagline">I am <span id="typewriter" style="color:var(--accent); font-weight:700;"></span></p>
-        <p class="bio-short">
-          Bridging the gap between computational theory and flight-ready reality.<br>
-          From wind tunnel experimentation to avionics integration at <strong>Airbus India</strong>.
-        </p>
-        <div>
-          <button class="btn" onclick="switchPage('projects')">Flight Log</button>
-          <button class="btn btn-outline" onclick="switchPage('contact')">Contact</button>
+        <h2>Aerospace Engineer</h2>
+        <div class="intro-text">
+          <p>I am an Aerospace Engineering graduate with a strong focus on experimental aerodynamics, wind tunnel design, and unsteady flow analysis. My work centers on translating theoretical models into physical systems, with hands-on experience in gust generation, flow visualization, and aerodynamic testing.</p>
+          <br>
+          <p>I have worked extensively with tools such as ANSYS, MATLAB, SolidWorks, and LaTeX to support both experimental and analytical investigations. Through academic projects and industry exposure, I have developed a methodical approach to problem-solving—grounded in validation, data interpretation, and engineering practicality.</p>
+          <br>
+          <p>I am particularly interested in aerodynamic experimentation, UAV systems, and research-driven engineering environments where rigorous analysis and real-world constraints intersect. This website highlights my projects, experience, and technical work, reflecting both my skills and my approach to engineering.</p>
         </div>
+        <a href="#contact" class="btn">Get in Touch</a>
       </div>
-    </section>
-
-    <!-- ABOUT -->
-    <section id="view-about" class="page-view">
-      <div class="about-split">
-        <div>
-          <div class="content-box">
-            <h2>Philosophy</h2>
-            <p>Engineering is about managing the forces of nature. My approach combines rigorous mathematical analysis with hands-on experimentation. I thrive in the cycle of <strong>Design, Test, and Analyze</strong>.</p>
-          </div>
-          <div class="content-box">
-            <h3>Beyond Engineering</h3>
-            <p>Building scratch-built <strong>RC Aircraft</strong> allows me to feel the aerodynamics I calculate. I am also a sci-fi enthusiast and enjoy drone photography.</p>
-          </div>
-        </div>
-        <div>
-          <div class="content-box" style="text-align:center;">
-            <h3>Skill Matrix</h3>
-            <div class="radar-container">
-              <!-- SVG generated via JS matches user data: CFD 7, CAD 8, Prog 6, Exp 8 -->
-              <svg class="radar-svg" viewBox="0 0 100 100">
-                <circle cx="50" cy="50" r="40" stroke="var(--border)" fill="none" stroke-dasharray="2"/>
-                <circle cx="50" cy="50" r="20" stroke="var(--border)" fill="none" stroke-dasharray="2"/>
-                <!-- Axes -->
-                <line x1="50" y1="50" x2="50" y2="10" class="radar-axis"/>
-                <line x1="50" y1="50" x2="90" y2="50" class="radar-axis"/>
-                <line x1="50" y1="50" x2="50" y2="90" class="radar-axis"/>
-                <line x1="50" y1="50" x2="10" y2="50" class="radar-axis"/>
-                <!-- Text -->
-                <text x="50" y="8" class="radar-label">CFD (7)</text>
-                <text x="95" y="55" class="radar-label">CAD (8)</text>
-                <text x="50" y="98" class="radar-label">Prog (6)</text>
-                <text x="5" y="55" class="radar-label">Exp (8)</text>
-                <!-- Polygon Data: 7, 8, 6, 8 -->
-                <polygon points="50,22 82,50 50,74 18,50" class="radar-poly" fill-opacity="0.3"/>
-              </svg>
-            </div>
-          </div>
-        </div>
+      <div class="hero-img-box">
+        <img src="profile.jpg" alt="Profile" class="profile-pic">
       </div>
-    </section>
-
-    <!-- EXPERIENCE -->
-    <section id="view-experience" class="page-view">
-      <h2 style="text-align:center; margin-bottom:1.5em;">Flight History</h2>
-      <div class="timeline">
-        <div class="timeline-item">
-          <div class="job-title">Associate Engineer - Integration Test & Analytics</div>
-          <div class="company">AIRBUS INDIA, Bangalore</div>
-          <span style="opacity:0.7">Dec 2024 – Present</span>
-          <p style="margin-top:0.5em">Responsible for integration testing of avionics subsystems. Leveraging data analytics to optimize flight test campaigns.</p>
-        </div>
-        <div class="timeline-item">
-          <div class="job-title">Intern - System Testing Engineer</div>
-          <div class="company">AIRBUS INDIA, Bangalore</div>
-          <span style="opacity:0.7">July 2024 – Nov 2024</span>
-          <p style="margin-top:0.5em">Supported system V&V. Performed functional testing on simulation benches and analyzed test logs.</p>
-        </div>
-        <div class="timeline-item">
-          <div class="job-title">Engineering Intern</div>
-          <div class="company">AIRLIFT TECHNOLOGY, Nepal</div>
-          <span style="opacity:0.7">2024</span>
-          <p style="margin-top:0.5em">Led drone mapping for Kathmandu Metro. Processed photogrammetry data for 3D terrain models.</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- ACADEMIC -->
-    <section id="view-academic" class="page-view">
-      <h2 style="text-align:center;">Academic Vault</h2>
-      <div class="lock-container" id="academicLock">
-        <div style="font-size:3em; margin-bottom:0.5em;">🔒</div>
-        <h3>Restricted Access</h3>
-        <p>Semester-wise breakdown is confidential.</p>
-        <div style="margin-top:2em;">
-          <button class="btn" onclick="location.href='mailto:nischalraut6@gmail.com?subject=Request Access'">Request Access</button>
-          <button class="btn btn-outline" onclick="unlockAcademic()">Demo Unlock</button>
-        </div>
-      </div>
-      <div class="graph-display" id="academicGraph"></div>
-      <h3 id="aggScore" style="text-align:center; margin-top:2em; display:none;">Aggregate: <span style="color:var(--accent)">76.71%</span></h3>
-    </section>
-
-    <!-- PROJECTS -->
-    <section id="view-projects" class="page-view">
-      <h2 style="margin-bottom:1em;">Project Flight Logs</h2>
-      <div class="project-grid">
-        <div class="p-card" onclick="openLog('tunnel')">
-          <div class="p-img"><img src="windtunnel1.jpeg" alt="Tunnel"></div>
-          <div class="p-content">
-            <span class="p-tag">Research</span>
-            <h3>Subsonic Wind Tunnel</h3>
-            <p>Design and Development of a Subsonic Wind Tunnel with Gust Generator.</p>
-          </div>
-        </div>
-        <div class="p-card" onclick="openLog('b52')">
-          <div class="p-img" style="background:#0c4a6e; color:white;">🚀</div>
-          <div class="p-content">
-            <span class="p-tag">Design</span>
-            <h3>B-52 Air Launch</h3>
-            <p>Conceptual study of using the B-52 as a carrier for small satellite launch.</p>
-          </div>
-        </div>
-        <div class="p-card" onclick="openLog('glider')">
-          <div class="p-img" style="background:#064e3b; color:white;">✈️</div>
-          <div class="p-content">
-            <span class="p-tag">Fabrication</span>
-            <h3>Styrofoam Glider</h3>
-            <p>Scratch-built RC Glider using hot-wire foam cutting and Al spars.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- CONTACT -->
-    <section id="view-contact" class="page-view">
-      <div class="content-box" style="max-width:600px; margin:0 auto; text-align:center;">
-        <h2>Establish Comms</h2>
-        <p>nischalraut6@gmail.com</p>
-        <form style="text-align:left; display:grid; gap:1em;">
-          <input type="text" placeholder="Callsign (Name)" style="width:100%; padding:1em; border-radius:8px; border:1px solid var(--border); background:rgba(0,0,0,0.2); color:inherit;">
-          <input type="email" placeholder="Frequency (Email)" style="width:100%; padding:1em; border-radius:8px; border:1px solid var(--border); background:rgba(0,0,0,0.2); color:inherit;">
-          <textarea rows="5" placeholder="Transmission..." style="width:100%; padding:1em; border-radius:8px; border:1px solid var(--border); background:rgba(0,0,0,0.2); color:inherit;"></textarea>
-          <button class="btn" type="button" onclick="alert('Message Sent')">Send</button>
-        </form>
-        
-        <div style="margin-top:2em; border-top:1px solid var(--border); padding-top:2em; display:flex; gap:1em; justify-content:center;">
-           <a href="https://www.linkedin.com/in/nischal-raut-1b2227314/" target="_blank" class="btn btn-outline" style="margin:0; text-decoration:none;">LinkedIn</a>
-           <a href="https://github.com/Nischalraut" target="_blank" class="btn btn-outline" style="margin:0; text-decoration:none;">GitHub</a>
-        </div>
-      </div>
-    </section>
-
-  </main>
-
-  <!-- MISSION MODAL (Dynamic Content) -->
-  <div class="modal-overlay" id="missionModal">
-    <div class="mission-log">
-      <div class="log-header">
-        <div class="log-title">Mission Report <span id="log-id" style="float:right; opacity:0.5;">#001</span></div>
-        <h2 id="log-name" style="margin-top:0.2em;">Project Name</h2>
-      </div>
-      <div class="data-grid">
-        <div class="data-item"><label>Specification 1</label><span id="spec-1">--</span></div>
-        <div class="data-item"><label>Specification 2</label><span id="spec-2">--</span></div>
-        <div class="data-item"><label>Specification 3</label><span id="spec-3">--</span></div>
-        <div class="data-item"><label>Status</label><span style="color:#10B981">COMPLETED</span></div>
-      </div>
-      <p id="log-desc" style="line-height:1.7; color:var(--text-muted);">Description...</p>
-      <button class="btn" style="margin-top:2em; width:100%;" onclick="closeLog()">Close Log</button>
     </div>
-  </div>
+  </header>
 
-  <script>
-    // 1. MOUSE AIRFLOW EFFECT (Canvas)
-    const canvas = document.getElementById('airflow-canvas');
-    const ctx = canvas.getContext('2d');
-    let width, height;
-    let particles = [];
-
-    function resize() { width = canvas.width = window.innerWidth; height = canvas.height = window.innerHeight; }
-    window.addEventListener('resize', resize);
-    resize();
-
-    class Particle {
-      constructor(x, y) {
-        this.x = x; this.y = y;
-        this.vx = (Math.random() - 0.5) * 2; this.vy = (Math.random() - 0.5) * 2;
-        this.life = 1; this.color = document.documentElement.getAttribute('data-theme') === 'dark' ? '255,255,255' : '0,0,0';
-      }
-      update() {
-        this.x += this.vx; this.y += this.vy;
-        this.life -= 0.02;
-      }
-      draw() {
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, 2 * this.life, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(${this.color}, ${this.life * 0.5})`;
-        ctx.fill();
-      }
-    }
-
-    window.addEventListener('mousemove', e => {
-      for(let i=0; i<3; i++) particles.push(new Particle(e.clientX, e.clientY));
-    });
-
-    function animateParticles() {
-      ctx.clearRect(0, 0, width, height);
-      particles.forEach((p, i) => {
-        p.update(); p.draw();
-        if (p.life <= 0) particles.splice(i, 1);
-      });
-      requestAnimationFrame(animateParticles);
-    }
-    animateParticles();
-
-    // 2. TYPEWRITER EFFECT
-    const roles = ["an Aerospace Engineer.", "a UAV Specialist.", "a CFD Analyst.", "an Avionics Integrator."];
-    let roleIdx = 0, charIdx = 0, isDeleting = false;
-    function typeWriter() {
-      const target = document.getElementById('typewriter');
-      if (!target) return;
-      const current = roles[roleIdx];
-      target.textContent = current.substring(0, isDeleting ? charIdx - 1 : charIdx + 1);
-      charIdx += isDeleting ? -1 : 1;
-      let speed = isDeleting ? 50 : 100;
-      if (!isDeleting && charIdx === current.length) { speed = 2000; isDeleting = true; }
-      else if (isDeleting && charIdx === 0) { isDeleting = false; roleIdx = (roleIdx + 1) % roles.length; speed = 500; }
-      setTimeout(typeWriter, speed);
-    }
-    document.addEventListener('DOMContentLoaded', typeWriter);
-
-    // 3. PAGE LOGIC
-    const themeBtn = document.getElementById('themeBtn');
-    const root = document.documentElement;
-    themeBtn.onclick = () => root.setAttribute('data-theme', root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
-
-    function switchPage(id) {
-      document.querySelectorAll('nav ul li').forEach(l => l.classList.remove('active'));
-      document.getElementById('nav-' + id).classList.add('active');
-      document.querySelectorAll('.page-view').forEach(v => v.classList.remove('active-view'));
-      document.getElementById('view-' + id).classList.add('active-view');
-      window.scrollTo(0,0);
-    }
-
-    // 4. ACADEMIC GRAPH
-    const marks = [
-      {s:'1st', v:59.68}, {s:'2nd', v:67.43}, {s:'3rd', v:65.29}, {s:'4th', v:69.14},
-      {s:'5th', v:78.4}, {s:'6th', v:83.75}, {s:'7th', v:86.15}, {s:'8th', v:89.2}
-    ];
-    function unlockAcademic() {
-      document.getElementById('academicLock').style.display='none';
-      const graph = document.getElementById('academicGraph');
-      graph.style.display='flex';
-      document.getElementById('aggScore').style.display='block';
-      graph.innerHTML = marks.map(m => `
-        <div class="bar-col"><div class="bar" style="height:0%" data-h="${m.v}%"><span class="bar-val">${m.v}%</span></div><span class="sem-label">${m.s}</span></div>
-      `).join('');
-      setTimeout(() => document.querySelectorAll('.bar').forEach(b => b.style.height = b.getAttribute('data-h')), 100);
-    }
-
-    // 5. MISSION MODALS
-    const projects = {
-      tunnel: {
-        title: "Subsonic Wind Tunnel",
-        s1_label: "Test Section", s1_val: "1.2m x 0.52m",
-        s2_label: "Max Speed", s2_val: "10 m/s",
-        s3_label: "Sensor", s3_val: "Hot-wire",
-        desc: "Design and Development of a Subsonic Wind Tunnel with a Gust Generator Featuring Oscillating Vanes. Validated flow quality experimentally."
-      },
-      b52: {
-        title: "B-52 Air Launch",
-        s1_label: "Launch Alt", s1_val: "60,000 ft",
-        s2_label: "Payload", s2_val: "28,000 lbs",
-        s3_label: "Target", s3_val: "LEO",
-        desc: "Feasibility study of retrofitting B-52 Stratofortress for air-launching small satellites, significantly reducing Delta-V requirements."
-      },
-      glider: {
-        title: "Styrofoam Glider",
-        s1_label: "Wingspan", s1_val: "1.3 Meters",
-        s2_label: "Material", s2_val: "XPS Foam",
-        s3_label: "Spar", s3_val: "Aluminium",
-        desc: "Scratch-built RC aircraft using hot-wire foam cutting techniques. Aerodynamic analysis performed in XFLR5."
-      }
-    };
-    function openLog(id) {
-      const p = projects[id];
-      document.getElementById('log-name').textContent = p.title;
-      document.getElementById('spec-1').textContent = p.s1_val; document.getElementById('spec-1').previousElementSibling.textContent = p.s1_label;
-      document.getElementById('spec-2').textContent = p.s2_val; document.getElementById('spec-2').previousElementSibling.textContent = p.s2_label;
-      document.getElementById('spec-3').textContent = p.s3_val; document.getElementById('spec-3').previousElementSibling.textContent = p.s3_label;
-      document.getElementById('log-desc').textContent = p.desc;
-      document.getElementById('missionModal').classList.add('active');
-    }
-    function closeLog() { document.getElementById('missionModal').classList.remove('active'); }
-  </script>
-</body>
-</html>
+  <!-- SKILLS -->
+  <section id="skills">
+    <div class="container">
+      <h2 class="section-title">Technical Matrix</h2>
+      <div class="skills-grid">
+        <div class="content-box">
+          <h3>Core Competencies</h3>
+          <p>My expertise lies at the intersection of Digital Simulation and Physical Testing. I leverage CFD to predict flow behavior and Wind Tunnels to validate it.</p>
+          <ul style="margin-left:1.5em; line-height:1.8;">
+            <li><strong>Aerodynamics:</strong> Subsonic Wind Tunnel Testing, Gust Response.</li>
+            <li><strong>Simulation:</strong> ANSYS Fluent (Meshing, Turbulence Models).</li>
+            <li><strong>Design:</strong> CATIA V5, SolidWorks, AutoCAD.</li>
+            <li><strong>Avionics:</strong> UAV Integration, Photogrammetry.</li>
+          </ul>
+        </div>
+        <div class="radar-container content-box">
+          <svg class="radar-svg" viewBox="0 0 100 100">
+            <circle cx="50" cy="50" r="40" stroke="var(--border)" fill="none" stroke-dasharray="2"/>
+            <circle cx="50" cy="50" r="20" stroke="var(--border)" fill="none" stroke-dasharray="2"/>
+            <line x1="50" y1="50" x2="50" y2="10" class="radar-axis"/>
+            <line x1="50" y1="50" x2="90" y2="50" class="radar-axis"/>
+            <line x1="50" y1="50" x2="50" y2="90" class="radar-axis"/>
+            <line x1="50" y1="50" x2="10" y2="50" class="radar-axis"/>
