@@ -16,10 +16,14 @@
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@100;400;800&family=Rajdhani:wght@300;500;600;700&family=Syncopate:wght@400;700&display=swap" rel="stylesheet">
 
     <style>
-        /* VARIABLES */
+        /* 
+        ========================================================================
+        CORE VARIABLES
+        ========================================================================
+        */
         :root {
             --c-void: #030405;
-            --c-panel: rgba(8, 12, 16, 0.85);
+            --c-panel: rgba(8, 12, 16, 0.9);
             --c-border: rgba(255, 255, 255, 0.1);
             --c-prim: #FC3D21; 
             --c-prim-dim: rgba(252, 61, 33, 0.15);
@@ -41,7 +45,11 @@
             width: 100vw; height: 100vh;
         }
 
-        /* LAYERS */
+        /* 
+        ========================================================================
+        VISUAL LAYERS
+        ========================================================================
+        */
         #gl-canvas { position: fixed; inset: 0; z-index: 0; }
         
         .scanlines {
@@ -70,7 +78,11 @@
         }
         body.hovering #cursor { width: 50px; height: 50px; background: rgba(255,255,255,0.1); }
 
-        /* HUD */
+        /* 
+        ========================================================================
+        HUD LAYOUT
+        ========================================================================
+        */
         header {
             position: fixed; top: 0; left: 0; width: 100%; height: var(--head-h);
             display: flex; justify-content: space-between; align-items: center;
@@ -101,7 +113,11 @@
             font-family: var(--f-code); font-size: 10px; color: var(--c-prim);
         }
 
-        /* SECTORS */
+        /* 
+        ========================================================================
+        CONTENT SECTORS
+        ========================================================================
+        */
         .sector-wrapper {
             position: absolute; top: var(--head-h); left: var(--nav-w); right: 0; bottom: 30px;
             display: flex; flex-direction: column; justify-content: center; align-items: center;
@@ -114,7 +130,7 @@
             width: 100%; max-width: 1200px; padding: 2rem;
             display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 4rem; align-items: center;
         }
-        .full-box { grid-template-columns: 1fr; max-width: 1000px; }
+        .full-box { grid-template-columns: 1fr; max-width: 1100px; }
 
         h1 { font-family: var(--f-head); font-size: 4rem; line-height: 0.9; margin-bottom: 1rem; color: #fff; }
         h2 { font-family: var(--f-head); font-size: 2.5rem; margin-bottom: 2rem; color: var(--c-prim); }
@@ -132,10 +148,10 @@
         .r2 { top: -20%; left: -20%; width: 140%; height: 140%; animation-direction: reverse; }
         @keyframes rotate { to { transform: rotate(360deg); } }
 
-        /* Panels */
+        /* Glass Panel */
         .glass-panel {
             background: var(--c-panel); border: 1px solid var(--c-border); padding: 3rem;
-            backdrop-filter: blur(10px); position: relative;
+            backdrop-filter: blur(10px); position: relative; height: 100%;
         }
         .glass-panel::before {
             content: ''; position: absolute; top:0; left:0; width:4px; height:100%; background: var(--c-prim);
@@ -147,7 +163,7 @@
         .skill-track { width: 100%; height: 4px; background: rgba(255,255,255,0.1); }
         .skill-fill { height: 100%; background: var(--c-prim); box-shadow: 0 0 10px var(--c-prim); }
 
-        /* Cards */
+        /* Projects */
         .grid-cards { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2rem; }
         .card {
             background: rgba(255,255,255,0.03); border: 1px solid var(--c-border); padding: 2rem;
@@ -156,7 +172,15 @@
         .card:hover { transform: translateY(-5px); border-color: var(--c-prim); background: var(--c-prim-dim); }
         .tag { font-family: var(--f-code); font-size: 10px; color: var(--c-cyan); border: 1px solid var(--c-cyan); padding: 2px 6px; display: inline-block; margin-bottom: 10px; }
 
-        /* BOTTOM NAV BUTTON */
+        /* Timeline (Education & Exp) */
+        .timeline-box { position: relative; padding-left: 2rem; border-left: 1px solid var(--c-muted); margin-bottom: 2rem; }
+        .timeline-box::before { content:''; position: absolute; top:0; left:-4px; width:7px; height:7px; background:var(--c-prim); border-radius:50%; }
+        .t-date { font-family: var(--f-code); font-size: 12px; color: var(--c-prim); margin-bottom: 5px; }
+        .t-title { font-family: var(--f-head); font-size: 1.1rem; color: #fff; }
+        .t-sub { font-size: 0.9rem; color: var(--c-cyan); margin-bottom: 10px; font-weight: bold; }
+        .t-desc { font-size: 0.9rem; color: #ccc; }
+
+        /* WARP BUTTON */
         .warp-trigger {
             position: fixed; bottom: 50px; left: 50%; transform: translateX(-50%);
             display: flex; flex-direction: column; align-items: center; z-index: 500;
@@ -171,24 +195,38 @@
         }
         .warp-btn:hover { background: var(--c-prim); color: #000; box-shadow: 0 0 30px var(--c-prim-glow); }
 
-        /* BOOT SCREEN */
+        /* AUTO BOOT LOADER */
         #boot-layer {
             position: fixed; inset: 0; background: #000; z-index: 9999;
             display: flex; flex-direction: column; justify-content: center; align-items: center;
         }
-        .init-btn {
-            padding: 20px 50px; background: transparent; border: 1px solid #fff; color: #fff;
-            font-family: var(--f-head); cursor: pointer; transition: 0.3s;
-        }
-        .init-btn:hover { background: #fff; color: #000; }
+        .loader-bar { width: 300px; height: 2px; background: #333; position: relative; margin-top: 20px; }
+        .loader-fill { width: 0%; height: 100%; background: var(--c-prim); transition: width 0.1s; box-shadow: 0 0 20px var(--c-prim); }
 
-        /* MODAL */
+        /* MODAL & GALLERY */
         #modal {
             position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 1500;
             display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: 0.3s;
         }
         #modal.open { opacity: 1; pointer-events: auto; }
-        .modal-box { width: 800px; background: #050505; border: 1px solid var(--c-prim); padding: 3rem; }
+        .modal-box { width: 900px; background: #050505; border: 1px solid var(--c-prim); padding: 3rem; max-height: 90vh; overflow-y: auto; }
+
+        .gallery-container {
+            width: 100%; height: 300px; background: #111; margin-bottom: 2rem; position: relative;
+            display: flex; align-items: center; justify-content: center; border: 1px solid var(--c-border); overflow: hidden;
+        }
+        .gallery-img { max-width: 100%; max-height: 100%; display: none; }
+        .gallery-img.active { display: block; animation: fadeIn 0.5s; }
+        @keyframes fadeIn { from{opacity:0}to{opacity:1} }
+        
+        .gal-nav {
+            position: absolute; top: 50%; transform: translateY(-50%);
+            background: rgba(0,0,0,0.5); border: none; color: var(--c-prim); font-size: 2rem;
+            cursor: pointer; padding: 10px; z-index: 10; transition: 0.3s;
+        }
+        .gal-nav:hover { background: var(--c-prim); color: #000; }
+        .gal-prev { left: 0; }
+        .gal-next { right: 0; }
 
         .btn-link {
             display: inline-block; padding: 10px 20px; border: 1px solid var(--c-prim);
@@ -210,19 +248,19 @@
     <div id="cursor"></div>
     <div id="cursor-follower"></div>
 
-    <!-- BOOT -->
+    <!-- BOOT (AUTO) -->
     <div id="boot-layer">
-        <div style="font-family:var(--f-head); font-size:2rem; color:white; margin-bottom:1rem;">PORTFOLIO <span style="color:var(--c-prim)">v11.3</span></div>
-        <div style="font-family:var(--f-code); color:var(--c-muted); margin-bottom:2rem;">WARP DRIVE INTEGRATED // AUDIO ENABLED</div>
-        <button class="init-btn" onclick="bootUp()">INITIALIZE SYSTEM</button>
+        <div style="font-family:var(--f-head); font-size:2rem; color:white;">AERO-OS <span style="color:var(--c-prim)">v12.0</span></div>
+        <div style="font-family:var(--f-code); color:var(--c-muted); margin-top:10px;">LOADING ASSETS...</div>
+        <div class="loader-bar"><div class="loader-fill" id="load-prog"></div></div>
     </div>
 
     <!-- HUD -->
     <header>
         <div class="brand">NISCHAL <span>RAUT</span></div>
         <div class="hud-stats">
-            <div>STATUS: ONLINE</div>
-            <div>MODE: PROFESSIONAL</div>
+            <div>SYS: ONLINE</div>
+            <div>MODE: PRO</div>
             <div id="time">00:00:00</div>
         </div>
     </header>
@@ -231,12 +269,12 @@
         <div class="nav-icon active" onclick="warpTo(0)">HOME</div>
         <div class="nav-icon" onclick="warpTo(1)">SKILLS</div>
         <div class="nav-icon" onclick="warpTo(2)">PROJECTS</div>
-        <div class="nav-icon" onclick="warpTo(3)">EXP</div>
+        <div class="nav-icon" onclick="warpTo(3)">HISTORY</div>
         <div class="nav-icon" onclick="warpTo(4)">CONTACT</div>
     </aside>
 
     <footer>
-        > SYSTEM READY. WAITING FOR INPUT..._
+        > TERMINAL ACTIVE. WAITING FOR INPUT..._
     </footer>
 
     <!-- CONTENT SECTORS -->
@@ -260,7 +298,7 @@
         </div>
     </div>
 
-    <!-- 1. SKILLS -->
+    <!-- 1. SKILLS & VAULT -->
     <div id="sec-1" class="sector-wrapper">
         <div class="content-box full-box">
             <h2>TECHNICAL SKILLS</h2>
@@ -326,28 +364,54 @@
         </div>
     </div>
 
-    <!-- 3. EXPERIENCE -->
+    <!-- 3. HISTORY (WORK & EDUCATION) -->
     <div id="sec-3" class="sector-wrapper">
         <div class="content-box full-box">
-            <h2>PROFESSIONAL EXPERIENCE</h2>
-            <div class="glass-panel">
-                <div style="margin-bottom:3rem; border-left:1px solid var(--c-cyan); padding-left:2rem;">
-                    <div style="font-family:var(--f-code); font-size:12px; color:var(--c-prim);">DEC 2025 - PRESENT</div>
-                    <h3>ASSOCIATE ENGINEER</h3>
-                    <div style="font-size:0.9rem; color:var(--c-muted); margin-top:5px;">AIRBUS INDIA - INTEGRATION TEST & ANALYTICS</div>
-                    <p style="font-size:0.9rem; margin-top:10px;">Responsible for integration testing of avionics subsystems. Leveraging data analytics to optimize flight test campaigns.</p>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:3rem;">
+                <!-- WORK -->
+                <div class="glass-panel">
+                    <h3 style="color:var(--c-prim); margin-bottom:2rem;">PROFESSIONAL EXPERIENCE</h3>
+                    <div class="timeline-box">
+                        <div class="t-date">DEC 2025 - PRESENT</div>
+                        <div class="t-title">ASSOCIATE ENGINEER</div>
+                        <div class="t-sub">AIRBUS INDIA</div>
+                        <div class="t-desc">Integration testing of avionics subsystems. Data analytics for flight test optimization.</div>
+                    </div>
+                    <div class="timeline-box">
+                        <div class="t-date">JULY 2025 - NOV 2025</div>
+                        <div class="t-title">SYSTEM TESTING INTERN</div>
+                        <div class="t-sub">AIRBUS INDIA</div>
+                        <div class="t-desc">System V&V. Functional testing on simulation benches.</div>
+                    </div>
+                    <div class="timeline-box">
+                        <div class="t-date">NOV 2024 - FEB 2025</div>
+                        <div class="t-title">ENGINEERING INTERN</div>
+                        <div class="t-sub">AIRLIFT TECHNOLOGY</div>
+                        <div class="t-desc">Drone mapping for Kathmandu Metropolitan City.</div>
+                    </div>
                 </div>
-                <div style="margin-bottom:3rem; border-left:1px solid var(--c-cyan); padding-left:2rem;">
-                    <div style="font-family:var(--f-code); font-size:12px; color:var(--c-prim);">JULY 2025 - NOV 2025</div>
-                    <h3>SYSTEM TESTING INTERN</h3>
-                    <div style="font-size:0.9rem; color:var(--c-muted); margin-top:5px;">AIRBUS INDIA</div>
-                    <p style="font-size:0.9rem; margin-top:10px;">Supported system Verification & Validation (V&V). Performed functional testing on simulation benches.</p>
-                </div>
-                <div style="border-left:1px solid var(--c-cyan); padding-left:2rem;">
-                    <div style="font-family:var(--f-code); font-size:12px; color:var(--c-prim);">NOV 2024 - FEB 2025</div>
-                    <h3>ENGINEERING INTERN</h3>
-                    <div style="font-size:0.9rem; color:var(--c-muted); margin-top:5px;">AIRLIFT TECHNOLOGY</div>
-                    <p style="font-size:0.9rem; margin-top:10px;">Led drone mapping initiatives for Kathmandu Metropolitan City. Processed photogrammetry data.</p>
+
+                <!-- EDUCATION -->
+                <div class="glass-panel">
+                    <h3 style="color:var(--c-cyan); margin-bottom:2rem;">ACADEMIC TRAJECTORY</h3>
+                    <div class="timeline-box">
+                        <div class="t-date">2019 - 2025</div>
+                        <div class="t-title">B.E. AEROSPACE ENGINEERING</div>
+                        <div class="t-sub">IOE PULCHOWK CAMPUS</div>
+                        <div class="t-desc">Specialization in Aerodynamics & Structures.<br>Aggregate: 76.71%</div>
+                    </div>
+                    <div class="timeline-box">
+                        <div class="t-date">PRIOR</div>
+                        <div class="t-title">+2 SCIENCE</div>
+                        <div class="t-sub">OMEGA INT'L COLLEGE</div>
+                        <div class="t-desc">GPA: 3.5</div>
+                    </div>
+                    <div class="timeline-box">
+                        <div class="t-date">PRIOR</div>
+                        <div class="t-title">SCHOOL LEAVING CERTIFICATE</div>
+                        <div class="t-sub">WEST WING SCHOOL</div>
+                        <div class="t-desc">GPA: 4.0</div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -368,7 +432,7 @@
         </div>
     </div>
 
-    <!-- WARP TRIGGER BUTTON (Dynamic Label) -->
+    <!-- WARP TRIGGER BUTTON -->
     <div class="warp-trigger" onclick="nextSector()">
         <div style="font-family:var(--f-code); font-size:10px; margin-bottom:5px; color:var(--c-muted);">NAVIGATION</div>
         <button class="warp-btn" id="warp-label">GO TO SKILLS</button>
@@ -377,25 +441,41 @@
     <!-- MODAL -->
     <div id="modal">
         <div class="modal-box">
-            <div style="text-align:right; cursor:pointer;" onclick="closeModal()">[ CLOSE ]</div>
-            <h2 id="m-title" style="margin-top:0;">TITLE</h2>
-            <p id="m-desc" style="color:#ccc;">...</p>
+            <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--c-border); padding-bottom:1rem; margin-bottom:1rem;">
+                <h2 id="m-title" style="margin:0; font-size:1.5rem;">TITLE</h2>
+                <div style="cursor:pointer; color:var(--c-prim);" onclick="closeModal()">[ CLOSE ]</div>
+            </div>
+            
+            <!-- GALLERY -->
+            <div class="gallery-container">
+                <button class="gal-nav gal-prev" onclick="moveSlide(-1)">&#10094;</button>
+                <div id="gallery-track" style="width:100%; height:100%; display:flex; justify-content:center; align-items:center; color:#333;">
+                    <!-- IMAGES INJECTED HERE -->
+                </div>
+                <button class="gal-nav gal-next" onclick="moveSlide(1)">&#10095;</button>
+            </div>
+
+            <p id="m-desc" style="color:#ccc; line-height:1.7;">...</p>
         </div>
     </div>
 
     <script>
         /* 
         ========================================================================
-        1. FLIGHT STATE & AUDIO
+        1. AUDIO ENGINE (Auto-Init on Interaction)
         ========================================================================
         */
-        const flightState = { speed: 0 };
         let audioCtx;
-        const sectionNames = ["HOME", "SKILLS", "PROJECTS", "EXPERIENCE", "CONTACT"];
+        let audioEnabled = false;
 
-        function initAudio() {
+        function tryInitAudio() {
+            if (audioEnabled) return;
             audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            audioEnabled = true;
         }
+
+        // Initialize audio on first click anywhere
+        document.addEventListener('click', tryInitAudio, {once:true});
 
         function playWarpSound(duration) {
             if(!audioCtx) return;
@@ -426,10 +506,34 @@
 
         /* 
         ========================================================================
-        2. THREE.JS ENGINE
+        2. AUTO-BOOT SEQUENCE
+        ========================================================================
+        */
+        window.onload = () => {
+            const bar = document.getElementById('load-prog');
+            let width = 0;
+            const int = setInterval(() => {
+                width += Math.random() * 5;
+                if(width > 100) width = 100;
+                bar.style.width = width + '%';
+                
+                if(width === 100) {
+                    clearInterval(int);
+                    setTimeout(() => {
+                        gsap.to('#boot-layer', { opacity: 0, duration: 1, pointerEvents:'none' });
+                        init3D();
+                    }, 500);
+                }
+            }, 50);
+        };
+
+        /* 
+        ========================================================================
+        3. THREE.JS ENGINE
         ========================================================================
         */
         let scene, camera, renderer, globe, flowField, starField;
+        let flightState = { speed: 0 };
 
         function init3D() {
             const canvas = document.getElementById('gl-canvas');
@@ -440,13 +544,13 @@
             renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
             renderer.setSize(window.innerWidth, window.innerHeight);
 
-            // 1. Globe
+            // Globe
             const gGeo = new THREE.IcosahedronGeometry(8, 2);
             const gMat = new THREE.MeshBasicMaterial({ color: 0x112233, wireframe: true, transparent: true, opacity: 0.2 });
             globe = new THREE.Mesh(gGeo, gMat);
             scene.add(globe);
 
-            // 2. Flow Particles
+            // Particles
             const pGeo = new THREE.BufferGeometry();
             const pCount = 2000;
             const pPos = new Float32Array(pCount * 3);
@@ -456,7 +560,7 @@
             flowField = new THREE.Points(pGeo, pMat);
             scene.add(flowField);
 
-            // 3. Starfield (Hidden normally)
+            // Stars
             const sGeo = new THREE.BufferGeometry();
             const sCount = 5000;
             const sPos = new Float32Array(sCount * 3);
@@ -476,12 +580,11 @@
             globe.rotation.x += (window.mouseY * 0.0001 - globe.rotation.x) * 0.05;
             globe.rotation.y += (window.mouseX * 0.0001 - globe.rotation.y) * 0.05;
 
-            // WARP EFFECT
+            // WARP VISUALS
             if(flightState.speed > 0.5) {
                 starField.visible = true;
                 globe.visible = false;
                 flowField.visible = false;
-                
                 const pos = starField.geometry.attributes.position.array;
                 for(let i=2; i<pos.length; i+=3) {
                     pos[i] += flightState.speed * 5;
@@ -501,19 +604,13 @@
 
         /* 
         ========================================================================
-        3. NAVIGATION LOGIC
+        4. NAVIGATION LOGIC
         ========================================================================
         */
         let currentIdx = 0;
         const totalSec = 5;
         let isWarping = false;
-
-        function bootUp() {
-            initAudio();
-            playClick();
-            gsap.to('#boot-layer', { yPercent: -100, duration: 1, ease: 'power4.inOut' });
-            init3D();
-        }
+        const sectionNames = ["HOME", "SKILLS", "PROJECTS", "HISTORY", "CONTACT"];
 
         function nextSector() {
             warpTo((currentIdx + 1) % totalSec);
@@ -529,8 +626,6 @@
             isWarping = true;
             playClick();
 
-            if(audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
-
             const dist = Math.abs(idx - currentIdx);
             const duration = 1.0 + (dist * 0.3);
             playWarpSound(duration);
@@ -544,7 +639,6 @@
             if(oldDot) oldDot.classList.remove('active');
             document.querySelector('.warp-trigger').style.opacity = 0;
 
-            // WARP ANIMATION
             gsap.to(flightState, {
                 speed: 20, 
                 duration: duration * 0.4,
@@ -569,14 +663,13 @@
 
         /* 
         ========================================================================
-        4. INTERACTIONS
+        5. INTERACTIONS
         ========================================================================
         */
         window.mouseX = 0; window.mouseY = 0;
         document.addEventListener('mousemove', e => {
             window.mouseX = e.clientX - window.innerWidth/2;
             window.mouseY = e.clientY - window.innerHeight/2;
-            
             const cursor = document.getElementById('cursor');
             const follow = document.getElementById('cursor-follower');
             gsap.to(cursor, { x: e.clientX, y: e.clientY, duration: 0 });
@@ -589,7 +682,6 @@
             }
         });
 
-        // Clock
         setInterval(() => {
             const n = new Date();
             document.getElementById('time').innerText = n.toISOString().split('T')[1].split('.')[0];
@@ -606,19 +698,62 @@
             setTimeout(() => viz.querySelectorAll('div').forEach(d => d.style.height = d.getAttribute('data-h')), 100);
         }
 
-        // Modals
+        /* 
+        ========================================================================
+        6. MODAL & GALLERY
+        ========================================================================
+        */
         const mData = {
-            tunnel: { t:"WIND TUNNEL", d:"Design of open-jet tunnel with gust generator. Validated 0.88% TI." },
-            b52: { t:"B-52 LAUNCH", d:"Feasibility of B-52 as smallsat carrier. Optimized for LEO." },
-            glider: { t:"UAV GLIDER", d:"Scratch-built RC aircraft. Analysis via XFLR5." },
-            f15: { t:"CFD ANALYSIS", d:"Mach 2.5 simulation in ANSYS. Shock diamond visualization." }
+            tunnel: { t:"WIND TUNNEL", d:"Design of open-jet tunnel. Validated 0.88% TI.", imgs: ["wt1.jpg", "wt2.jpg", "wt3.jpg"] },
+            b52: { t:"B-52 LAUNCH", d:"Feasibility of B-52 as smallsat carrier.", imgs: ["b52_1.jpg", "b52_2.jpg"] },
+            glider: { t:"UAV GLIDER", d:"Scratch-built RC aircraft.", imgs: ["gl1.jpg", "gl2.jpg"] },
+            f15: { t:"CFD ANALYSIS", d:"Mach 2.5 simulation in ANSYS.", imgs: ["cfd1.jpg", "cfd2.jpg"] }
         };
+
+        let activeImgs = [];
+        let curSlide = 0;
+
         function openModal(id) {
             playClick();
-            document.getElementById('m-title').innerText = mData[id].t;
-            document.getElementById('m-desc').innerText = mData[id].d;
+            const d = mData[id];
+            document.getElementById('m-title').innerText = d.t;
+            document.getElementById('m-desc').innerText = d.d;
+            
+            // Build Gallery with Placeholders
+            activeImgs = d.imgs;
+            curSlide = 0;
+            renderGallery();
+            
             document.getElementById('modal').classList.add('open');
         }
+
+        function renderGallery() {
+            const track = document.getElementById('gallery-track');
+            track.innerHTML = '';
+            
+            activeImgs.forEach((src, i) => {
+                // Placeholder Logic: Since user doesn't have these files yet, use styled divs
+                const div = document.createElement('div');
+                div.style.display = i === curSlide ? 'flex' : 'none';
+                div.style.width = '100%';
+                div.style.height = '100%';
+                div.style.background = '#222';
+                div.style.color = '#555';
+                div.style.alignItems = 'center';
+                div.style.justifyContent = 'center';
+                div.style.border = '1px solid #333';
+                div.innerText = `PROJECT IMAGE ${i+1} (Replace src: ${src})`;
+                // Use this line if real images exist: 
+                // div.innerHTML = `<img src="${src}" style="max-width:100%; max-height:100%;">`;
+                track.appendChild(div);
+            });
+        }
+
+        function moveSlide(dir) {
+            curSlide = (curSlide + dir + activeImgs.length) % activeImgs.length;
+            renderGallery();
+        }
+
         function closeModal() {
             playClick();
             document.getElementById('modal').classList.remove('open');
@@ -627,5 +762,3 @@
     </script>
 </body>
 </html>
-
-
