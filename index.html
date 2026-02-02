@@ -3,35 +3,27 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <meta name="description" content="Portfolio of Nischal Raut, Aerospace Engineer specializing in Experimental Aerodynamics and CFD.">
   <title>Nischal Raut | Aerospace Engineer</title>
 
-  <!-- Dynamic Favicon (Red Square with 'N') -->
+  <!-- Dynamic Favicon -->
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%23FC3D21'/%3E%3Ctext x='50%25' y='50%25' dy='.35em' fill='white' font-family='sans-serif' font-weight='bold' font-size='36' text-anchor='middle'%3EN%3C/text%3E%3C/svg%3E">
 
-  <!-- Google Fonts: Outfit (Modern Headings), Inter (Clean Body), JetBrains Mono (Code) -->
+  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400&family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
 
   <style>
-    /* 
-     * -----------------------------------------------------------
-     * 1. CONFIGURATION & VARIABLES
-     * -----------------------------------------------------------
-     */
     :root {
-      /* Palette - Dark Mode (Default) */
+      /* Colors */
       --bg-body: #050505;
-      --bg-surface: rgba(20, 20, 25, 0.7);
-      --bg-glass: rgba(255, 255, 255, 0.05);
+      --bg-surface: #121216;
       --text-main: #ffffff;
       --text-muted: #94a3b8;
       --accent-primary: #FC3D21;
       --accent-secondary: #3b82f6;
       --border-color: rgba(255, 255, 255, 0.1);
       
-      /* Typography */
+      /* Fonts */
       --font-heading: 'Outfit', sans-serif;
       --font-body: 'Inter', sans-serif;
       --font-tech: 'JetBrains Mono', monospace;
@@ -41,670 +33,537 @@
 
     [data-theme="light"] {
       --bg-body: #f0f9ff;
-      --bg-surface: rgba(255, 255, 255, 0.8);
-      --bg-glass: rgba(255, 255, 255, 0.6);
+      --bg-surface: #ffffff;
       --text-main: #0f172a;
       --text-muted: #475569;
       --accent-primary: #dc2626;
-      --accent-secondary: #0ea5e9;
-      --border-color: rgba(0, 0, 0, 0.08);
+      --border-color: rgba(0, 0, 0, 0.1);
     }
 
-    * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
     
     body {
       font-family: var(--font-body);
       color: var(--text-main);
       background-color: var(--bg-body);
-      line-height: 1.6;
-      transition: background-color 0.5s ease, color 0.5s ease;
-      overflow-x: hidden;
-      width: 100%;
+      overflow: hidden; /* Prevent scrolling, using modals instead */
+      height: 100vh;
+      width: 100vw;
+      transition: background 0.5s;
     }
-
-    a { text-decoration: none; color: inherit; transition: 0.3s; }
-    ul { list-style: none; }
-    img { display: block; max-width: 100%; }
 
     /* 
      * -----------------------------------------------------------
-     * 2. ANIMATED BACKGROUNDS (SKY vs GALAXY)
+     * 1. ADVANCED BACKGROUND ANIMATION
      * -----------------------------------------------------------
      */
     .bg-container {
-      position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
-      z-index: -1; overflow: hidden; pointer-events: none;
+      position: fixed; inset: 0; z-index: -1; pointer-events: none;
     }
 
-    /* --- DARK MODE: GALAXY & STARS --- */
-    .galaxy-layer {
+    /* --- DARK MODE COSMOS --- */
+    .cosmos-layer {
       position: absolute; inset: 0;
-      background: radial-gradient(circle at center, #1e1b4b 0%, #000000 70%);
-      opacity: 0; transition: opacity 0.8s ease;
+      background: radial-gradient(ellipse at bottom, #1B2735 0%, #090A0F 100%);
+      opacity: 0; transition: opacity 1s;
     }
-    [data-theme="dark"] .galaxy-layer { opacity: 1; }
+    [data-theme="dark"] .cosmos-layer { opacity: 1; }
 
-    /* Stars using box-shadow (Performance hack for static particles) */
-    .stars {
-      width: 1px; height: 1px;
-      background: transparent;
-      box-shadow: 10vw 10vh #FFF, 20vw 20vh #FFF, 35vw 40vh #FFF, 70vw 10vh #FFF, 80vw 80vh #FFF, 50vw 50vh #FFF, 
-                  15vw 85vh #FFF, 90vw 20vh #FFF, 40vw 15vh #FFF, 60vw 90vh #FFF, 10vw 50vh #FFF;
-      animation: twinkle 5s infinite alternate;
-    }
-    .stars-2 {
-      width: 2px; height: 2px;
-      box-shadow: 12vw 15vh rgba(255,255,255,0.8), 45vw 35vh rgba(255,255,255,0.8), 85vw 60vh rgba(255,255,255,0.8), 
-                  25vw 80vh rgba(255,255,255,0.8), 65vw 10vh rgba(255,255,255,0.8);
-      animation: twinkle 7s infinite alternate-reverse;
-    }
-    /* Rotating Nebula */
-    .nebula {
-      position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
-      background: radial-gradient(circle at 50% 50%, rgba(76, 29, 149, 0.15), transparent 60%),
-                  radial-gradient(circle at 30% 70%, rgba(30, 58, 138, 0.15), transparent 50%);
-      animation: rotateGalaxy 120s linear infinite;
-    }
+    /* Parallax Stars */
+    .star-field { position: absolute; inset: 0; }
+    .star-field.small { animation: starMove 100s linear infinite; background-image: radial-gradient(1px 1px at 10% 10%, white, transparent), radial-gradient(1px 1px at 20% 40%, white, transparent), radial-gradient(1px 1px at 50% 80%, white, transparent); background-size: 500px 500px; opacity: 0.5; }
+    .star-field.medium { animation: starMove 150s linear infinite; background-image: radial-gradient(2px 2px at 30% 20%, white, transparent), radial-gradient(2px 2px at 70% 60%, white, transparent); background-size: 600px 600px; opacity: 0.8; }
 
-    /* --- LIGHT MODE: SKY, CLOUDS, ROCKET, PLANE --- */
+    /* Shooting Star (Comet) */
+    .comet {
+      position: absolute; top: 0; left: 50%; width: 150px; height: 2px;
+      background: linear-gradient(90deg, #fff, transparent);
+      transform: rotate(-45deg); opacity: 0;
+      animation: shoot 8s ease-in-out infinite; filter: drop-shadow(0 0 6px white);
+    }
+    .comet:nth-child(2) { top: 20%; animation-delay: 4s; width: 100px; }
+
+    /* Drifting Satellite */
+    .satellite {
+      position: absolute; top: 20%; left: -50px; width: 30px; height: 30px;
+      background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.3);
+      animation: floatSat 60s linear infinite;
+    }
+    .satellite::after { content:''; position: absolute; width: 40px; height: 2px; background: #555; top: 14px; left: -5px; }
+
+    /* --- LIGHT MODE SKY --- */
     .sky-layer {
       position: absolute; inset: 0;
-      background: linear-gradient(to bottom, #bae6fd 0%, #f0f9ff 100%);
-      opacity: 0; transition: opacity 0.8s ease;
+      background: linear-gradient(180deg, #38bdf8 0%, #e0f2fe 100%);
+      opacity: 0; transition: opacity 1s;
     }
     [data-theme="light"] .sky-layer { opacity: 1; }
 
-    /* Moving Clouds */
     .cloud {
-      position: absolute; background: #fff; border-radius: 50px; opacity: 0.8;
-      animation: drift linear infinite;
+      position: absolute; background: rgba(255,255,255,0.8); border-radius: 50px;
+      filter: blur(8px); animation: drift linear infinite;
     }
-    .cloud::after, .cloud::before {
-      content:''; position: absolute; background: #fff; border-radius: 50%;
+    .c1 { width: 200px; height: 80px; top: 10%; left: -200px; animation-duration: 40s; }
+    .c2 { width: 300px; height: 100px; top: 30%; left: -300px; animation-duration: 60s; opacity: 0.6; }
+
+    /* 3D Realistic Rocket */
+    .rocket-complex {
+      position: absolute; bottom: -200px; right: 15%;
+      width: 40px; height: 120px;
+      background: linear-gradient(90deg, #e2e8f0, #cbd5e1, #94a3b8);
+      border-radius: 50% 50% 5px 5px;
+      transform: rotate(-15deg);
+      box-shadow: inset -5px 0 10px rgba(0,0,0,0.2);
+      animation: launch3D 15s ease-in-out infinite;
+      z-index: 0;
     }
-    .c1 { width: 100px; height: 40px; top: 10%; left: -100px; animation-duration: 45s; }
-    .c1::after { width: 50px; height: 50px; top: -25px; left: 15px; }
-    .c1::before { width: 40px; height: 40px; top: -15px; left: 45px; }
+    .rocket-complex::before { /* Nose cone shadow */
+      content:''; position: absolute; top:0; left:0; width:100%; height:30px;
+      background: linear-gradient(90deg, rgba(255,255,255,0.8), transparent);
+      border-radius: 50% 50% 0 0;
+    }
+    .fins {
+      position: absolute; bottom: 0; width: 100%; height: 25px;
+    }
+    .fins::before, .fins::after {
+      content:''; position: absolute; bottom: 0; width: 15px; height: 35px; background: #64748b;
+      transform-origin: bottom center;
+    }
+    .fins::before { left: -10px; transform: skewY(30deg); border-radius: 5px 0 0 0; }
+    .fins::after { right: -10px; transform: skewY(-30deg); border-radius: 0 5px 0 0; }
     
-    .c2 { width: 160px; height: 60px; top: 25%; left: -200px; animation-duration: 60s; animation-delay: -20s; opacity: 0.6; }
-    .c2::after { width: 70px; height: 70px; top: -35px; left: 25px; }
-    .c2::before { width: 60px; height: 60px; top: -25px; left: 70px; }
-
-    /* Rocket Animation */
-    .rocket-container {
-      position: absolute; bottom: -150px; right: 15%;
-      animation: launch 12s ease-in-out infinite;
-      transform: rotate(-10deg);
-    }
-    .rocket-body {
-      width: 20px; height: 60px; background: #cbd5e1; border-radius: 50% 50% 5px 5px;
-      position: relative; border: 1px solid #94a3b8;
-    }
-    .rocket-fin {
-      position: absolute; bottom: 0; width: 10px; height: 20px; background: #ef4444;
-    }
-    .fin-l { left: -8px; border-radius: 100% 0 0 0; }
-    .fin-r { right: -8px; border-radius: 0 100% 0 0; }
-    .rocket-window {
-      width: 10px; height: 10px; background: #0ea5e9; border-radius: 50%;
-      position: absolute; top: 15px; left: 5px; border: 2px solid #e2e8f0;
-    }
-    .rocket-flame {
-      position: absolute; bottom: -20px; left: 2px; width: 16px; height: 25px;
-      background: linear-gradient(to bottom, #f59e0b, transparent);
-      border-radius: 0 0 50% 50%; animation: flameFlicker 0.1s infinite;
+    .exhaust {
+      position: absolute; bottom: -40px; left: 5px; width: 30px; height: 60px;
+      background: linear-gradient(to bottom, #f59e0b, #ef4444, transparent);
+      filter: blur(4px); border-radius: 50%;
+      animation: thrust 0.1s infinite alternate;
     }
 
-    /* Plane Animation */
-    .plane-container {
-      position: absolute; top: 15%; left: -100px;
-      opacity: 0.6;
-      animation: flyOver 35s linear infinite;
-    }
-    .plane-svg { width: 40px; fill: #64748b; transform: rotate(90deg); }
-
-    /* Keyframes */
-    @keyframes rotateGalaxy { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-    @keyframes twinkle { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
-    @keyframes drift { from { transform: translateX(0); } to { transform: translateX(110vw); } }
-    @keyframes launch { 
-      0% { transform: translateY(0) rotate(-10deg); } 
-      20% { transform: translateY(-120vh) rotate(-5deg); } 
-      100% { transform: translateY(-120vh) rotate(-5deg); } 
-    }
-    @keyframes flameFlicker { 0% { height: 25px; } 100% { height: 35px; } }
-    @keyframes flyOver { 0% { transform: translateX(0); } 100% { transform: translateX(120vw); } }
+    /* Animations */
+    @keyframes starMove { from { transform: translateY(0); } to { transform: translateY(-1000px); } }
+    @keyframes shoot { 0% { transform: translate(0,0) rotate(-45deg); opacity: 0; } 10% { opacity: 1; } 20% { transform: translate(-500px, 500px) rotate(-45deg); opacity: 0; } 100% { opacity: 0; } }
+    @keyframes floatSat { from { transform: translate(0,0) rotate(0deg); } to { transform: translate(110vw, 50vh) rotate(360deg); } }
+    @keyframes launch3D { 0% { bottom: -200px; transform: rotate(-15deg); } 30% { bottom: 120vh; transform: rotate(-10deg); } 100% { bottom: 120vh; } }
+    @keyframes thrust { 0% { height: 60px; opacity: 0.8; } 100% { height: 70px; opacity: 1; } }
+    @keyframes drift { to { transform: translateX(120vw); } }
 
     /* 
      * -----------------------------------------------------------
-     * 3. UI COMPONENTS
+     * 2. UI LAYOUT
      * -----------------------------------------------------------
      */
-    /* Layout */
-    .container { max-width: 1200px; margin: 0 auto; padding: 0 2em; }
-    section { padding: 8em 0; position: relative; z-index: 2; }
-
-    /* Typography */
-    h1 { font-size: 4em; font-weight: 800; letter-spacing: -0.03em; line-height: 1.1; margin-bottom: 0.3em; }
-    h2 { font-size: 2.5em; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 0.8em; }
-    h3 { font-size: 1.25em; font-weight: 600; margin-bottom: 0.4em; }
-    p { font-size: 1.05em; color: var(--text-muted); margin-bottom: 1.5em; }
-    .tech-mono { font-family: var(--font-tech); color: var(--accent-primary); font-size: 0.9em; letter-spacing: 0.05em; }
-
-    /* Navbar */
     nav {
       position: fixed; top: 0; width: 100%; height: var(--nav-height);
-      background: rgba(var(--bg-body), 0.1);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border-bottom: 1px solid var(--border-color);
       display: flex; align-items: center; justify-content: space-between;
-      padding: 0 2.5em; z-index: 100;
+      padding: 0 3em; z-index: 1000;
+      background: rgba(0,0,0,0.02); backdrop-filter: blur(5px);
     }
-    nav .brand { font-family: var(--font-heading); font-weight: 800; font-size: 1.5em; letter-spacing: -0.5px; }
-    nav ul { display: flex; gap: 2.5em; }
-    nav ul li a { font-weight: 500; font-size: 0.95em; opacity: 0.8; }
-    nav ul li a:hover { opacity: 1; color: var(--accent-primary); }
+    nav .brand { font-family: var(--font-heading); font-weight: 800; font-size: 1.5em; cursor: pointer; }
+    nav ul { display: flex; gap: 2em; }
+    nav ul li { cursor: pointer; font-weight: 500; font-size: 0.95em; position: relative; opacity: 0.7; transition: 0.3s; }
+    nav ul li:hover { opacity: 1; color: var(--accent-primary); }
+    nav ul li.active-link { opacity: 1; color: var(--accent-primary); }
 
-    /* Theme Toggle */
-    .theme-toggle {
-      background: var(--bg-surface); border: 1px solid var(--border-color);
-      width: 40px; height: 40px; border-radius: 50%;
+    .theme-toggle { cursor: pointer; padding: 10px; border-radius: 50%; background: rgba(255,255,255,0.1); }
+
+    /* Main Content Area */
+    .main-wrapper {
+      position: relative; width: 100%; height: 100vh;
       display: flex; align-items: center; justify-content: center;
-      cursor: pointer; transition: 0.3s;
     }
-    .theme-toggle:hover { border-color: var(--accent-primary); color: var(--accent-primary); }
 
-    /* Hero */
-    #hero { min-height: 100vh; display: flex; align-items: center; padding-top: var(--nav-height); }
-    .hero-grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 4em; align-items: center; }
-    .hero-img-box {
-      position: relative; width: 320px; height: 320px; margin: auto;
+    /* Section Modals (Hidden by default, fade in) */
+    .section-modal {
+      position: absolute; inset: 0;
+      padding-top: var(--nav-height);
+      background: rgba(0,0,0,0.6); /* Tint */
+      backdrop-filter: blur(15px);
+      display: flex; flex-direction: column; align-items: center;
+      opacity: 0; pointer-events: none; transform: scale(0.95);
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      overflow-y: auto;
     }
-    .hero-img-box img {
-      width: 100%; height: 100%; object-fit: cover; border-radius: 20px;
-      transform: rotate(3deg); border: 1px solid var(--border-color);
-      box-shadow: 20px 20px 60px rgba(0,0,0,0.3);
-      transition: 0.5s ease;
-    }
-    .hero-img-box::before {
-      content: ''; position: absolute; inset: 0; border: 2px solid var(--accent-primary);
-      border-radius: 20px; transform: rotate(-3deg); z-index: -1;
-      transition: 0.5s ease;
-    }
-    .hero-img-box:hover img { transform: rotate(0); }
-    .hero-img-box:hover::before { transform: rotate(0); }
-
-    .btn {
-      display: inline-flex; align-items: center; gap: 0.5em;
-      padding: 0.9em 2em; background: var(--accent-primary);
-      color: white; border-radius: 50px; font-weight: 600;
-      transition: 0.3s; border: 1px solid transparent;
-    }
-    .btn:hover { transform: translateY(-3px); box-shadow: 0 10px 25px rgba(252, 61, 33, 0.4); }
-    .btn-glass {
-      background: rgba(255,255,255,0.05); border: 1px solid var(--border-color);
-      color: var(--text-main); margin-left: 1em;
-    }
-    .btn-glass:hover { border-color: var(--text-main); background: rgba(255,255,255,0.1); box-shadow: none; }
-
-    /* Skills Grid */
-    .skill-card {
-      background: var(--bg-glass); backdrop-filter: blur(10px);
-      border: 1px solid var(--border-color); padding: 2em;
-      border-radius: 16px; transition: 0.4s;
-    }
-    .skill-card:hover { transform: translateY(-5px); border-color: var(--accent-primary); }
-    .skill-tabs { display: flex; gap: 1em; margin-bottom: 2.5em; flex-wrap: wrap; }
-    .skill-tab {
-      padding: 0.6em 1.4em; border-radius: 50px; cursor: pointer;
-      font-size: 0.9em; font-weight: 500; border: 1px solid var(--border-color);
-      background: var(--bg-surface); transition: 0.3s;
-    }
-    .skill-tab.active { background: var(--text-main); color: var(--bg-body); border-color: var(--text-main); }
+    [data-theme="light"] .section-modal { background: rgba(255,255,255,0.85); }
     
-    .grid-4 { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 1.5em; }
+    .section-modal.active {
+      opacity: 1; pointer-events: all; transform: scale(1); z-index: 500;
+    }
 
-    /* Projects */
-    .project-card {
-      background: var(--bg-surface); border-radius: 20px; overflow: hidden;
-      border: 1px solid var(--border-color); position: relative;
-      transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    /* Close Button for Modals */
+    .close-section {
+      position: absolute; top: 100px; right: 40px;
+      font-size: 2em; cursor: pointer; z-index: 501;
+      opacity: 0.5; transition: 0.3s;
     }
-    .project-card:hover { transform: translateY(-8px); box-shadow: 0 20px 40px rgba(0,0,0,0.2); }
-    .project-thumb { height: 220px; background: #0f172a; position: relative; overflow: hidden; }
-    .project-thumb img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; }
-    .project-card:hover .project-thumb img { transform: scale(1.05); }
-    .project-content { padding: 2em; }
-    .tag { 
-      font-size: 0.75em; text-transform: uppercase; letter-spacing: 0.05em; 
-      font-weight: 700; color: var(--accent-primary); margin-bottom: 0.5em; display: block;
+    .close-section:hover { opacity: 1; color: var(--accent-primary); }
+
+    .container { max-width: 1000px; width: 100%; padding: 2em; }
+
+    /* Hero (Always visible behind, but z-indexed lower when modal active) */
+    .hero-container {
+      text-align: center; z-index: 1;
+      transition: 0.3s;
     }
+    .hero-container.blur { filter: blur(5px); opacity: 0.5; }
+    
+    h1 { font-size: 4.5em; font-weight: 800; letter-spacing: -0.04em; line-height: 1; margin-bottom: 0.2em; }
+    h2 { font-size: 1.5em; color: var(--accent-primary); font-family: var(--font-tech); margin-bottom: 1em; }
+    p { font-size: 1.1em; max-width: 600px; margin: 0 auto 2em; color: var(--text-muted); line-height: 1.6; }
+    
+    .btn {
+      padding: 0.8em 2em; border-radius: 50px; border: 1px solid var(--border-color);
+      background: rgba(255,255,255,0.05); color: var(--text-main); font-weight: 600;
+      cursor: pointer; transition: 0.3s; margin: 0 0.5em;
+    }
+    .btn:hover { background: var(--accent-primary); border-color: var(--accent-primary); color: white; }
+    .btn-primary { background: var(--accent-primary); border-color: var(--accent-primary); color: white; }
+
+    /* 
+     * -----------------------------------------------------------
+     * 3. CONTENT STYLES
+     * -----------------------------------------------------------
+     */
+    
+    /* Academic Section (Locked) */
+    .academic-lock-wrapper {
+      position: relative;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: 20px;
+      padding: 3em;
+      text-align: center;
+      overflow: hidden;
+      min-height: 400px;
+    }
+    .blur-overlay {
+      position: absolute; inset: 0;
+      backdrop-filter: blur(15px);
+      background: rgba(0,0,0,0.5);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      z-index: 10;
+      transition: 0.5s;
+    }
+    .blur-overlay.unlocked { transform: translateY(-100%); pointer-events: none; }
+    
+    .lock-icon { font-size: 3em; margin-bottom: 0.5em; color: var(--accent-primary); }
+
+    /* The Graph */
+    .graph-container {
+      display: flex; justify-content: space-between; align-items: flex-end;
+      height: 300px; width: 100%; padding-top: 2em;
+    }
+    .bar-group {
+      display: flex; flex-direction: column; align-items: center; justify-content: flex-end;
+      height: 100%; width: 10%;
+    }
+    .bar {
+      width: 100%; background: linear-gradient(to top, var(--accent-primary), #fb923c);
+      border-radius: 5px 5px 0 0; position: relative;
+      transition: height 1s ease;
+      height: 0; /* Animate to height */
+    }
+    .bar-label { margin-top: 10px; font-size: 0.8em; color: var(--text-muted); }
+    .bar-val { position: absolute; top: -25px; font-size: 0.75em; font-weight: bold; color: var(--text-main); }
 
     /* Experience Timeline */
-    .timeline-item {
-      display: grid; grid-template-columns: 80px 1fr; gap: 2em;
-      margin-bottom: 3em; position: relative;
+    .job-card {
+      background: var(--bg-surface); border-left: 4px solid var(--accent-primary);
+      padding: 1.5em; margin-bottom: 1.5em; border-radius: 0 10px 10px 0;
+      position: relative;
     }
-    .timeline-item::before {
-      content: ''; position: absolute; left: 39px; top: 80px; bottom: -50px;
-      width: 2px; background: var(--border-color); z-index: 0;
+    .job-card h3 { font-size: 1.3em; margin-bottom: 0.2em; }
+    .job-card .company { color: var(--accent-primary); font-weight: 700; font-family: var(--font-tech); }
+    .job-card .date { font-size: 0.9em; color: var(--text-muted); margin-bottom: 1em; display: block; }
+    
+    /* Project Grid */
+    .project-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5em; }
+    .p-card {
+      background: var(--bg-surface); border: 1px solid var(--border-color);
+      border-radius: 12px; padding: 1.5em; cursor: pointer; transition: 0.3s;
     }
-    .timeline-item:last-child::before { display: none; }
-    .logo-box {
-      width: 80px; height: 80px; background: #fff; border-radius: 16px;
-      display: flex; align-items: center; justify-content: center;
-      z-index: 1; border: 4px solid var(--bg-body);
-      padding: 10px;
-    }
-    .logo-box img { width: 100%; height: 100%; object-fit: contain; }
+    .p-card:hover { transform: translateY(-5px); border-color: var(--accent-primary); }
 
-    /* Forms */
-    input, textarea {
-      width: 100%; padding: 1.2em; background: var(--bg-glass);
-      border: 1px solid var(--border-color); border-radius: 12px;
-      color: var(--text-main); font-family: var(--font-body);
-      transition: 0.3s; margin-bottom: 1.5em;
+    /* Detail Modal (Nested) */
+    .detail-modal {
+      display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9);
+      z-index: 2000; padding: 2em; align-items: center; justify-content: center;
     }
-    input:focus, textarea:focus { outline: none; border-color: var(--accent-primary); background: rgba(0,0,0,0.2); }
-
-    /* Modals */
-    .modal {
-      display: none; position: fixed; inset: 0; z-index: 999;
-      background: rgba(0,0,0,0.8); backdrop-filter: blur(8px);
-      align-items: center; justify-content: center; padding: 2em;
-    }
-    .modal-box {
-      background: #1e1e24; width: 100%; max-width: 900px;
-      border-radius: 24px; overflow: hidden;
-      border: 1px solid var(--border-color);
-      display: flex; flex-direction: column; max-height: 90vh;
-    }
-    [data-theme="light"] .modal-box { background: #ffffff; }
-    .modal-header { position: relative; height: 300px; background: #000; }
-    .modal-header img { width: 100%; height: 100%; object-fit: contain; display: none; }
-    .modal-header img.active { display: block; }
-    .modal-body { padding: 3em; overflow-y: auto; }
-    .close-modal {
-      position: absolute; top: 20px; right: 20px;
-      width: 40px; height: 40px; background: rgba(0,0,0,0.5);
-      color: white; border-radius: 50%; display: flex;
-      align-items: center; justify-content: center; cursor: pointer; z-index: 10;
+    .detail-content {
+      background: var(--bg-surface); max-width: 800px; width: 100%;
+      border-radius: 12px; padding: 2em; position: relative;
     }
 
-    /* Mobile */
-    .menu-btn { display: none; font-size: 1.5em; cursor: pointer; }
-    @media(max-width: 768px) {
-      .hero-grid { grid-template-columns: 1fr; text-align: center; }
-      .hero-img-box { margin: 2em auto; width: 250px; height: 250px; }
-      nav ul {
-        display: none; position: absolute; top: 100%; left: 0; width: 100%;
-        background: var(--bg-body); padding: 2em; flex-direction: column;
-        border-bottom: 1px solid var(--border-color);
-      }
-      nav ul.active { display: flex; }
-      .menu-btn { display: block; }
-      h1 { font-size: 2.5em; }
-    }
   </style>
 </head>
 <body>
 
-  <!-- 
-    BACKGROUND ANIMATION SYSTEMS 
-  -->
+  <!-- Backgrounds -->
   <div class="bg-container">
-    <!-- Dark Mode: Galaxy -->
-    <div class="galaxy-layer">
-      <div class="nebula"></div>
-      <div class="stars"></div>
-      <div class="stars-2"></div>
+    <div class="cosmos-layer">
+      <div class="star-field small"></div>
+      <div class="star-field medium"></div>
+      <div class="comet"></div>
+      <div class="comet"></div>
+      <div class="satellite"></div>
     </div>
-    
-    <!-- Light Mode: Sky -->
     <div class="sky-layer">
       <div class="cloud c1"></div>
       <div class="cloud c2"></div>
-      
-      <!-- CSS Rocket -->
-      <div class="rocket-container">
-        <div class="rocket-body">
-          <div class="rocket-window"></div>
-          <div class="rocket-fin fin-l"></div>
-          <div class="rocket-fin fin-r"></div>
-        </div>
-        <div class="rocket-flame"></div>
-      </div>
-
-      <!-- SVG Plane -->
-      <div class="plane-container">
-        <svg class="plane-svg" viewBox="0 0 512 512">
-          <path d="M498.1 173.8l-133.6-25.2c-15.6-2.9-29.3-12.7-36.9-26.3L256.4 12.5c-9.1-16.5-31.7-16.7-41 0l-12.7 23.1c-11.8 21.5-33.5 36.1-57.9 39.4L13.9 83c-18.4 2.5-24.8 26.6-9.8 38.6l107.1 85.5c17.5 14 26.3 36.6 23.3 58.7l-9.6 70.3c-2.7 19.5 18.2 34 35.5 24.6l103.9-56.7c15-8.2 33.3-8.2 48.3 0l103.9 56.7c17.3 9.4 38.2-5.1 35.5-24.6l-9.6-70.3c-3-22.1 5.8-44.7 23.3-58.7l107.1-85.5c15-12.1 8.6-36.2-9.8-38.7z"/>
-        </svg>
+      <div class="rocket-complex">
+        <div class="fins"></div>
+        <div class="exhaust"></div>
       </div>
     </div>
   </div>
 
-  <!-- Navbar -->
+  <!-- Nav -->
   <nav>
-    <a href="#hero" class="brand">NR<span style="color:var(--accent-primary)">.</span></a>
-    
-    <div style="display:flex; align-items:center; gap:2em;">
-      <ul id="navLinks">
-        <li><a href="#about">About</a></li>
-        <li><a href="#skills">Skills</a></li>
-        <li><a href="#projects">Work</a></li>
-        <li><a href="#experience">History</a></li>
-        <li><a href="#contact">Contact</a></li>
-      </ul>
-      
-      <div class="theme-toggle" id="themeToggle">
-        <!-- Sun/Moon Icon SVG -->
-        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-          <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
-        </svg>
-      </div>
-      <div class="menu-btn" onclick="document.getElementById('navLinks').classList.toggle('active')">☰</div>
-    </div>
+    <div class="brand" onclick="goHome()">NR<span style="color:var(--accent-primary)">.</span></div>
+    <ul>
+      <li onclick="openSection('skills')">Skills</li>
+      <li onclick="openSection('projects')">Work</li>
+      <li onclick="openSection('experience')">Experience</li>
+      <li onclick="openSection('academic')">Academic</li>
+      <li onclick="openSection('contact')">Contact</li>
+    </ul>
+    <div class="theme-toggle" id="themeBtn">🌓</div>
   </nav>
 
-  <!-- Hero -->
-  <section id="hero">
-    <div class="container hero-grid">
-      <div class="hero-text">
-        <span class="tech-mono">&lt;AerospaceEngineer /&gt;</span>
-        <h1>Nischal Raut</h1>
-        <h2 style="font-weight:400; font-size:1.8em; color:var(--text-muted);">Bridging CFD & Experimentation</h2>
-        <p>
-          I design wind tunnels, analyze supersonic flows, and build drones. 
-          A precision-obsessed engineer translating mathematical models into flight-ready reality.
-          <br><b>IOE Pulchowk Graduate | Aggregate: 76.71%</b>
-        </p>
+  <!-- Main View -->
+  <div class="main-wrapper">
+    
+    <!-- Hero (Home) -->
+    <div class="hero-container" id="hero">
+      <div style="margin-bottom: 1em;">
+        <img src="profile.jpg" alt="Profile" style="width:150px; height:150px; border-radius:50%; object-fit:cover; border:3px solid var(--accent-primary); margin:auto;">
+      </div>
+      <h1>Nischal Raut</h1>
+      <h2>&lt;Aerospace Engineer /&gt;</h2>
+      <p>
+        Specializing in Experimental Aerodynamics, CFD, and UAV Systems.<br>
+        Bridging the gap between computational models and flight-ready reality.
+      </p>
+      <div>
+        <button class="btn btn-primary" onclick="openSection('projects')">View Portfolio</button>
+        <button class="btn" onclick="openSection('contact')">Get in Touch</button>
+      </div>
+    </div>
+
+    <!-- SECTIONS (MODALS) -->
+
+    <!-- Skills -->
+    <div class="section-modal" id="skills">
+      <div class="close-section" onclick="closeSection()">×</div>
+      <div class="container">
+        <h1>Technical Arsenal</h1>
+        <div class="project-grid" style="margin-top:2em;">
+          <div class="p-card"><h3>Analysis & CFD</h3><p>ANSYS Fluent, XFLR5, MATLAB Analysis</p></div>
+          <div class="p-card"><h3>Design (CAD)</h3><p>CATIA V5, SolidWorks, AutoCAD</p></div>
+          <div class="p-card"><h3>Experimental</h3><p>Wind Tunnel Testing, Photogrammetry</p></div>
+          <div class="p-card"><h3>Programming</h3><p>Python (Data Vis), C, MATLAB Scripting</p></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Experience -->
+    <div class="section-modal" id="experience">
+      <div class="close-section" onclick="closeSection()">×</div>
+      <div class="container">
+        <h1>Experience</h1>
         <div style="margin-top:2em;">
-          <a href="#projects" class="btn">View Projects &rarr;</a>
-          <a href="#contact" class="btn btn-glass">Contact Me</a>
-        </div>
-      </div>
-      <div class="hero-img-box">
-        <img src="profile.jpg" alt="Profile">
-      </div>
-    </div>
-  </section>
+          
+          <div class="job-card">
+            <h3>Associate Engineer - Integration Test & Analytics</h3>
+            <span class="company">AIRBUS INDIA, Bangalore</span>
+            <span class="date">Dec 2024 – Present</span>
+            <p>Responsible for integration testing of avionics subsystems and data analytics for flight test campaigns. Automating test procedures to enhance efficiency.</p>
+          </div>
 
-  <!-- About -->
-  <section id="about">
-    <div class="container">
-      <h3 style="color:var(--accent-primary)">PHILOSOPHY</h3>
-      <h2>The Art of Fluid Dynamics</h2>
-      <div style="display:grid; grid-template-columns: 1fr 1fr; gap:3em; margin-top:2em;">
-        <div>
-          <p style="font-size:1.2em; color:var(--text-main);">
-            "My engineering approach is simple: Trust the math, but verify with the wind."
-          </p>
-        </div>
-        <div>
-          <p>
-            From calculating stability derivatives in MATLAB to physically constructing gust generators, I thrive in the iterative cycle of Design, Test, and Analyze. I am currently focused on UAV systems and computational fluid dynamics (ANSYS Fluent).
-          </p>
+          <div class="job-card">
+            <h3>Intern - System Testing Engineer</h3>
+            <span class="company">AIRBUS INDIA, Bangalore</span>
+            <span class="date">July 2024 – Nov 2024</span>
+            <p>Supported system verification and validation (V&V). Performed functional testing on simulation benches and analyzed test results.</p>
+          </div>
+
+          <div class="job-card">
+            <h3>Engineering Intern</h3>
+            <span class="company">AIRLIFT TECHNOLOGY, Nepal</span>
+            <span class="date">Early 2024</span>
+            <p>Led drone mapping for Kathmandu Metro. Processed photogrammetry data to generate 3D terrain models.</p>
+          </div>
+
         </div>
       </div>
     </div>
-  </section>
 
-  <!-- Skills -->
-  <section id="skills">
-    <div class="container">
-      <h3 style="color:var(--accent-primary)">EXPERTISE</h3>
-      <h2>Technical Arsenal</h2>
-      
-      <div class="skill-tabs">
-        <div class="skill-tab active" data-filter="all">All</div>
-        <div class="skill-tab" data-filter="analysis">Analysis & CFD</div>
-        <div class="skill-tab" data-filter="cad">CAD & Design</div>
-        <div class="skill-tab" data-filter="prog">Programming</div>
-      </div>
-
-      <div class="grid-4" id="skillGrid">
-        <div class="skill-card" data-cat="analysis">
-          <h4>ANSYS Fluent</h4>
-          <p class="tech-mono">Mesh generation, Turbulence modeling</p>
-        </div>
-        <div class="skill-card" data-cat="analysis">
-          <h4>MATLAB</h4>
-          <p class="tech-mono">Numerical analysis, Stability derivatives</p>
-        </div>
-        <div class="skill-card" data-cat="cad">
-          <h4>CATIA V5</h4>
-          <p class="tech-mono">Surface modeling, Assembly</p>
-        </div>
-        <div class="skill-card" data-cat="cad">
-          <h4>SolidWorks</h4>
-          <p class="tech-mono">Parametric design, Drafting</p>
-        </div>
-        <div class="skill-card" data-cat="prog">
-          <h4>Python</h4>
-          <p class="tech-mono">Data Vis, Automation scripting</p>
-        </div>
-        <div class="skill-card" data-cat="prog">
-          <h4>C Language</h4>
-          <p class="tech-mono">Embedded logic, Algorithms</p>
-        </div>
-        <div class="skill-card" data-cat="analysis">
-          <h4>Wind Tunnel</h4>
-          <p class="tech-mono">Flow vis, Force measurement</p>
-        </div>
-        <div class="skill-card" data-cat="cad">
-          <h4>Photogrammetry</h4>
-          <p class="tech-mono">Agisoft Metashape, Drone mapping</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Projects -->
-  <section id="projects">
-    <div class="container">
-      <h3 style="color:var(--accent-primary)">PORTFOLIO</h3>
-      <h2>Featured Works</h2>
-      
-      <div class="grid-4" style="grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));">
+    <!-- Academic (Locked) -->
+    <div class="section-modal" id="academic">
+      <div class="close-section" onclick="closeSection()">×</div>
+      <div class="container">
+        <h1>Academic Performance</h1>
+        <p>Institute of Engineering, Pulchowk Campus (2019-2025)</p>
         
-        <!-- Project 1 -->
-        <div class="project-card" onclick="openModal('modal1')">
-          <div class="project-thumb">
-            <img src="windtunnel1.jpeg" alt="Wind Tunnel">
+        <div class="academic-lock-wrapper">
+          <!-- The Overlay -->
+          <div class="blur-overlay" id="academicOverlay">
+            <div class="lock-icon">🔒</div>
+            <h2>Restricted Access</h2>
+            <p>Detailed semester breakdown is confidential.</p>
+            <div style="margin-top:1em;">
+              <button class="btn btn-primary" onclick="requestAccess()">Request Access</button>
+              <button class="btn" onclick="unlockDemo()">Demo Unlock (For Portfolio)</button>
+            </div>
           </div>
-          <div class="project-content">
-            <span class="tag">Research</span>
+
+          <!-- The Content -->
+          <div style="text-align:left;">
+            <h2 style="color:var(--text-main); font-family:var(--font-heading)">Aggregate: <span style="color:var(--accent-primary)">76.71%</span></h2>
+            <div class="graph-container">
+              <!-- Bars injected via JS -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Projects -->
+    <div class="section-modal" id="projects">
+      <div class="close-section" onclick="closeSection()">×</div>
+      <div class="container">
+        <h1>Projects</h1>
+        <div class="project-grid" style="margin-top:2em;">
+          <div class="p-card" onclick="showDetail('Wind Tunnel')">
             <h3>Subsonic Wind Tunnel</h3>
-            <p>Design and fabrication of an open-jet tunnel with gust generator.</p>
+            <p style="font-size:0.9em; color:var(--accent-primary)">RESEARCH</p>
+            <p>Designed open-jet tunnel with gust generator. Validated TI of 0.88%.</p>
           </div>
-        </div>
-
-        <!-- Project 2 -->
-        <div class="project-card" onclick="openModal('modal2')">
-          <div class="project-thumb">
-             <div style="width:100%; height:100%; display:flex; align-items:center; justify-content:center; background: #0c4a6e; font-size:3em;">🚀</div>
-          </div>
-          <div class="project-content">
-            <span class="tag">Design</span>
+          <div class="p-card" onclick="showDetail('B-52')">
             <h3>B-52 Air Launch</h3>
-            <p>Conceptual carrier study for small satellite launch vehicles.</p>
+            <p style="font-size:0.9em; color:var(--accent-primary)">DESIGN</p>
+            <p>Feasibility study of carrier aircraft for satellite launch.</p>
+          </div>
+          <div class="p-card" onclick="showDetail('Glider')">
+            <h3>RC Glider</h3>
+            <p style="font-size:0.9em; color:var(--accent-primary)">FABRICATION</p>
+            <p>Design, foam cutting, and flight testing.</p>
           </div>
         </div>
-
-        <!-- Project 3 -->
-        <div class="project-card" onclick="openModal('modal3')">
-          <div class="project-thumb">
-            <div style="width:100%; height:100%; display:flex; align-items:center; justify-content:center; background: #064e3b; font-size:3em;">✈️</div>
-          </div>
-          <div class="project-content">
-            <span class="tag">Fabrication</span>
-            <h3>Styrofoam Glider</h3>
-            <p>XFLR5 analysis to flight testing of a remote-controlled glider.</p>
-          </div>
-        </div>
-
-        <!-- Project 4 -->
-        <div class="project-card" onclick="openModal('modal5')">
-          <div class="project-thumb">
-            <div style="width:100%; height:100%; display:flex; align-items:center; justify-content:center; background: #450a0a; font-size:3em;">💻</div>
-          </div>
-          <div class="project-content">
-            <span class="tag">CFD</span>
-            <h3>F-15 Flow Analysis</h3>
-            <p>Supersonic flow simulation and shock wave analysis.</p>
-          </div>
-        </div>
-
       </div>
     </div>
-  </section>
 
-  <!-- Experience -->
-  <section id="experience">
-    <div class="container">
-      <h3 style="color:var(--accent-primary)">TIMELINE</h3>
-      <h2>Professional Journey</h2>
-
-      <div class="timeline-item">
-        <div class="logo-box"><img src="airlift.png" alt="Logo"></div>
-        <div>
-          <h3>Engineering Intern</h3>
-          <p class="tech-mono">Airlift Technology | 2024 - Present</p>
-          <p>Lead drone mapping operations for Kathmandu Metro. Processed 100GB+ of photogrammetry data to generate 3D city models.</p>
-        </div>
-      </div>
-
-      <div class="timeline-item">
-        <div class="logo-box"><img src="ioe.png" alt="Logo"></div>
-        <div>
-          <h3>B.E. Aerospace Engineering</h3>
-          <p class="tech-mono">Pulchowk Campus | 2019 - 2025</p>
-          <p>Major in Aerodynamics. Final Year Project: Subsonic Wind Tunnel Design. Aggregate: 76.71%.</p>
-        </div>
-      </div>
-
-    </div>
-  </section>
-
-  <!-- Contact -->
-  <section id="contact">
-    <div class="container" style="max-width:600px; text-align:center;">
-      <h3 style="color:var(--accent-primary)">CONNECT</h3>
-      <h2>Ready to Collaborate?</h2>
-      
-      <form style="text-align:left; margin-top:2em;" onsubmit="event.preventDefault(); alert('Message sent (Demo)');">
-        <input type="text" placeholder="Name" required>
-        <input type="email" placeholder="Email" required>
-        <textarea rows="5" placeholder="Message"></textarea>
-        <button class="btn" style="width:100%; justify-content:center;">Send Message</button>
-      </form>
-
-      <div style="margin-top:2em; font-size:0.9em; opacity:0.7;">
-        nischalraut6@gmail.com <br> +977-9813980068
+    <!-- Contact -->
+    <div class="section-modal" id="contact">
+      <div class="close-section" onclick="closeSection()">×</div>
+      <div class="container" style="text-align:center;">
+        <h1>Contact</h1>
+        <p>nischalraut6@gmail.com</p>
+        <form style="max-width:500px; margin:2em auto; text-align:left;">
+          <input type="text" placeholder="Name" style="width:100%; padding:1em; margin-bottom:1em; background:var(--bg-surface); border:1px solid var(--border-color); color:white;">
+          <textarea rows="5" placeholder="Message" style="width:100%; padding:1em; margin-bottom:1em; background:var(--bg-surface); border:1px solid var(--border-color); color:white;"></textarea>
+          <button class="btn btn-primary" style="width:100%">Send</button>
+        </form>
       </div>
     </div>
-  </section>
 
-  <!-- MODALS -->
-  <div id="modal1" class="modal">
-    <div class="modal-box">
-      <div class="modal-header">
-        <div class="close-modal" onclick="closeModal('modal1')">×</div>
-        <img src="windtunnel1.jpeg" class="active" alt="Tunnel">
-      </div>
-      <div class="modal-body">
-        <h2>Subsonic Wind Tunnel</h2>
-        <p><strong>Problem:</strong> Lack of facilities to study gust response.</p>
-        <p><strong>Solution:</strong> Built an open-jet tunnel with active vanes.</p>
-        <p><strong>Result:</strong> Validated 0.88% turbulence intensity.</p>
-      </div>
-    </div>
   </div>
 
-  <!-- Reusable modal structure for others... (Simplified for brevity in single file) -->
-  <div id="modal2" class="modal">
-    <div class="modal-box">
-      <div class="modal-header" style="background:#0c4a6e; display:flex; align-items:center; justify-content:center;">
-        <div class="close-modal" onclick="closeModal('modal2')">×</div>
-        <span style="font-size:4em">🚀</span>
-      </div>
-      <div class="modal-body">
-        <h2>B-52 Air Launch</h2>
-        <p>Analyzed flight envelopes to determine optimal release altitudes for smallsat carriers, reducing delta-V requirements significantly.</p>
-      </div>
+  <!-- Generic Detail Modal -->
+  <div class="detail-modal" id="detailModal">
+    <div class="detail-content">
+      <span class="close-section" onclick="document.getElementById('detailModal').style.display='none'" style="top:10px; right:10px; font-size:1.5em;">×</span>
+      <h2 id="modalTitle">Project Title</h2>
+      <p id="modalDesc">Details...</p>
     </div>
   </div>
-
-  <div id="modal3" class="modal">
-    <div class="modal-box">
-      <div class="modal-header" style="background:#064e3b; display:flex; align-items:center; justify-content:center;">
-        <div class="close-modal" onclick="closeModal('modal3')">×</div>
-        <span style="font-size:4em">✈️</span>
-      </div>
-      <div class="modal-body">
-        <h2>Styrofoam Glider</h2>
-        <p>End-to-end fabrication using hot-wire cutting. Achieved 12:1 glide ratio in test flights.</p>
-      </div>
-    </div>
-  </div>
-
-  <div id="modal5" class="modal">
-    <div class="modal-box">
-      <div class="modal-header" style="background:#450a0a; display:flex; align-items:center; justify-content:center;">
-        <div class="close-modal" onclick="closeModal('modal5')">×</div>
-        <span style="font-size:4em">💻</span>
-      </div>
-      <div class="modal-body">
-        <h2>F-15 CFD Analysis</h2>
-        <p>Simulated Mach 2.5 flow. Visualized shock diamonds and boundary layer separation using ANSYS Fluent.</p>
-      </div>
-    </div>
-  </div>
-
 
   <script>
-    // Theme Logic
-    const toggle = document.getElementById('themeToggle');
+    // 1. Theme Logic
+    const themeBtn = document.getElementById('themeBtn');
     const root = document.documentElement;
-    
-    // Check local storage or default to dark
-    const savedTheme = localStorage.getItem('theme') || 'dark';
-    root.setAttribute('data-theme', savedTheme);
-
-    toggle.addEventListener('click', () => {
-      const current = root.getAttribute('data-theme');
-      const next = current === 'dark' ? 'light' : 'dark';
+    themeBtn.onclick = () => {
+      const curr = root.getAttribute('data-theme');
+      const next = curr === 'dark' ? 'light' : 'dark';
       root.setAttribute('data-theme', next);
-      localStorage.setItem('theme', next);
-    });
+    };
 
-    // Skill Tabs
-    document.querySelectorAll('.skill-tab').forEach(tab => {
-      tab.addEventListener('click', () => {
-        document.querySelector('.skill-tab.active').classList.remove('active');
-        tab.classList.add('active');
-        const cat = tab.dataset.filter;
-        document.querySelectorAll('.skill-card').forEach(card => {
-          card.style.display = (cat === 'all' || card.dataset.cat === cat) ? 'block' : 'none';
-        });
+    // 2. Navigation Logic
+    function openSection(id) {
+      // Hide other sections
+      document.querySelectorAll('.section-modal').forEach(el => el.classList.remove('active'));
+      
+      // Blur Hero
+      document.getElementById('hero').classList.add('blur');
+      
+      // Show target
+      const target = document.getElementById(id);
+      target.classList.add('active');
+
+      // If opening academic, prepare graph
+      if(id === 'academic') initGraph();
+    }
+
+    function closeSection() {
+      document.querySelectorAll('.section-modal').forEach(el => el.classList.remove('active'));
+      document.getElementById('hero').classList.remove('blur');
+    }
+
+    function goHome() {
+      closeSection();
+    }
+
+    // 3. Academic Graph Logic
+    const marks = [
+      {sem: '1st', val: 59.68},
+      {sem: '2nd', val: 67.43},
+      {sem: '3rd', val: 65.29},
+      {sem: '4th', val: 69.14},
+      {sem: '5th', val: 78.4},
+      {sem: '6th', val: 83.75},
+      {sem: '7th', val: 86.15},
+      {sem: '8th', val: 89.2}
+    ];
+
+    function initGraph() {
+      const container = document.querySelector('.graph-container');
+      if(container.innerHTML.trim() !== "") return; // Already rendered
+
+      marks.forEach(m => {
+        const group = document.createElement('div');
+        group.className = 'bar-group';
+        group.innerHTML = `
+          <div class="bar" style="height:0%" data-h="${m.val}%">
+            <span class="bar-val">${m.val}%</span>
+          </div>
+          <span class="bar-label">${m.sem}</span>
+        `;
+        container.appendChild(group);
       });
-    });
+    }
 
-    // Modal Logic
-    window.openModal = (id) => {
-      document.getElementById(id).style.display = 'flex';
-      document.body.style.overflow = 'hidden';
+    function requestAccess() {
+      window.location.href = "mailto:nischalraut6@gmail.com?subject=Request Access to Academic Records";
     }
-    window.closeModal = (id) => {
-      document.getElementById(id).style.display = 'none';
-      document.body.style.overflow = 'auto';
+
+    function unlockDemo() {
+      document.getElementById('academicOverlay').classList.add('unlocked');
+      // Animate bars
+      setTimeout(() => {
+        document.querySelectorAll('.bar').forEach(b => {
+          b.style.height = b.getAttribute('data-h');
+        });
+      }, 300);
     }
-    window.onclick = (e) => {
-      if(e.target.classList.contains('modal')) e.target.style.display = 'none';
+
+    // 4. Detail Modal
+    function showDetail(title) {
+      const m = document.getElementById('detailModal');
+      document.getElementById('modalTitle').innerText = title;
+      document.getElementById('modalDesc').innerText = "Detailed technical description of " + title + " goes here. (Placeholder for demo)";
+      m.style.display = 'flex';
     }
+
   </script>
-
 </body>
 </html>
