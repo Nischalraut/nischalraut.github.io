@@ -16,12 +16,17 @@
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@100;400;800&family=Rajdhani:wght@300;500;600;700&family=Syncopate:wght@400;700&display=swap" rel="stylesheet">
 
     <style>
-        /* CORE VARIABLES */
+        /* 
+        ========================================================================
+        CORE VARIABLES
+        ========================================================================
+        */
         :root {
             --c-void: #030405;
             --c-panel: rgba(8, 12, 16, 0.9);
             --c-border: rgba(255, 255, 255, 0.1);
             --c-prim: #FC3D21; 
+            --c-prim-dim: rgba(252, 61, 33, 0.15);
             --c-cyan: #00F3FF;
             --c-text: #E0E6ED;
             --c-muted: #64748B;
@@ -36,25 +41,50 @@
         
         body {
             background-color: var(--c-void); color: var(--c-text);
-            font-family: var(--f-body); 
-            overflow: hidden; /* App-like behavior */
-            width: 100vw; height: 100vh;
-            position: fixed; /* Lock body for mobile swipe */
+            font-family: var(--f-body); overflow: hidden;
+            width: 100vw; height: 100vh; position: fixed;
         }
 
-        /* LAYERS */
-        #gl-canvas { position: fixed; inset: 0; z-index: 0; }
+        /* 
+        ========================================================================
+        VISUAL LAYERS
+        ========================================================================
+        */
+        #gl-canvas { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
+        
         .scanlines {
             position: fixed; inset: 0; z-index: 10; pointer-events: none;
             background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,0) 50%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0.3));
             background-size: 100% 4px; opacity: 0.4;
         }
+        
         .vignette {
             position: fixed; inset: 0; z-index: 9; pointer-events: none;
             background: radial-gradient(circle, transparent 40%, #000 130%);
         }
 
-        /* HUD LAYOUT */
+        /* CURSOR (Hidden on Touch) */
+        #cursor {
+            position: fixed; top: 0; left: 0; width: 20px; height: 20px;
+            border: 1px solid var(--c-prim); transform: translate(-50%, -50%) rotate(45deg);
+            pointer-events: none; z-index: 10000; mix-blend-mode: exclusion;
+            transition: width 0.2s, height 0.2s;
+        }
+        #cursor-follower {
+            position: fixed; top: 0; left: 0; width: 40px; height: 40px;
+            border: 1px dashed var(--c-prim); border-radius: 50%;
+            transform: translate(-50%, -50%); pointer-events: none; z-index: 9999;
+            opacity: 0.5; transition: 0.1s ease-out;
+        }
+        body.hovering #cursor { width: 50px; height: 50px; background: rgba(255,255,255,0.1); }
+        
+        @media (hover: none) { #cursor, #cursor-follower { display: none; } }
+
+        /* 
+        ========================================================================
+        HUD LAYOUT
+        ========================================================================
+        */
         header {
             position: fixed; top: 0; left: 0; width: 100%; height: var(--head-h);
             display: flex; justify-content: space-between; align-items: center;
@@ -78,20 +108,30 @@
         }
         .nav-icon:hover, .nav-icon.active { color: var(--c-prim); border-left: 2px solid var(--c-prim); }
 
-        /* SECTORS (SCROLLABLE INTERNALS) */
+        footer {
+            position: fixed; bottom: 0; left: var(--nav-w); right: 0; height: 30px;
+            background: rgba(0,0,0,0.9); border-top: 1px solid var(--c-border);
+            display: flex; align-items: center; padding: 0 20px; z-index: 100;
+            font-family: var(--f-code); font-size: 10px; color: var(--c-prim);
+        }
+
+        /* 
+        ========================================================================
+        CONTENT SECTORS
+        ========================================================================
+        */
         .sector-wrapper {
-            position: absolute; top: var(--head-h); left: var(--nav-w); right: 0; bottom: 0;
+            position: absolute; top: var(--head-h); left: var(--nav-w); right: 0; bottom: 30px;
             display: flex; flex-direction: column; justify-content: center; align-items: center;
             opacity: 0; pointer-events: none; transform: scale(1.2); transition: 0.1s;
-            overflow-y: auto; /* Allow internal scrolling if content is long */
-            overflow-x: hidden;
-            padding: 2rem;
+            padding: 2rem; overflow-y: auto; overflow-x: hidden;
         }
         .sector-wrapper.active { opacity: 1; pointer-events: auto; transform: scale(1); }
 
         .content-box {
-            width: 100%; max-width: 1200px; padding: 2rem 0 6rem 0; /* Padding bottom for mobile nav */
+            width: 100%; max-width: 1200px; padding: 2rem;
             display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 4rem; align-items: center;
+            padding-bottom: 100px; /* Space for warp button */
         }
         .full-box { grid-template-columns: 1fr; max-width: 1100px; }
 
@@ -145,7 +185,7 @@
 
         /* WARP BUTTON */
         .warp-trigger {
-            position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
+            position: fixed; bottom: 50px; left: 50%; transform: translateX(-50%);
             display: flex; flex-direction: column; align-items: center; z-index: 500;
             transition: opacity 0.5s; cursor: pointer;
         }
@@ -201,48 +241,47 @@
 
         /* 
         ========================================================================
-        MOBILE OPTIMIZATION (MEDIA QUERIES)
+        MOBILE OPTIMIZATION
         ========================================================================
         */
         @media (max-width: 768px) {
-            :root {
-                --nav-w: 0px; /* Hide sidebar */
-                --head-h: 60px;
-            }
+            :root { --nav-w: 0px; --head-h: 60px; }
             
-            /* Typography */
-            h1 { font-size: 2.5rem; }
+            /* Orientation Change */
+            .content-box { display: flex; flex-direction: column-reverse; padding: 1rem; padding-bottom: 8rem; }
+            .full-box { display: block; }
+            
+            /* Profile moves to top */
+            .profile-container { order: 2; width: 280px; height: 280px; margin-bottom: 2rem; }
+            
+            h1 { font-size: 2.5rem; text-align: center; }
             h2 { font-size: 1.8rem; }
-            p { font-size: 1rem; }
-
-            /* Layout */
-            .content-box { grid-template-columns: 1fr; gap: 2rem; padding: 1rem; padding-bottom: 8rem; }
-            .grid-cards { grid-template-columns: 1fr; }
-            .profile-container { width: 250px; height: 250px; order: -1; }
             
-            /* HUD */
-            header { padding: 0 1rem; }
-            .hud-stats { display: none; }
+            /* Grids become stacks */
+            .grid-cards, .mobile-stack { grid-template-columns: 1fr !important; gap: 2rem; }
             
-            /* Bottom Nav (Mobile Only) */
+            /* Nav becomes bottom bar */
             aside {
-                top: auto; bottom: 0; left: 0; right: 0; width: 100%; height: 60px;
-                flex-direction: row; border-right: none; border-top: 1px solid var(--c-border);
-                background: #000;
+                width: 100%; height: 60px; top: auto; bottom: 0; flex-direction: row;
+                border-right: none; border-top: 1px solid var(--c-border); background: #000;
             }
             .nav-icon { 
-                writing-mode: horizontal-tb; transform: none; padding: 0; 
-                flex: 1; text-align: center; border-left: none; border-bottom: 2px solid transparent;
+                writing-mode: horizontal-tb; transform: none; flex: 1; text-align: center;
+                padding: 0; line-height: 60px; border-left: none; border-bottom: 2px solid transparent;
             }
-            .nav-icon:hover, .nav-icon.active { border-left: none; border-bottom: 2px solid var(--c-prim); }
-
-            /* Modal */
+            .nav-icon.active { border-left: none; border-bottom: 2px solid var(--c-prim); }
+            
+            /* Warp Button Higher */
+            .warp-trigger { bottom: 80px; width: 90%; }
+            .warp-btn { width: 100%; padding: 12px; font-size: 0.9rem; }
+            
+            /* Modal Adjustments */
             .modal-box { width: 95%; padding: 1.5rem; }
             .gallery-container { height: 250px; }
             
-            /* Buttons */
-            .warp-trigger { bottom: 80px; } /* Move up above nav bar */
-            .warp-btn { width: auto; padding: 10px 20px; font-size: 0.8rem; }
+            /* Hide HUD Stats */
+            .hud-stats { display: none; }
+            footer { display: none; }
         }
 
     </style>
@@ -253,10 +292,14 @@
     <canvas id="gl-canvas"></canvas>
     <div class="scanlines"></div>
     <div class="vignette"></div>
+    
+    <!-- CURSORS -->
+    <div id="cursor"></div>
+    <div id="cursor-follower"></div>
 
     <!-- BOOT (AUTO) -->
     <div id="boot-layer">
-        <div style="font-family:var(--f-head); font-size:2rem; color:white; text-align:center;">AERO-OS <span style="color:var(--c-prim)">v12.2</span></div>
+        <div style="font-family:var(--f-head); font-size:2rem; color:white;">AERO-OS <span style="color:var(--c-prim)">v12.3</span></div>
         <div style="font-family:var(--f-code); color:var(--c-muted); margin-top:10px;">MOBILE OPTIMIZED</div>
         <div class="loader-bar"><div class="loader-fill" id="load-prog"></div></div>
     </div>
@@ -271,7 +314,6 @@
         </div>
     </header>
 
-    <!-- NAVIGATION BAR -->
     <aside>
         <div class="nav-icon active" onclick="warpTo(0)">HOME</div>
         <div class="nav-icon" onclick="warpTo(1)">SKILLS</div>
@@ -290,7 +332,7 @@
                 <h1>NISCHAL<br>RAUT</h1>
                 <div class="intro-border">
                     <p>I am an Aerospace Engineering graduate with a strong focus on experimental aerodynamics, wind tunnel design, and unsteady flow analysis. My work centers on translating theoretical models into physical systems, with hands-on experience in gust generation, flow visualization, and aerodynamic testing.</p>
-                    <p>I have worked extensively with tools such as ANSYS, MATLAB, SolidWorks, and LaTeX to support both experimental and analytical investigations.</p>
+                    <p>I have worked extensively with tools such as ANSYS, MATLAB, SolidWorks, and LaTeX to support both experimental and analytical investigations. Through academic projects and industry exposure, I have developed a methodical approach to problem-solving.</p>
                 </div>
             </div>
             <div class="profile-container">
@@ -342,7 +384,7 @@
     <div id="sec-2" class="sector-wrapper">
         <div class="content-box full-box">
             <h2>SELECTED PROJECTS</h2>
-            <div class="grid-cards">
+            <div class="grid-cards mobile-stack">
                 <div class="card" onclick="openModal('tunnel')">
                     <span class="tag">RESEARCH</span>
                     <h3>SUBSONIC WIND TUNNEL</h3>
@@ -435,7 +477,7 @@
         </div>
     </div>
 
-    <!-- WARP TRIGGER BUTTON -->
+    <!-- WARP TRIGGER BUTTON (Dynamic Label) -->
     <div class="warp-trigger" onclick="nextSector()">
         <div style="font-family:var(--f-code); font-size:10px; margin-bottom:5px; color:var(--c-muted);">NAVIGATION</div>
         <button class="warp-btn" id="warp-label">GO TO SKILLS</button>
@@ -465,7 +507,7 @@
     <script>
         /* 
         ========================================================================
-        1. AUDIO ENGINE & SWIPE GESTURES
+        1. AUDIO ENGINE
         ========================================================================
         */
         let audioCtx;
@@ -479,33 +521,6 @@
 
         document.addEventListener('click', tryInitAudio, {once:true});
         document.addEventListener('touchstart', tryInitAudio, {once:true});
-
-        // SWIPE DETECTION
-        let touchStartY = 0;
-        let touchEndY = 0;
-
-        document.addEventListener('touchstart', e => {
-            touchStartY = e.changedTouches[0].screenY;
-        });
-
-        document.addEventListener('touchend', e => {
-            touchEndY = e.changedTouches[0].screenY;
-            handleSwipe();
-        });
-
-        function handleSwipe() {
-            if (isWarping) return;
-            const threshold = 50; // min distance
-            
-            // Swipe Up -> Next
-            if (touchStartY - touchEndY > threshold) {
-                warpTo((currentIdx + 1) % totalSec);
-            }
-            // Swipe Down -> Prev
-            else if (touchEndY - touchStartY > threshold) {
-                warpTo((currentIdx - 1 + totalSec) % totalSec);
-            }
-        }
 
         function playWarpSound(duration) {
             if(!audioCtx) return;
@@ -711,6 +726,11 @@
                 document.body.classList.remove('hovering');
             }
         });
+
+        setInterval(() => {
+            const n = new Date();
+            document.getElementById('time').innerText = n.toISOString().split('T')[1].split('.')[0];
+        }, 1000);
 
         // Vault
         const marks = [{v:59.68},{v:67.43},{v:65.29},{v:69.14},{v:78.4},{v:83.75},{v:86.15},{v:89.2}];
