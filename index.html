@@ -8,37 +8,35 @@
   <!-- Dynamic Favicon -->
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23FC3D21'/%3E%3Ctext x='50%25' y='50%25' dy='.35em' fill='white' font-family='sans-serif' font-weight='bold' font-size='32' text-anchor='middle'%3EN%3C/text%3E%3C/svg%3E">
 
-  <!-- Soft, Modern Fonts -->
+  <!-- Fonts: Poppins (Headings) & Nunito (Body) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
 
   <style>
     :root {
-      /* Palette */
+      /* Colors */
       --bg-body: #0B0D17;
-      --bg-card: rgba(30, 35, 45, 0.6);
+      --bg-surface: rgba(30, 35, 45, 0.6);
       --text-main: #F1F5F9;
       --text-muted: #94A3B8;
       --accent: #FC3D21;
       --border: rgba(255, 255, 255, 0.08);
-      --glass: blur(20px);
       
       /* Typography */
       --font-head: 'Poppins', sans-serif;
       --font-body: 'Nunito', sans-serif;
       
-      /* Transitions */
-      --trans-speed: 1s;
-      --trans-ease: cubic-bezier(0.4, 0, 0.2, 1);
+      /* Animation Speeds */
+      --page-trans: 0.6s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     [data-theme="light"] {
       --bg-body: #E0F2FE;
-      --bg-card: rgba(255, 255, 255, 0.7);
+      --bg-surface: rgba(255, 255, 255, 0.8);
       --text-main: #0F172A;
       --text-muted: #475569;
       --accent: #DC2626;
-      --border: rgba(0, 0, 0, 0.06);
+      --border: rgba(0, 0, 0, 0.08);
     }
 
     * { margin:0; padding:0; box-sizing:border-box; }
@@ -48,542 +46,554 @@
       background: var(--bg-body);
       color: var(--text-main);
       overflow-x: hidden;
-      transition: background-color var(--trans-speed) var(--trans-ease), color var(--trans-speed) var(--trans-ease);
+      min-height: 100vh;
+      transition: background-color 1s ease, color 1s ease;
     }
 
     /* 
      * -----------------------------------------------------------
-     * 1. FLUID ANIMATED BACKGROUNDS
+     * 1. BACKGROUND ANIMATION LAYER
      * -----------------------------------------------------------
      */
-    .bg-canvas {
-      position: fixed; inset: 0; z-index: -1; overflow: hidden; pointer-events: none;
+    .bg-layer {
+      position: fixed; inset: 0; z-index: -1; pointer-events: none; overflow: hidden;
     }
 
-    /* --- DARK MODE: PLANETS & SPACE --- */
-    .space-wrapper {
+    /* DARK MODE: Space, Planets, Meteors */
+    .space-scene {
       position: absolute; inset: 0;
-      opacity: 0; transition: opacity var(--trans-speed) var(--trans-ease);
-      background: radial-gradient(circle at bottom, #1e1b4b 0%, #000000 80%);
+      background: radial-gradient(circle at bottom, #1e1b4b 0%, #000000 90%);
+      opacity: 0; transition: opacity 1s;
     }
-    [data-theme="dark"] .space-wrapper { opacity: 1; }
+    [data-theme="dark"] .space-scene { opacity: 1; }
 
-    /* Stars */
     .stars {
       position: absolute; inset: 0;
       background-image: 
         radial-gradient(1px 1px at 10% 10%, white, transparent),
         radial-gradient(1px 1px at 20% 40%, white, transparent),
-        radial-gradient(2px 2px at 50% 50%, white, transparent),
-        radial-gradient(2px 2px at 80% 80%, white, transparent);
-      background-size: 500px 500px;
-      opacity: 0.6; animation: starDrift 100s linear infinite;
+        radial-gradient(2px 2px at 50% 50%, white, transparent);
+      background-size: 600px 600px;
+      opacity: 0.5; animation: starMove 120s linear infinite;
     }
 
-    /* Planet 1: Ringed Gas Giant */
-    .planet-1 {
+    .planet-ring {
       position: absolute; top: 15%; right: 10%;
-      width: 120px; height: 120px; border-radius: 50%;
-      background: radial-gradient(circle at 30% 30%, #a78bfa, #4c1d95);
-      box-shadow: -5px -5px 20px rgba(0,0,0,0.8) inset, 0 0 20px rgba(167, 139, 250, 0.2);
+      width: 140px; height: 140px; border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, #7c3aed, #4c1d95);
+      box-shadow: inset -10px -10px 30px rgba(0,0,0,0.8);
     }
-    .ring {
-      position: absolute; top: 50%; left: 50%;
-      width: 200px; height: 60px;
-      border: 8px solid rgba(255, 255, 255, 0.1);
-      border-top: 8px solid rgba(255, 255, 255, 0.4);
-      border-radius: 50%;
-      transform: translate(-50%, -50%) rotate(-20deg);
+    .planet-ring::after {
+      content:''; position: absolute; top: 50%; left: 50%;
+      width: 220px; height: 60px; border-radius: 50%;
+      border: 6px solid rgba(255,255,255,0.1);
+      border-top: 6px solid rgba(255,255,255,0.5);
+      transform: translate(-50%, -50%) rotate(-25deg);
     }
 
-    /* Planet 2: Red Rocky Planet */
-    .planet-2 {
-      position: absolute; bottom: 20%; left: 5%;
-      width: 80px; height: 80px; border-radius: 50%;
+    .planet-red {
+      position: absolute; bottom: 20%; left: 8%;
+      width: 90px; height: 90px; border-radius: 50%;
       background: radial-gradient(circle at 30% 30%, #fda4af, #be123c);
-      box-shadow: -10px -10px 30px rgba(0,0,0,0.9) inset;
+      box-shadow: inset -8px -8px 20px rgba(0,0,0,0.9);
     }
 
-    /* Meteors */
     .meteor {
-      position: absolute; top: -10%; left: 50%;
+      position: absolute; top: -100px; left: 50%;
       width: 150px; height: 2px;
       background: linear-gradient(90deg, white, transparent);
       transform: rotate(45deg); opacity: 0;
-      filter: drop-shadow(0 0 5px white);
     }
-    .m1 { animation: meteorShower 6s infinite 2s; left: 20%; }
-    .m2 { animation: meteorShower 8s infinite 5s; left: 70%; width: 100px; }
+    .m1 { animation: meteorFall 7s infinite 2s; left: 20%; }
+    .m2 { animation: meteorFall 10s infinite 6s; left: 70%; width: 100px; }
 
-    /* --- LIGHT MODE: SKY & AVIATION --- */
-    .sky-wrapper {
+    /* LIGHT MODE: Sky, Plane, Rocket */
+    .sky-scene {
       position: absolute; inset: 0;
       background: linear-gradient(to bottom, #BAE6FD, #F0F9FF);
-      opacity: 0; transition: opacity var(--trans-speed) var(--trans-ease);
+      opacity: 0; transition: opacity 1s;
     }
-    [data-theme="light"] .sky-wrapper { opacity: 1; }
+    [data-theme="light"] .sky-scene { opacity: 1; }
 
-    /* Clouds */
     .cloud {
-      position: absolute; background: white; border-radius: 50px; opacity: 0.8;
-      filter: blur(5px); animation: drift linear infinite;
+      position: absolute; background: white; border-radius: 50px;
+      filter: blur(8px); opacity: 0.7; animation: cloudDrift linear infinite;
     }
-    .c1 { width: 150px; height: 60px; top: 10%; left: -200px; animation-duration: 45s; }
-    .c2 { width: 250px; height: 90px; top: 30%; left: -300px; animation-duration: 60s; opacity: 0.6; }
+    .c1 { width: 180px; height: 70px; top: 15%; left: -200px; animation-duration: 50s; }
+    .c2 { width: 300px; height: 100px; top: 35%; left: -400px; animation-duration: 70s; opacity: 0.5; }
 
-    /* Commercial Plane SVG */
     .plane-container {
-      position: absolute; top: 20%; left: -200px;
-      width: 100px; opacity: 0.7;
-      animation: flyBy 35s linear infinite;
+      position: absolute; top: 18%; left: -200px; width: 120px; opacity: 0.6;
+      animation: planeFly 40s linear infinite;
     }
-    .plane-svg { fill: #475569; width: 100%; filter: drop-shadow(0 10px 10px rgba(0,0,0,0.1)); }
+    .plane-svg { width: 100%; fill: #475569; }
 
-    /* Rocket (Every 8 seconds) */
-    .rocket-launch {
-      position: absolute; bottom: -120px; left: 50%; transform: translateX(-50%);
+    /* Rocket (8s Interval) */
+    .rocket-wrapper {
+      position: absolute; bottom: -150px; left: 50%; transform: translateX(-50%);
       width: 30px; height: 80px;
-      animation: launchSequence 8s ease-in-out infinite; /* 8s Loop */
+      animation: rocketLaunch 8s ease-in-out infinite;
     }
     .rocket-body {
       width: 100%; height: 100%; background: linear-gradient(to right, #CBD5E1, #94A3B8);
       border-radius: 50% 50% 4px 4px; position: relative; z-index: 2;
-      box-shadow: inset -5px 0 5px rgba(0,0,0,0.1);
     }
     .rocket-window {
       position: absolute; top: 20px; left: 50%; transform: translateX(-50%);
-      width: 12px; height: 12px; background: #38BDF8; border-radius: 50%; border: 2px solid #E2E8F0;
+      width: 12px; height: 12px; background: #38BDF8; border-radius: 50%; border: 2px solid #fff;
     }
     .rocket-fin {
-      position: absolute; bottom: 0; width: 15px; height: 25px; background: #EF4444; z-index: 1;
+      position: absolute; bottom: 0; width: 14px; height: 25px; background: #EF4444; z-index: 1;
     }
-    .fin-l { left: -10px; border-radius: 10px 0 0 0; }
-    .fin-r { right: -10px; border-radius: 0 10px 0 0; }
-    
-    .flame {
-      position: absolute; top: 100%; left: 4px; width: 22px; height: 50px;
+    .fin-l { left: -10px; border-radius: 100% 0 0 0; }
+    .fin-r { right: -10px; border-radius: 0 100% 0 0; }
+    .fire {
+      position: absolute; top: 100%; left: 4px; width: 22px; height: 40px;
       background: linear-gradient(to bottom, #F59E0B, transparent);
       border-radius: 0 0 10px 10px; filter: blur(3px);
-      animation: flamePulse 0.1s infinite alternate;
+      animation: burn 0.1s infinite alternate;
     }
 
-    /* Keyframes */
-    @keyframes starDrift { from { transform:translateY(0); } to { transform:translateY(-500px); } }
-    @keyframes meteorShower {
-      0% { transform: translate(0,0) rotate(45deg); opacity: 0; }
-      10% { opacity: 1; }
-      20% { transform: translate(400px, 400px) rotate(45deg); opacity: 0; }
-      100% { opacity: 0; }
-    }
-    @keyframes flyBy { 0% { left: -15%; } 100% { left: 115%; } }
-    @keyframes drift { to { transform: translateX(120vw); } }
-    @keyframes launchSequence {
+    @keyframes starMove { from {transform: translateY(0);} to {transform: translateY(-500px);} }
+    @keyframes meteorFall { 0% {opacity:0; transform:translate(0,0) rotate(45deg);} 10% {opacity:1;} 20% {opacity:0; transform:translate(400px, 400px) rotate(45deg);} 100% {opacity:0;} }
+    @keyframes cloudDrift { to { transform: translateX(120vw); } }
+    @keyframes planeFly { 0% { left: -15%; } 100% { left: 115%; } }
+    @keyframes rocketLaunch {
       0% { bottom: -150px; opacity: 1; transform: translateX(-50%) scale(0.8); }
-      15% { bottom: 120vh; opacity: 1; transform: translateX(-50%) scale(0.8); } /* Fly up quickly */
-      20% { opacity: 0; bottom: 120vh; } 
-      100% { opacity: 0; bottom: 120vh; } /* Stay hidden rest of 8s */
+      15% { bottom: 110vh; opacity: 1; transform: translateX(-50%) scale(0.8); }
+      20% { bottom: 110vh; opacity: 0; }
+      100% { bottom: 110vh; opacity: 0; }
     }
-    @keyframes flamePulse { from { height: 40px; opacity:0.8; } to { height: 60px; opacity:1; } }
+    @keyframes burn { from {height: 40px; opacity:0.8;} to {height: 60px; opacity:1;} }
 
     /* 
      * -----------------------------------------------------------
-     * 2. LAYOUT & UI
+     * 2. UI & NAVIGATION
      * -----------------------------------------------------------
      */
     nav {
-      position: fixed; top: 0; width: 100%; height: 90px;
+      position: fixed; top: 0; width: 100%; height: 80px;
       display: flex; align-items: center; justify-content: space-between;
-      padding: 0 3em; z-index: 100;
-      backdrop-filter: blur(12px);
-      background: rgba(var(--bg-body), 0.05);
+      padding: 0 3em; z-index: 1000;
+      backdrop-filter: blur(10px);
+      background: rgba(var(--bg-body), 0.1);
+      border-bottom: 1px solid var(--border);
     }
-    .brand { font-weight: 800; font-size: 1.5em; letter-spacing: -0.5px; }
+    .brand { font-family: var(--font-head); font-weight: 800; font-size: 1.5em; cursor: pointer; }
+    nav ul { display: flex; gap: 2em; list-style: none; }
+    nav ul li {
+      cursor: pointer; font-weight: 600; opacity: 0.7; position: relative;
+      transition: 0.3s;
+    }
+    nav ul li:hover, nav ul li.active { opacity: 1; color: var(--accent); }
+    nav ul li.active::after {
+      content: ''; position: absolute; bottom: -5px; left: 0; width: 100%; height: 2px; background: var(--accent);
+    }
     
-    /* Toggle Switch */
-    .theme-switch-wrapper { display: flex; align-items: center; gap: 10px; }
-    .theme-label { font-size: 0.85em; opacity: 0.7; }
-    .switch { position: relative; display: inline-block; width: 50px; height: 26px; }
-    .switch input { opacity: 0; width: 0; height: 0; }
-    .slider {
-      position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0;
-      background-color: rgba(255,255,255,0.2); transition: .4s; border-radius: 34px;
-    }
-    .slider:before {
-      position: absolute; content: ""; height: 18px; width: 18px;
-      left: 4px; bottom: 4px; background-color: white;
-      transition: .4s; border-radius: 50%;
-    }
-    input:checked + .slider { background-color: var(--accent); }
-    input:checked + .slider:before { transform: translateX(24px); }
-
-    /* Hero */
-    .container { max-width: 1100px; margin: 0 auto; padding: 0 2em; }
-    #hero {
-      min-height: 100vh; display: flex; flex-direction: column; 
-      justify-content: center; align-items: center; text-align: center;
-      padding-top: 80px; position: relative; z-index: 2;
-    }
-    .avatar {
-      width: 150px; height: 150px; border-radius: 50%; 
-      border: 3px solid var(--accent); padding: 5px;
-      margin-bottom: 1.5em; background: var(--bg-body);
-      transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    }
-    .avatar img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
-    .avatar:hover { transform: scale(1.1); }
-
-    h1 { font-size: 3.5em; margin-bottom: 0.2em; font-weight: 800; }
-    h2 { font-size: 1.6em; font-weight: 600; color: var(--text-muted); margin-bottom: 1em; }
-    .hero-desc { max-width: 600px; margin: 0 auto 3em; line-height: 1.8; color: var(--text-muted); }
-
-    /* Hybrid Cards */
-    .card-grid {
-      display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 1.5em; width: 100%; animation: floatUp 1s ease-out forwards;
-    }
-    .card {
-      background: var(--bg-card); backdrop-filter: var(--glass);
-      padding: 2em; border-radius: 16px; border: 1px solid var(--border);
-      text-align: left; cursor: pointer;
-      transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
-    }
-    .card:hover {
-      transform: translateY(-8px);
-      box-shadow: 0 15px 30px rgba(0,0,0,0.1);
-      border-color: var(--accent);
-    }
-    .card-icon { font-size: 2.5em; margin-bottom: 0.5em; display: inline-block; }
-    .card h3 { font-size: 1.2em; margin-bottom: 0.5em; }
-    .card p { font-size: 0.9em; color: var(--text-muted); margin: 0; }
+    .theme-switch { cursor: pointer; padding: 0.5em; border-radius: 50%; background: var(--bg-surface); }
 
     /* 
      * -----------------------------------------------------------
-     * 3. MODALS
+     * 3. PAGE ARCHITECTURE (View Swapping)
      * -----------------------------------------------------------
      */
-    .modal-overlay {
-      position: fixed; inset: 0; background: rgba(0,0,0,0.6);
-      backdrop-filter: blur(10px); z-index: 1000;
-      opacity: 0; pointer-events: none;
-      display: flex; align-items: center; justify-content: center;
-      transition: opacity 0.5s var(--trans-ease);
+    main {
+      padding-top: 100px; /* offset for nav */
+      min-height: 100vh;
+      width: 100%;
+      position: relative;
     }
-    .modal-overlay.active { opacity: 1; pointer-events: all; }
-    
-    .modal-box {
-      background: var(--bg-body); width: 90%; max-width: 850px;
-      max-height: 85vh; overflow-y: auto;
-      border-radius: 20px; border: 1px solid var(--border);
-      padding: 3em; position: relative;
-      transform: scale(0.9); transition: transform 0.5s var(--trans-ease);
-    }
-    .modal-overlay.active .modal-box { transform: scale(1); }
-    
-    .close-btn {
-      position: absolute; top: 20px; right: 20px;
-      width: 40px; height: 40px; border-radius: 50%;
-      background: rgba(255,255,255,0.05); display: flex;
-      align-items: center; justify-content: center; cursor: pointer;
-      font-size: 1.5em; transition: 0.3s;
-    }
-    .close-btn:hover { color: var(--accent); background: rgba(255,255,255,0.1); }
 
-    /* Academic Graph Styles */
-    .lock-view {
-      text-align: center; border: 2px dashed var(--border);
-      border-radius: 12px; padding: 3em 1em; margin-top: 1em;
+    .page-view {
+      display: none; /* Hidden by default */
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 2em;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
     }
-    .graph-view {
-      display: none; height: 350px; margin-top: 2em;
-      align-items: flex-end; justify-content: space-between; gap: 8px;
+    .page-view.active-view {
+      display: block;
+      opacity: 1;
+      transform: translateY(0);
+      animation: fadeUp 0.6s ease forwards;
     }
-    .bar-wrapper {
-      flex: 1; display: flex; flex-direction: column;
-      align-items: center; justify-content: flex-end; height: 100%;
+
+    @keyframes fadeUp { from {opacity:0; transform:translateY(20px);} to {opacity:1; transform:translateY(0);} }
+
+    /* HOME PAGE */
+    .hero-content { text-align: center; padding: 4em 0; }
+    .profile-pic {
+      width: 180px; height: 180px; border-radius: 50%;
+      border: 4px solid var(--accent); padding: 5px;
+      object-fit: cover; margin-bottom: 2em;
+      background: var(--bg-body);
+      transition: transform 0.3s;
     }
+    .profile-pic:hover { transform: scale(1.05); }
+    h1 { font-family: var(--font-head); font-size: 3.5em; font-weight: 800; line-height: 1.1; margin-bottom: 0.2em; }
+    .tagline { font-size: 1.5em; color: var(--text-muted); font-weight: 600; margin-bottom: 1.5em; }
+    .bio-short { max-width: 600px; margin: 0 auto 2em; line-height: 1.8; color: var(--text-muted); }
+    
+    /* ABOUT PAGE */
+    .about-grid { display: grid; grid-template-columns: 1fr; gap: 3em; }
+    .content-box {
+      background: var(--bg-surface); backdrop-filter: blur(10px);
+      padding: 2.5em; border-radius: 16px; border: 1px solid var(--border);
+    }
+    h2 { font-family: var(--font-head); font-size: 2em; margin-bottom: 0.8em; color: var(--text-main); }
+    h3 { font-family: var(--font-head); font-size: 1.3em; margin-bottom: 0.5em; color: var(--accent); }
+    p { margin-bottom: 1.5em; line-height: 1.7; color: var(--text-muted); }
+
+    /* INTERESTS SECTION */
+    .interests-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5em; margin-top: 1em;
+    }
+    .interest-card {
+      background: rgba(255,255,255,0.03); padding: 1.5em; border-radius: 12px;
+      text-align: center; border: 1px solid var(--border); transition: 0.3s;
+    }
+    .interest-card:hover { border-color: var(--accent); transform: translateY(-5px); }
+    .int-icon { font-size: 2em; display: block; margin-bottom: 0.5em; }
+
+    /* EXPERIENCE PAGE */
+    .timeline { border-left: 2px solid var(--accent); padding-left: 2em; margin-left: 1em; }
+    .timeline-item { position: relative; margin-bottom: 3em; }
+    .timeline-item::before {
+      content:''; position: absolute; left: -2.6em; top: 5px;
+      width: 16px; height: 16px; background: var(--accent); border-radius: 50%;
+    }
+    .job-title { font-size: 1.3em; font-weight: 700; color: var(--text-main); }
+    .company { font-weight: 600; color: var(--accent); font-family: var(--font-head); }
+    .duration { font-size: 0.9em; opacity: 0.7; display: block; margin-bottom: 1em; }
+
+    /* ACADEMIC PAGE */
+    .lock-container {
+      text-align: center; padding: 4em; border: 2px dashed var(--border);
+      border-radius: 16px; background: rgba(0,0,0,0.2); margin-top: 2em;
+    }
+    .graph-display {
+      display: none; height: 400px; margin-top: 2em;
+      align-items: flex-end; gap: 10px;
+    }
+    .bar-col { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 100%; }
     .bar {
-      width: 100%; background: linear-gradient(to top, var(--accent), #fb923c);
+      width: 100%; background: linear-gradient(to top, var(--accent), #f97316);
       border-radius: 6px 6px 0 0; position: relative;
-      transition: height 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-      height: 0;
-      opacity: 0.8;
+      height: 0; transition: height 1s ease; opacity: 0.9;
     }
     .bar:hover { opacity: 1; }
-    .bar-val {
-      position: absolute; top: -25px; left: 50%; transform: translateX(-50%);
-      font-size: 0.7em; font-weight: 700; width: 40px; text-align: center;
-    }
-    .sem-label { font-size: 0.75em; margin-top: 8px; color: var(--text-muted); }
+    .bar-val { position: absolute; top: -25px; width: 100%; text-align: center; font-weight: bold; font-size: 0.8em; }
+    .sem-label { margin-top: 10px; font-size: 0.8em; opacity: 0.7; }
 
-    /* Timeline Styles */
-    .job-item {
-      padding-left: 20px; border-left: 3px solid var(--accent);
-      margin-bottom: 30px; position: relative;
+    /* PROJECTS PAGE */
+    .project-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2em; }
+    .p-card {
+      background: var(--bg-surface); padding: 0; border-radius: 16px;
+      border: 1px solid var(--border); overflow: hidden;
+      transition: transform 0.3s;
     }
-    .job-item::before {
-      content:''; position: absolute; left: -9px; top: 0;
-      width: 15px; height: 15px; background: var(--accent); border-radius: 50%;
-      border: 3px solid var(--bg-body);
-    }
-    
+    .p-card:hover { transform: translateY(-8px); border-color: var(--accent); }
+    .p-img { width: 100%; height: 180px; background: #222; object-fit: cover; }
+    .p-content { padding: 1.5em; }
+    .p-tag { font-size: 0.75em; letter-spacing: 1px; color: var(--accent); font-weight: 700; text-transform: uppercase; }
+
+    /* UTILS */
     .btn {
-      padding: 10px 25px; background: var(--accent); color: white;
-      border-radius: 50px; border: none; font-weight: 600; cursor: pointer;
-      transition: 0.3s;
+      padding: 0.8em 2em; background: var(--accent); color: white;
+      border: none; border-radius: 50px; font-weight: 600; cursor: pointer;
+      transition: 0.3s; display: inline-block; margin-top: 1em;
     }
-    .btn:hover { filter: brightness(1.1); transform: translateY(-2px); }
+    .btn:hover { transform: translateY(-2px); filter: brightness(1.1); }
     .btn-outline { background: transparent; border: 1px solid var(--border); color: var(--text-main); margin-left: 10px; }
     .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
 
-    @keyframes floatUp { from { opacity:0; transform:translateY(30px); } to { opacity:1; transform:translateY(0); } }
+    /* Responsive */
+    @media(max-width: 768px) {
+      nav { padding: 0 1.5em; }
+      nav ul { gap: 1em; font-size: 0.9em; }
+      .brand { display: none; } /* Hide brand on mobile to fit menu */
+      h1 { font-size: 2.5em; }
+    }
   </style>
 </head>
 <body>
 
   <!-- Backgrounds -->
-  <div class="bg-canvas">
-    
-    <!-- Dark Mode: Deep Space -->
-    <div class="space-wrapper">
+  <div class="bg-layer">
+    <!-- Dark Mode -->
+    <div class="space-scene">
       <div class="stars"></div>
-      
-      <!-- Ringed Planet -->
-      <div class="planet-1"><div class="ring"></div></div>
-      
-      <!-- Rocky Planet -->
-      <div class="planet-2"></div>
-      
-      <!-- Shooting Stars -->
+      <div class="planet-ring"></div>
+      <div class="planet-red"></div>
       <div class="meteor m1"></div>
       <div class="meteor m2"></div>
     </div>
-    
-    <!-- Light Mode: Sky -->
-    <div class="sky-wrapper">
+    <!-- Light Mode -->
+    <div class="sky-scene">
       <div class="cloud c1"></div>
       <div class="cloud c2"></div>
-      
-      <!-- Realistic Plane SVG -->
       <div class="plane-container">
         <svg class="plane-svg" viewBox="0 0 576 512">
           <path d="M482.3 192c34.2 0 93.7 29 93.7 64c0 36-59.5 64-93.7 64l-116.6 0L265.2 495.9c-5.7 10-16.3 16.1-27.8 16.1l-56.2 0c-10.6 0-18.3-10.2-15.4-20.4l49-171.6L112 320 68.8 377.6c-3 4-7.8 6.4-12.8 6.4l-42 0c-7.8 0-14-6.3-14-14c0-1.3 .2-2.6 .5-3.9L32 256 .5 145.9c-.4-1.3-.5-2.6-.5-3.9c0-7.7 6.2-14 14-14l42 0c5 0 9.8 2.4 12.8 6.4L112 192l102.9 0-49-171.6C162.9 10.2 170.6 0 181.2 0l56.2 0c11.5 0 22.1 6.1 27.8 16.1L365.7 192l116.6 0z"/>
         </svg>
       </div>
-
-      <!-- Rocket (Every 8s) -->
-      <div class="rocket-launch">
+      <div class="rocket-wrapper">
         <div class="rocket-body">
           <div class="rocket-window"></div>
           <div class="rocket-fin fin-l"></div>
           <div class="rocket-fin fin-r"></div>
         </div>
-        <div class="flame"></div>
+        <div class="fire"></div>
       </div>
     </div>
   </div>
 
-  <!-- Nav -->
+  <!-- Navigation -->
   <nav>
-    <div class="brand">NR<span style="color:var(--accent)">.</span></div>
-    <div class="theme-switch-wrapper">
-      <span class="theme-label">Theme</span>
-      <label class="switch">
-        <input type="checkbox" id="themeToggle">
-        <span class="slider"></span>
-      </label>
-    </div>
+    <div class="brand" onclick="switchPage('home')">NR<span style="color:var(--accent)">.</span></div>
+    <ul>
+      <li onclick="switchPage('home')" id="nav-home" class="active">Home</li>
+      <li onclick="switchPage('about')" id="nav-about">About</li>
+      <li onclick="switchPage('experience')" id="nav-experience">Experience</li>
+      <li onclick="switchPage('academic')" id="nav-academic">Academic</li>
+      <li onclick="switchPage('projects')" id="nav-projects">Projects</li>
+    </ul>
+    <div class="theme-switch" id="themeBtn" title="Toggle Mode">🌓</div>
   </nav>
 
-  <!-- Hero -->
-  <section id="hero">
-    <div class="container">
-      <div class="avatar">
-        <img src="profile.jpg" alt="Profile">
-      </div>
-      <h1>Nischal Raut</h1>
-      <h2>Aerospace Engineer</h2>
-      <p class="hero-desc">
-        Specializing in Experimental Aerodynamics, CFD, and UAV Systems.<br>
-        Currently integrating avionics at <strong>Airbus India</strong>.
-      </p>
-
-      <div class="card-grid">
-        <div class="card" onclick="openModal('experience')">
-          <span class="card-icon">💼</span>
-          <h3>Experience</h3>
-          <p>Internship to Associate Engineer @ Airbus.</p>
-        </div>
-        <div class="card" onclick="openModal('academic')">
-          <span class="card-icon">📊</span>
-          <h3>Academic Vault</h3>
-          <p>Semester marks & Aggregate graph.</p>
-        </div>
-        <div class="card" onclick="openModal('projects')">
-          <span class="card-icon">🚀</span>
-          <h3>Projects</h3>
-          <p>Wind Tunnels, Gliders, CFD.</p>
-        </div>
-        <div class="card" onclick="openModal('contact')">
-          <span class="card-icon">📬</span>
-          <h3>Contact</h3>
-          <p>Email & LinkedIn.</p>
+  <!-- MAIN CONTENT CONTAINER -->
+  <main>
+    
+    <!-- 1. HOME VIEW -->
+    <section id="view-home" class="page-view active-view">
+      <div class="hero-content">
+        <img src="profile.jpg" alt="Profile" class="profile-pic">
+        <h1>Nischal Raut</h1>
+        <p class="tagline">Aerospace Engineer | UAV Specialist | CFD Analyst</p>
+        <p class="bio-short">
+          Bridging the gap between computational theory and flight-ready reality.
+          From wind tunnel experimentation to avionics integration at Airbus India.
+        </p>
+        <div>
+          <button class="btn" onclick="switchPage('projects')">View Portfolio</button>
+          <button class="btn btn-outline" onclick="switchPage('contact')">Contact Me</button>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- 
-    MODALS 
-  -->
-
-  <!-- Experience Modal -->
-  <div class="modal-overlay" id="modal-experience">
-    <div class="modal-box">
-      <div class="close-btn" onclick="closeModal('experience')">&times;</div>
-      <h2>Professional Experience</h2>
-      <div style="margin-top:2em;">
-        <div class="job-item">
-          <h3>Associate Engineer - Integration Test & Analytics</h3>
-          <p style="color:var(--accent); font-weight:700;">AIRBUS INDIA, Bangalore</p>
-          <p style="font-size:0.9em; margin-bottom:0.5em; opacity:0.7;">Dec 2024 – Present</p>
-          <p>Conducting integration testing for avionics subsystems. Leveraging data analytics to optimize flight test campaigns and automating testing workflows.</p>
+    <!-- 2. ABOUT VIEW (Expanded) -->
+    <section id="view-about" class="page-view">
+      <div class="about-grid">
+        <div class="content-box">
+          <h2>Philosophy & Approach</h2>
+          <p>
+            Engineering is not merely about solving equations; it is about managing the forces of nature to achieve elegance in motion. My approach combines rigorous mathematical analysis with hands-on experimentation. Whether it's validating a CFD model in a wind tunnel or integrating complex avionics, I thrive in the iterative cycle of <strong>Design, Test, and Analyze</strong>.
+          </p>
+          <p>
+            My journey began with a curiosity about how heavy metal objects could defy gravity, which evolved into a specialized focus on Aerodynamics and System Integration.
+          </p>
         </div>
-        <div class="job-item">
-          <h3>Intern - System Testing Engineer</h3>
-          <p style="color:var(--accent); font-weight:700;">AIRBUS INDIA, Bangalore</p>
-          <p style="font-size:0.9em; margin-bottom:0.5em; opacity:0.7;">July 2024 – Nov 2024</p>
-          <p>Executed functional verification and validation (V&V) on system benches. Analyzed test logs and supported defect tracking.</p>
-        </div>
-        <div class="job-item">
-          <h3>Engineering Intern</h3>
-          <p style="color:var(--accent); font-weight:700;">AIRLIFT TECHNOLOGY, Nepal</p>
-          <p style="font-size:0.9em; margin-bottom:0.5em; opacity:0.7;">2024</p>
-          <p>Drone mapping and photogrammetry for Kathmandu Metropolitan City. Generated 3D orthomosaics.</p>
+        
+        <div class="content-box">
+          <h2>Beyond Engineering</h2>
+          <p>
+            When I'm not running simulations or soldering flight controllers, I am deeply immersed in the world of <strong>RC Aviation</strong>. Building and flying my own aircraft gives me an intuitive understanding of flight mechanics that textbooks cannot provide.
+          </p>
+          <h3>Interests</h3>
+          <div class="interests-grid">
+            <div class="interest-card">
+              <span class="int-icon">✈️</span>
+              <strong>RC Aviation</strong>
+              <p style="font-size:0.8em; margin:0;">Scratch building & flying</p>
+            </div>
+            <div class="interest-card">
+              <span class="int-icon">🔭</span>
+              <strong>Astronomy</strong>
+              <p style="font-size:0.8em; margin:0;">Sci-Fi Literature & Space Tech</p>
+            </div>
+            <div class="interest-card">
+              <span class="int-icon">📸</span>
+              <strong>Photography</strong>
+              <p style="font-size:0.8em; margin:0;">Drone Mapping & Landscape</p>
+            </div>
+            <div class="interest-card">
+              <span class="int-icon">🏎</span>
+              <strong>F1 Aerodynamics</strong>
+              <p style="font-size:0.8em; margin:0;">Fluid dynamics in racing</p>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
-  </div>
+    </section>
 
-  <!-- Academic Modal -->
-  <div class="modal-overlay" id="modal-academic">
-    <div class="modal-box">
-      <div class="close-btn" onclick="closeModal('academic')">&times;</div>
-      <h2>Academic Performance</h2>
-      <p>IOE Pulchowk Campus (2019-2025)</p>
+    <!-- 3. EXPERIENCE VIEW -->
+    <section id="view-experience" class="page-view">
+      <h2 style="margin-bottom:1.5em; text-align:center;">Professional Timeline</h2>
+      <div class="timeline">
+        
+        <div class="timeline-item">
+          <div class="job-title">Associate Engineer - Integration Test & Analytics</div>
+          <div class="company">AIRBUS INDIA, Bangalore</div>
+          <span class="duration">Dec 2024 – Present</span>
+          <p>
+            Responsible for the integration testing of avionics subsystems. I leverage data analytics to optimize flight test campaigns, automating procedures to enhance efficiency and reliability in safety-critical systems.
+          </p>
+        </div>
 
-      <!-- Lock Screen -->
-      <div class="lock-view" id="academicLock">
+        <div class="timeline-item">
+          <div class="job-title">Intern - System Testing Engineer</div>
+          <div class="company">AIRBUS INDIA, Bangalore</div>
+          <span class="duration">July 2024 – Nov 2024</span>
+          <p>
+            Supported system Verification & Validation (V&V). Performed functional testing on simulation benches, analyzed test logs, and contributed to defect tracking and resolution workflows.
+          </p>
+        </div>
+
+        <div class="timeline-item">
+          <div class="job-title">Engineering Intern</div>
+          <div class="company">AIRLIFT TECHNOLOGY, Nepal</div>
+          <span class="duration">2024</span>
+          <p>
+            Led drone mapping initiatives for Kathmandu Metropolitan City. Processed large-scale photogrammetry data to generate high-fidelity 3D terrain models and orthomosaics.
+          </p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 4. ACADEMIC VIEW (Vault) -->
+    <section id="view-academic" class="page-view">
+      <h2 style="text-align:center;">Academic Vault</h2>
+      <p style="text-align:center;">Institute of Engineering, Pulchowk Campus (2019-2025)</p>
+      
+      <div class="lock-container" id="academicLock">
         <div style="font-size:3em; margin-bottom:0.5em;">🔒</div>
         <h3>Restricted Access</h3>
-        <p>Detailed semester breakdown is confidential.</p>
+        <p>Semester-wise breakdown is confidential.</p>
         <div style="margin-top:2em;">
-          <button class="btn" onclick="location.href='mailto:nischalraut6@gmail.com?subject=Request Academic Records'">Request Access</button>
-          <button class="btn btn-outline" onclick="unlockGraph()">Demo Unlock</button>
+          <button class="btn" onclick="location.href='mailto:nischalraut6@gmail.com?subject=Request Access'">Request Access</button>
+          <button class="btn btn-outline" onclick="unlockAcademic()">Demo Unlock</button>
         </div>
       </div>
 
-      <!-- Graph View -->
-      <div class="graph-view" id="academicGraph">
-        <!-- Bars injected via JS -->
+      <div class="graph-display" id="academicGraph">
+        <!-- Bars injected by JS -->
       </div>
-      <h3 id="aggText" style="text-align:center; margin-top:2em; display:none;">Aggregate Score: <span style="color:var(--accent); font-size:1.2em;">76.71%</span></h3>
-    </div>
-  </div>
+      <h3 id="aggScore" style="text-align:center; margin-top:2em; display:none;">Aggregate: <span style="color:var(--accent)">76.71%</span></h3>
+    </section>
 
-  <!-- Projects Modal -->
-  <div class="modal-overlay" id="modal-projects">
-    <div class="modal-box">
-      <div class="close-btn" onclick="closeModal('projects')">&times;</div>
-      <h2>Key Projects</h2>
-      <div class="card-grid" style="margin-top:2em;">
-        <div class="card" style="cursor:default;">
-          <h3>Subsonic Wind Tunnel</h3>
-          <p style="color:var(--accent); font-size:0.8em; font-weight:bold;">RESEARCH</p>
-          <p>Designed open-jet tunnel with gust generator. Validated 0.88% Turbulent Intensity.</p>
+    <!-- 5. PROJECTS VIEW -->
+    <section id="view-projects" class="page-view">
+      <h2 style="margin-bottom:1em;">Featured Projects</h2>
+      <div class="project-grid">
+        
+        <div class="p-card">
+          <img src="windtunnel1.jpeg" class="p-img" alt="Tunnel">
+          <div class="p-content">
+            <span class="p-tag">Research</span>
+            <h3>Subsonic Wind Tunnel</h3>
+            <p>Designed and built an open-jet wind tunnel with an active gust generator. Validated 0.88% Turbulent Intensity experimentally.</p>
+          </div>
         </div>
-        <div class="card" style="cursor:default;">
-          <h3>B-52 Air Launch</h3>
-          <p style="color:var(--accent); font-size:0.8em; font-weight:bold;">DESIGN</p>
-          <p>Conceptual design study. Analyzed release altitudes for optimal small satellite orbit insertion.</p>
+
+        <div class="p-card">
+          <div class="p-img" style="display:flex; align-items:center; justify-content:center; background:#0c4a6e; font-size:3em;">🚀</div>
+          <div class="p-content">
+            <span class="p-tag">Design</span>
+            <h3>B-52 Air Launch</h3>
+            <p>Conceptual study of using the B-52 as a carrier for small satellite launch vehicles to optimize orbit insertion.</p>
+          </div>
         </div>
-        <div class="card" style="cursor:default;">
-          <h3>RC Styrofoam Glider</h3>
-          <p style="color:var(--accent); font-size:0.8em; font-weight:bold;">FABRICATION</p>
-          <p>End-to-end fabrication (hot wire cutting) and flight testing. XFLR5 Analysis included.</p>
+
+        <div class="p-card">
+          <div class="p-img" style="display:flex; align-items:center; justify-content:center; background:#064e3b; font-size:3em;">✈️</div>
+          <div class="p-content">
+            <span class="p-tag">Fabrication</span>
+            <h3>Styrofoam Glider</h3>
+            <p>From airfoil selection (XFLR5) to hot-wire foam cutting and flight testing. Achieved stable glide ratio.</p>
+          </div>
         </div>
-        <div class="card" style="cursor:default;">
-          <h3>F-15 CFD Analysis</h3>
-          <p style="color:var(--accent); font-size:0.8em; font-weight:bold;">SIMULATION</p>
-          <p>ANSYS Fluent simulation of supersonic flow. Studied shock diamonds and drag coefficients.</p>
+
+        <div class="p-card">
+          <div class="p-img" style="display:flex; align-items:center; justify-content:center; background:#450a0a; font-size:3em;">💻</div>
+          <div class="p-content">
+            <span class="p-tag">CFD</span>
+            <h3>F-15 Flow Analysis</h3>
+            <p>Simulated supersonic flow over F-15 Eagle using ANSYS Fluent. Analyzed shock diamonds and drag coefficients.</p>
+          </div>
         </div>
+
       </div>
-    </div>
-  </div>
+    </section>
 
-  <!-- Contact Modal -->
-  <div class="modal-overlay" id="modal-contact">
-    <div class="modal-box">
-      <div class="close-btn" onclick="closeModal('contact')">&times;</div>
-      <h2>Get in Touch</h2>
-      <p style="margin-bottom:2em;">nischalraut6@gmail.com</p>
-      <form style="display:grid; gap:1em;">
-        <input type="text" placeholder="Your Name" style="padding:1em; border-radius:10px; border:1px solid var(--border); background:var(--bg-card); color:var(--text-main);">
-        <input type="email" placeholder="Your Email" style="padding:1em; border-radius:10px; border:1px solid var(--border); background:var(--bg-card); color:var(--text-main);">
-        <textarea rows="5" placeholder="Message" style="padding:1em; border-radius:10px; border:1px solid var(--border); background:var(--bg-card); color:var(--text-main);"></textarea>
-        <button class="btn" type="button" onclick="alert('Message Sent (Demo)')">Send Message</button>
-      </form>
-    </div>
-  </div>
+    <!-- 6. CONTACT VIEW -->
+    <section id="view-contact" class="page-view">
+      <div class="content-box" style="max-width:600px; margin:0 auto; text-align:center;">
+        <h2>Get in Touch</h2>
+        <p>nischalraut6@gmail.com</p>
+        <form style="text-align:left; display:grid; gap:1em;">
+          <input type="text" placeholder="Your Name" style="width:100%; padding:1em; border-radius:8px; border:1px solid var(--border); background:rgba(0,0,0,0.2); color:inherit;">
+          <input type="email" placeholder="Email Address" style="width:100%; padding:1em; border-radius:8px; border:1px solid var(--border); background:rgba(0,0,0,0.2); color:inherit;">
+          <textarea rows="5" placeholder="Message" style="width:100%; padding:1em; border-radius:8px; border:1px solid var(--border); background:rgba(0,0,0,0.2); color:inherit;"></textarea>
+          <button class="btn" type="button" onclick="alert('Message Sent (Demo)')">Send Message</button>
+        </form>
+      </div>
+    </section>
+
+  </main>
 
   <script>
-    // Theme Logic
-    const toggle = document.getElementById('themeToggle');
+    // 1. Theme Logic
+    const themeBtn = document.getElementById('themeBtn');
     const root = document.documentElement;
 
-    if(localStorage.getItem('theme') === 'light') {
-      root.setAttribute('data-theme', 'light');
-      toggle.checked = true;
+    themeBtn.onclick = () => {
+      const curr = root.getAttribute('data-theme');
+      const next = curr === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+    };
+
+    // 2. View Swapping Logic (Virtual Multi-Page)
+    function switchPage(pageId) {
+      // Update Nav
+      document.querySelectorAll('nav ul li').forEach(li => li.classList.remove('active'));
+      const navItem = document.getElementById('nav-' + pageId);
+      if(navItem) navItem.classList.add('active');
+
+      // Update View
+      document.querySelectorAll('.page-view').forEach(view => {
+        view.classList.remove('active-view');
+        // Small timeout to allow fade out effect if we added one, but fast switch is usually better for UX
+      });
+      
+      const target = document.getElementById('view-' + pageId);
+      target.classList.add('active-view');
+      
+      window.scrollTo(0, 0);
     }
 
-    toggle.addEventListener('change', (e) => {
-      const theme = e.target.checked ? 'light' : 'dark';
-      root.setAttribute('data-theme', theme);
-      localStorage.setItem('theme', theme);
-    });
-
-    // Modal Logic
-    function openModal(id) {
-      document.getElementById('modal-' + id).classList.add('active');
-    }
-    function closeModal(id) {
-      document.getElementById('modal-' + id).classList.remove('active');
-    }
-
-    // Graph Data & Logic
+    // 3. Academic Graph Logic
     const marks = [
-      {s: '1st', v: 59.68},
-      {s: '2nd', v: 67.43},
-      {s: '3rd', v: 65.29},
-      {s: '4th', v: 69.14},
-      {s: '5th', v: 78.4},
-      {s: '6th', v: 83.75},
-      {s: '7th', v: 86.15},
-      {s: '8th', v: 89.2}
+      {s: '1st', v: 59.68}, {s: '2nd', v: 67.43}, 
+      {s: '3rd', v: 65.29}, {s: '4th', v: 69.14}, 
+      {s: '5th', v: 78.4},  {s: '6th', v: 83.75}, 
+      {s: '7th', v: 86.15}, {s: '8th', v: 89.2}
     ];
 
-    function unlockGraph() {
+    function unlockAcademic() {
       const lock = document.getElementById('academicLock');
       const graph = document.getElementById('academicGraph');
-      const agg = document.getElementById('aggText');
-      
-      // Hide lock, show graph
+      const agg = document.getElementById('aggScore');
+
       lock.style.display = 'none';
       graph.style.display = 'flex';
       agg.style.display = 'block';
 
-      // Generate Bars
+      // Render
       graph.innerHTML = marks.map(m => `
-        <div class="bar-wrapper">
+        <div class="bar-col">
           <div class="bar" style="height:0%" data-h="${m.v}%">
             <span class="bar-val">${m.v}%</span>
           </div>
@@ -591,7 +601,7 @@
         </div>
       `).join('');
 
-      // Trigger Animation
+      // Animate
       setTimeout(() => {
         document.querySelectorAll('.bar').forEach(b => {
           b.style.height = b.getAttribute('data-h');
