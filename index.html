@@ -1,805 +1,1103 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>NISCHAL RAUT | AEROSPACE ENGINEER</title>
-    
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpolygon points='50,10 90,90 50,75 10,90' fill='%23FC3D21'/%3E%3C/svg%3E">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nischal Raut | Aerospace Engineer</title>
+  <meta name="description" content="Portfolio of Nischal Raut, aspiring aerospace engineer with interests in experimental aerodynamics, CFD, and UAV applications." />
 
-    <!-- LIBRARIES -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    
-    <!-- FONTS -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@100;400;800&family=Rajdhani:wght@300;500;600;700&family=Syncopate:wght@400;700&display=swap" rel="stylesheet">
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Lato:wght@400;500;600&display=swap" rel="stylesheet">
 
-    <style>
-        /* CORE VARIABLES */
-        :root {
-            --c-void: #030405;
-            --c-panel: rgba(8, 12, 16, 0.9);
-            --c-border: rgba(255, 255, 255, 0.1);
-            --c-prim: #FC3D21; 
-            --c-prim-dim: rgba(252, 61, 33, 0.15);
-            --c-cyan: #00F3FF;
-            --c-text: #E0E6ED;
-            --c-muted: #64748B;
-            --nav-w: 80px;
-            --head-h: 80px;
-            --f-head: 'Syncopate', sans-serif;
-            --f-body: 'Rajdhani', sans-serif;
-            --f-code: 'JetBrains Mono', monospace;
-        }
+  <style>
+    :root {
+      --accent-red: #FC3D21;
+      --text-main: #f8f9fa;
+      --text-muted: #d1d5db;
+      --nav-bg: rgba(17, 24, 39, 0.7);
+      --bg-dark: #0b1432;
+    }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        
-        body {
-            background-color: var(--c-void); color: var(--c-text);
-            font-family: var(--f-body); overflow: hidden;
-            width: 100vw; height: 100vh; position: fixed;
-        }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-        /* LAYERS */
-        #gl-canvas { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
-        .scanlines {
-            position: fixed; inset: 0; z-index: 10; pointer-events: none;
-            background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,0) 50%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0.3));
-            background-size: 100% 4px; opacity: 0.4;
-        }
-        .vignette {
-            position: fixed; inset: 0; z-index: 9; pointer-events: none;
-            background: radial-gradient(circle, transparent 40%, #000 130%);
-        }
+    html {
+      scroll-behavior: smooth;
+    }
 
-        /* CURSOR (Desktop Only) */
-        #cursor {
-            position: fixed; top: 0; left: 0; width: 20px; height: 20px;
-            border: 1px solid var(--c-prim); transform: translate(-50%, -50%) rotate(45deg);
-            pointer-events: none; z-index: 10000; mix-blend-mode: exclusion;
-            transition: width 0.2s, height 0.2s;
-        }
-        #cursor-follower {
-            position: fixed; top: 0; left: 0; width: 40px; height: 40px;
-            border: 1px dashed var(--c-prim); border-radius: 50%;
-            transform: translate(-50%, -50%); pointer-events: none; z-index: 9999;
-            opacity: 0.5; transition: 0.1s ease-out;
-        }
-        body.hovering #cursor { width: 50px; height: 50px; background: rgba(255,255,255,0.1); }
-        @media (hover: none) { #cursor, #cursor-follower { display: none; } }
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+      *, *::before, *::after {
+        animation-duration: 0.001ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.001ms !important;
+      }
+    }
 
-        /* HUD LAYOUT */
-        header {
-            position: fixed; top: 0; left: 0; width: 100%; height: var(--head-h);
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 0 3rem; background: rgba(3, 4, 5, 0.95); border-bottom: 1px solid var(--c-border);
-            z-index: 100; backdrop-filter: blur(10px);
-        }
-        .brand { font-family: var(--f-head); font-size: 1.5rem; letter-spacing: 2px; }
-        .brand span { color: var(--c-prim); }
-        .hud-stats { display: flex; gap: 20px; font-family: var(--f-code); font-size: 10px; color: var(--c-cyan); }
+    body {
+      font-family: 'Lato', sans-serif;
+      color: var(--text-main);
+      background: linear-gradient(-45deg, #0b1432, #0B3D91, #162447, #2b2e4a);
+      background-size: 400% 400%;
+      animation: bgShift 30s ease infinite;
+      min-height: 100vh;
+    }
 
-        aside {
-            position: fixed; top: var(--head-h); left: 0; bottom: 0; width: var(--nav-w);
-            border-right: 1px solid var(--c-border); background: rgba(3, 4, 5, 0.6);
-            display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 3rem;
-            z-index: 90;
-        }
-        .nav-icon {
-            font-family: var(--f-code); font-size: 10px; color: var(--c-muted);
-            writing-mode: vertical-rl; transform: rotate(180deg); letter-spacing: 2px;
-            cursor: pointer; transition: 0.3s; padding: 10px 0;
-        }
-        .nav-icon:hover, .nav-icon.active { color: var(--c-prim); border-left: 2px solid var(--c-prim); }
+    @keyframes bgShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
 
-        /* SECTORS (SCROLLING LOGIC) */
-        .sector-wrapper {
-            position: absolute; top: 0; left: var(--nav-w); right: 0; bottom: 0;
-            display: flex; flex-direction: column;
-            opacity: 0; pointer-events: none; transform: scale(1.2); transition: 0.1s;
-            overflow-y: auto; overflow-x: hidden;
-            -webkit-overflow-scrolling: touch; /* Smooth mobile scroll */
-        }
-        .sector-wrapper.active { opacity: 1; pointer-events: auto; transform: scale(1); }
+    h1, h2, h3, h4 {
+      font-family: 'Playfair Display', serif;
+    }
 
-        /* CONTENT SPACING */
-        .content-box {
-            width: 100%; max-width: 1200px; margin: 0 auto;
-            min-height: 100vh; /* Ensure full height */
-            padding: calc(var(--head-h) + 2rem) 2rem 4rem 2rem; /* Clear Header */
-            display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 4rem; align-items: center;
-        }
-        .full-box { grid-template-columns: 1fr; max-width: 1100px; }
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
 
-        /* TYPOGRAPHY */
-        h1 { font-family: var(--f-head); font-size: 4rem; line-height: 0.9; margin-bottom: 1rem; color: #fff; }
-        h2 { font-family: var(--f-head); font-size: 2.5rem; margin-bottom: 2rem; color: var(--c-prim); }
-        p { font-size: 1.1rem; line-height: 1.7; color: var(--c-text); margin-bottom: 1.5rem; }
-        .intro-border { border-left: 3px solid var(--c-prim); padding-left: 2rem; background: linear-gradient(90deg, var(--c-prim-dim), transparent); }
+    a:hover {
+      text-decoration: underline;
+    }
 
-        /* PROFILE */
-        .profile-container { position: relative; width: 350px; height: 350px; margin: auto; }
-        .p-img { width: 100%; height: 100%; object-fit: cover; clip-path: polygon(20% 0%, 80% 0%, 100% 20%, 100% 80%, 80% 100%, 20% 100%, 0% 80%, 0% 20%); filter: grayscale(0.5); }
-        .hud-ring {
-            position: absolute; border: 1px dashed var(--c-cyan); border-radius: 50%;
-            animation: rotate 20s linear infinite; pointer-events: none; opacity: 0.5;
-        }
-        .r1 { top: -10%; left: -10%; width: 120%; height: 120%; border-color: var(--c-prim); }
-        .r2 { top: -20%; left: -20%; width: 140%; height: 140%; animation-direction: reverse; }
-        @keyframes rotate { to { transform: rotate(360deg); } }
+    button {
+      font-family: inherit;
+    }
 
-        /* ELEMENTS */
-        .glass-panel {
-            background: var(--c-panel); border: 1px solid var(--c-border); padding: 3rem;
-            backdrop-filter: blur(10px); position: relative; height: 100%;
-        }
-        .glass-panel::before { content: ''; position: absolute; top:0; left:0; width:4px; height:100%; background: var(--c-prim); }
+    :focus-visible {
+      outline: 2px solid var(--accent-red);
+      outline-offset: 3px;
+    }
 
-        /* SKILLS */
-        .skill-item { margin-bottom: 1.5rem; }
-        .skill-head { display: flex; justify-content: space-between; font-family: var(--f-code); font-size: 12px; margin-bottom: 5px; }
-        .skill-track { width: 100%; height: 4px; background: rgba(255,255,255,0.1); }
-        .skill-fill { height: 100%; background: var(--c-prim); box-shadow: 0 0 10px var(--c-prim); }
+    /* Skip link */
+    .skip-link {
+      position: absolute;
+      left: -999px;
+      top: 1rem;
+      background: #111827;
+      color: #ffffff;
+      padding: 0.5em 1em;
+      z-index: 1001;
+      border-radius: 4px;
+    }
 
-        /* PROJECTS */
-        .grid-cards { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2rem; }
-        .card {
-            background: rgba(255,255,255,0.03); border: 1px solid var(--c-border); padding: 2rem;
-            transition: 0.3s; cursor: pointer;
-        }
-        .card:hover { transform: translateY(-5px); border-color: var(--c-prim); background: rgba(252,61,33,0.1); }
-        .tag { font-family: var(--f-code); font-size: 10px; color: var(--c-cyan); border: 1px solid var(--c-cyan); padding: 2px 6px; display: inline-block; margin-bottom: 10px; }
+    .skip-link:focus {
+      left: 1rem;
+    }
 
-        /* TIMELINE */
-        .timeline-box { position: relative; padding-left: 2rem; border-left: 1px solid var(--c-muted); margin-bottom: 2rem; }
-        .timeline-box::before { content:''; position: absolute; top:0; left:-4px; width:7px; height:7px; background:var(--c-prim); border-radius:50%; }
-        .t-date { font-family: var(--f-code); font-size: 12px; color: var(--c-prim); margin-bottom: 5px; }
-        .t-title { font-family: var(--f-head); font-size: 1.1rem; color: #fff; }
-        .t-sub { font-size: 0.9rem; color: var(--c-cyan); margin-bottom: 10px; font-weight: bold; }
-        .t-desc { font-size: 0.9rem; color: #ccc; }
+    /* Navbar */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
 
-        /* WARP BUTTON */
-        .warp-trigger {
-            position: fixed; bottom: 50px; left: 50%; transform: translateX(-50%);
-            display: flex; flex-direction: column; align-items: center; z-index: 500;
-            transition: opacity 0.5s; cursor: pointer; width: 300px; max-width: 90%;
-        }
-        .warp-btn {
-            background: rgba(0,0,0,0.9); border: 1px solid var(--c-prim);
-            color: var(--c-prim); font-family: var(--f-head); font-size: 1rem;
-            padding: 15px 40px; clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
-            transition: 0.3s; text-transform: uppercase; letter-spacing: 2px;
-            pointer-events: auto; width: 100%;
-        }
-        .warp-btn:hover { background: var(--c-prim); color: #000; box-shadow: 0 0 30px var(--c-prim-glow); }
+    nav {
+      width: 100%;
+      background: var(--nav-bg);
+      backdrop-filter: blur(8px);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1em 2em;
+    }
 
-        /* BOOT SCREEN */
-        #boot-layer {
-            position: fixed; inset: 0; background: #000; z-index: 9999;
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-        }
-        .loader-bar { width: 300px; height: 2px; background: #333; position: relative; margin-top: 20px; }
-        .loader-fill { width: 0%; height: 100%; background: var(--c-prim); transition: width 0.1s; box-shadow: 0 0 20px var(--c-prim); }
+    nav .brand {
+      font-size: 1.4em;
+      font-weight: 700;
+      color: var(--accent-red);
+    }
 
-        /* MODAL */
-        #modal {
-            position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 1500;
-            display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: 0.3s;
-        }
-        #modal.open { opacity: 1; pointer-events: auto; }
-        .modal-box { width: 900px; background: #050505; border: 1px solid var(--c-prim); padding: 3rem; max-height: 90vh; overflow-y: auto; }
+    nav .brand a {
+      color: inherit;
+      text-decoration: none;
+    }
 
-        /* GALLERY */
-        .gallery-container {
-            width: 100%; height: 400px; background: #111; margin-bottom: 2rem; position: relative;
-            display: flex; align-items: center; justify-content: center; border: 1px solid var(--c-border); overflow: hidden;
-        }
-        .gallery-img { max-width: 100%; max-height: 100%; display: none; object-fit: contain; }
-        .gallery-img.active { display: block; animation: fadeIn 0.5s; }
-        @keyframes fadeIn { from{opacity:0}to{opacity:1} }
-        
-        .gal-nav {
-            position: absolute; top: 50%; transform: translateY(-50%);
-            background: rgba(0,0,0,0.5); border: none; color: var(--c-prim); font-size: 2rem;
-            cursor: pointer; padding: 10px; z-index: 10; transition: 0.3s;
-        }
-        .gal-nav:hover { background: var(--c-prim); color: #000; }
-        .gal-prev { left: 0; }
-        .gal-next { right: 0; }
+    nav .nav-links {
+      list-style: none;
+      display: flex;
+      gap: 1.5em;
+      margin: 0;
+    }
 
-        .btn-link {
-            display: inline-block; padding: 10px 20px; border: 1px solid var(--c-prim);
-            color: var(--c-prim); text-decoration: none; font-family: var(--f-head);
-            margin-right: 10px; transition: 0.3s; font-size: 0.8rem;
-        }
-        .btn-link:hover { background: var(--c-prim); color: #000; }
+    nav .nav-links li a {
+      color: var(--text-main);
+      font-weight: 500;
+      padding-bottom: 0.1em;
+      border-bottom: 2px solid transparent;
+    }
 
-        /* 
-        ========================================================================
-        MOBILE OPTIMIZATION (CRITICAL FIXES)
-        ========================================================================
-        */
-        @media (max-width: 768px) {
-            :root { --nav-w: 0px; --head-h: 60px; }
-            
-            /* RESET LAYOUT FOR MOBILE */
-            .sector-wrapper { 
-                left: 0; /* Full width */
-                padding: 0;
-            }
-            
-            .content-box { 
-                display: flex; flex-direction: column-reverse; 
-                padding: 80px 1.5rem 140px 1.5rem; /* SAFE AREA PADDING */
-                gap: 2rem;
-                min-height: auto; /* Allow natural height */
-            }
-            .full-box { display: block; }
-            
-            /* Typography Scale */
-            h1 { font-size: 2.5rem; text-align: center; }
-            h2 { font-size: 1.8rem; }
-            p { font-size: 1rem; }
+    nav .nav-links li a:hover {
+      color: var(--accent-red);
+    }
 
-            /* Profile Fix */
-            .profile-container { 
-                width: 260px; height: 260px; order: 2; margin-bottom: 1rem;
-            }
-            
-            /* Stack Grids */
-            .grid-cards, .mobile-stack { grid-template-columns: 1fr !important; gap: 2rem; }
-            
-            /* Bottom Nav Bar */
-            aside {
-                width: 100%; height: 60px; top: auto; bottom: 0; flex-direction: row;
-                border-right: none; border-top: 1px solid var(--c-border); background: #000;
-            }
-            .nav-icon { 
-                writing-mode: horizontal-tb; transform: none; flex: 1; text-align: center;
-                padding: 0; line-height: 60px; border-left: none; border-bottom: 2px solid transparent;
-            }
-            .nav-icon.active { border-left: none; border-bottom: 2px solid var(--c-prim); }
-            
-            /* Warp Button Safety Area */
-            .warp-trigger { bottom: 80px; width: 90%; }
-            
-            /* Hide Desktop Elements */
-            .hud-stats { display: none; }
-            footer { display: none; }
-            
-            /* Modal Fix */
-            .modal-box { width: 95%; padding: 1.5rem; }
-            .gallery-container { height: 250px; }
-        }
+    nav .nav-links li a.active {
+      color: var(--accent-red);
+      border-color: var(--accent-red);
+    }
 
-    </style>
+    .menu-toggle {
+      display: none;
+      font-size: 1.8em;
+      cursor: pointer;
+      color: #ffffff;
+      background: none;
+      border: none;
+    }
+
+    @media (max-width: 768px) {
+      nav {
+        padding: 0.75em 1.5em;
+      }
+
+      .menu-toggle {
+        display: block;
+      }
+
+      nav .nav-links {
+        display: none;
+        flex-direction: column;
+        background: #111827;
+        padding: 0.75em 0.5em;
+        position: absolute;
+        right: 1.5em;
+        top: 100%;
+        width: 220px;
+        border-radius: 0.5em;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+      }
+
+      nav .nav-links.active {
+        display: flex;
+      }
+
+      nav .nav-links li a {
+        padding: 0.4em 0.6em;
+      }
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    section {
+      padding: 5em 1.5em 4em;
+    }
+
+    /* Hero */
+    #hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 7em 2em 4em;
+    }
+
+    .hero-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      gap: 2em;
+    }
+
+    .hero-text h1 {
+      font-size: 3em;
+      color: var(--accent-red);
+    }
+
+    .hero-text h2 {
+      font-size: 1.5em;
+      margin-bottom: 0.8em;
+      color: var(--text-main);
+    }
+
+    .hero-text p {
+      font-size: 1.1em;
+      line-height: 1.7;
+      margin-bottom: 1.5em;
+    }
+
+    .btn {
+      display: inline-block;
+      background: var(--accent-red);
+      color: white;
+      padding: 0.8em 1.3em;
+      border-radius: 6px;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+      transition: background 0.3s ease, color 0.3s ease, transform 0.2s ease;
+    }
+
+    .btn:hover {
+      background: #ffffff;
+      color: var(--accent-red);
+      text-decoration: none;
+      transform: translateY(-1px);
+    }
+
+    .hero-img img {
+      width: 320px;
+      height: 320px;
+      border-radius: 50%;
+      object-fit: cover;
+      box-shadow: 0 0 25px rgba(0, 0, 0, 0.4);
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    @media (max-width: 900px) {
+      #hero {
+        padding-top: 6em;
+      }
+      .hero-container {
+        grid-template-columns: 1fr;
+        text-align: center;
+      }
+      .hero-img img {
+        margin-bottom: 2em;
+      }
+    }
+
+    /* Skills */
+    #skills h2 {
+      margin-bottom: 1em;
+      color: var(--accent-red);
+    }
+
+    .skill-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.2em;
+    }
+
+    .skill-card {
+      background: rgba(255, 255, 255, 0.05);
+      padding: 1.2em;
+      border-radius: 8px;
+      text-align: center;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      min-height: 110px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .skill-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 0 12px rgba(252, 61, 33, 0.5);
+    }
+
+    /* Education / Experience */
+    h2.section-title {
+      margin-bottom: 1.5em;
+      color: var(--accent-red);
+    }
+
+    .item-row {
+      display: grid;
+      grid-template-columns: 90px 1fr;
+      gap: 1.5em;
+      align-items: center;
+      background: rgba(255, 255, 255, 0.05);
+      padding: 1.2em;
+      border-radius: 10px;
+      margin-bottom: 1em;
+    }
+
+    .item-row img {
+      width: 80px;
+      height: 80px;
+      object-fit: contain;
+      background: white;
+      padding: 0.3em;
+      border-radius: 8px;
+    }
+
+    .item-info h3 {
+      margin: 0;
+      color: var(--accent-red);
+      font-size: 1.1em;
+    }
+
+    .item-info p {
+      margin: 0.3em 0;
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+
+    @media (max-width: 600px) {
+      .item-row {
+        grid-template-columns: 1fr;
+        text-align: left;
+      }
+      .item-row img {
+        margin: 0 auto 0.5em;
+      }
+    }
+
+    /* Projects */
+    #projects h2 {
+      margin-bottom: 1em;
+      color: var(--accent-red);
+    }
+
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1em;
+    }
+
+    .project-card {
+      background: rgba(255, 255, 255, 0.05);
+      padding: 1.2em;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      text-align: left;
+      border: none;
+      color: inherit;
+      width: 100%;
+      display: block;
+    }
+
+    .project-card h3 {
+      margin: 0.3em 0;
+      color: var(--accent-red);
+      font-size: 1.1em;
+    }
+
+    .project-card p {
+      margin: 0;
+      color: var(--text-muted);
+      font-size: 0.95em;
+    }
+
+    .project-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 0 12px rgba(252, 61, 33, 0.4);
+    }
+
+    /* Modals */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 9999;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.9);
+      align-items: center;
+      justify-content: center;
+      padding: 2em 1em;
+    }
+
+    .modal.open {
+      display: flex;
+    }
+
+    .modal-content {
+      background: #1f2937;
+      color: white;
+      border-radius: 10px;
+      padding: 2em;
+      max-width: 1000px;
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2em;
+      max-height: 90vh;
+      overflow-y: auto;
+      position: relative;
+    }
+
+    .modal-content:focus {
+      outline: none;
+    }
+
+    .modal h2 {
+      margin-top: 0;
+      color: var(--accent-red);
+    }
+
+    .modal .modal-close {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      font-size: 1.5em;
+      cursor: pointer;
+      background: none;
+      border: none;
+      color: #ffffff;
+    }
+
+    .details p {
+      line-height: 1.7;
+      margin-bottom: 0.8em;
+      color: var(--text-muted);
+    }
+
+    .details ul {
+      margin-left: 1.2em;
+      color: var(--text-muted);
+    }
+
+    .details ul li {
+      margin-bottom: 0.4em;
+    }
+
+    .carousel {
+      position: relative;
+    }
+
+    .carousel img {
+      width: 100%;
+      display: none;
+      border-radius: 8px;
+    }
+
+    .carousel img.active {
+      display: block;
+    }
+
+    .carousel .prev,
+    .carousel .next {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(0, 0, 0, 0.4);
+      border: none;
+      color: white;
+      font-size: 1.5em;
+      cursor: pointer;
+      width: 2.4em;
+      height: 2.4em;
+      border-radius: 999px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .carousel .prev {
+      left: 10px;
+    }
+
+    .carousel .next {
+      right: 10px;
+    }
+
+    .carousel .prev:disabled,
+    .carousel .next:disabled {
+      opacity: 0.4;
+      cursor: default;
+    }
+
+    .carousel-status {
+      margin-top: 0.75em;
+      font-size: 0.9em;
+      color: var(--text-muted);
+      text-align: center;
+    }
+
+    .image-error {
+      opacity: 0.3;
+    }
+
+    @media (max-width: 900px) {
+      .modal-content {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    body.modal-open {
+      overflow: hidden;
+    }
+
+    /* Contact */
+    #contact h2 {
+      margin-bottom: 1em;
+      color: var(--accent-red);
+    }
+
+    #contact p {
+      margin: 0.4em 0;
+      color: var(--text-main);
+    }
+
+    #contact a {
+      color: var(--accent-red);
+    }
+
+    #contact a:hover {
+      text-decoration: underline;
+    }
+  </style>
 </head>
 <body>
 
-    <!-- 3D LAYERS -->
-    <canvas id="gl-canvas"></canvas>
-    <div class="scanlines"></div>
-    <div class="vignette"></div>
-    
-    <!-- CURSORS -->
-    <div id="cursor"></div>
-    <div id="cursor-follower"></div>
+  <a href="#hero" class="skip-link">Skip to main content</a>
 
-    <!-- BOOT (AUTO) -->
-    <div id="boot-layer">
-        <div style="font-family:var(--f-head); font-size:2rem; color:white;">LOADING <span style="color:var(--c-prim)">PROFILE</span></div>
-        <div style="font-family:var(--f-code); color:var(--c-muted); margin-top:10px;">PLEASE WAIT.....</div>
-        <div class="loader-bar"><div class="loader-fill" id="load-prog"></div></div>
-    </div>
+  <header>
+    <nav aria-label="Main navigation">
+      <div class="brand">
+        <a href="#hero">Nischal Raut</a>
+      </div>
+      <button class="menu-toggle" type="button" aria-expanded="false" aria-label="Toggle navigation menu">
+        &#9776;
+      </button>
+      <ul class="nav-links">
+        <li><a href="#hero">Home</a></li>
+        <li><a href="#skills">Skills</a></li>
+        <li><a href="#education">Education</a></li>
+        <li><a href="#experience">Experience</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
 
-    <!-- HUD -->
-    <header>
-        <div class="brand">NISCHAL <span>RAUT</span></div>
-        <div class="hud-stats">
-            <div>SYS: ONLINE</div>
-            <div>MODE: PRO</div>
-            <div id="time">00:00:00</div>
+  <main id="main-content">
+    <!-- Hero -->
+    <section id="hero">
+      <div class="hero-container">
+        <div class="hero-text">
+          <h1>Nischal Raut</h1>
+          <h2>Aerospace Engineer</h2>
+          <p>
+            Hi! I'm an aspiring aerospace engineer passionate about experimental aerodynamics &amp; CFD.
+            Bridging computational models with experimental validation. <br>
+            Bachelor’s Aggregate: <b>76.71%</b>.
+          </p>
+          <a href="Nischal_Raut_CV.pdf" class="btn" download="Nischal_Raut_CV.pdf">📄 Download CV</a>
         </div>
-    </header>
-
-    <aside>
-        <div class="nav-icon active" onclick="warpTo(0)">HOME</div>
-        <div class="nav-icon" onclick="warpTo(1)">SKILLS</div>
-        <div class="nav-icon" onclick="warpTo(2)">PROJECTS</div>
-        <div class="nav-icon" onclick="warpTo(3)">HISTORY</div>
-        <div class="nav-icon" onclick="warpTo(4)">CONTACT</div>
-    </aside>
-
-    <!-- CONTENT SECTORS -->
-    
-    <!-- 0. HOME -->
-    <div id="sec-0" class="sector-wrapper active">
-        <div class="content-box">
-            <div>
-                <div style="font-family:var(--f-code); color:var(--c-prim); margin-bottom:10px;">AEROSPACE ENGINEER</div>
-                <h1>NISCHAL<br>RAUT</h1>
-                <div class="intro-border">
-                    <p>I am an Aerospace Engineering graduate with a strong focus on experimental aerodynamics, wind tunnel design, and unsteady flow analysis. My work centers on translating theoretical models into physical systems, with hands-on experience in gust generation, flow visualization, and aerodynamic testing.</p>
-                    <p>I have worked extensively with tools such as ANSYS, MATLAB, SolidWorks, and LaTeX to support both experimental and analytical investigations. Through academic projects and industry exposure, I have developed a methodical approach to problem-solving.</p>
-                </div>
-            </div>
-            <div class="profile-container">
-                <div class="hud-ring r1"></div>
-                <div class="hud-ring r2"></div>
-                <img src="nischal.png" alt="Profile" class="p-img">
-            </div>
+        <div class="hero-img">
+          <img src="profile.jpg" alt="Portrait of Nischal Raut" width="320" height="320">
         </div>
-    </div>
+      </div>
+    </section>
 
-    <!-- 1. SKILLS & VAULT -->
-    <div id="sec-1" class="sector-wrapper">
-        <div class="content-box full-box">
-            <h2>TECHNICAL SKILLS</h2>
-            <div style="display:grid; grid-template-columns:1fr 1fr; gap:4rem;" class="mobile-stack">
-                <div class="glass-panel">
-                    <h3 style="font-family:var(--f-code); color:var(--c-cyan); margin-bottom:1rem;">// COMPETENCIES</h3>
-                    
-                    <div class="skill-item">
-                        <div class="skill-head"><span>CFD (ANSYS)</span><span>70%</span></div>
-                        <div class="skill-track"><div class="skill-fill" style="width:70%"></div></div>
-                    </div>
-                    <div class="skill-item">
-                        <div class="skill-head"><span>CAD (CATIA)</span><span>80%</span></div>
-                        <div class="skill-track"><div class="skill-fill" style="width:80%"></div></div>
-                    </div>
-                    <div class="skill-item">
-                        <div class="skill-head"><span>PROGRAMMING (PYTHON/C)</span><span>60%</span></div>
-                        <div class="skill-track"><div class="skill-fill" style="width:60%"></div></div>
-                    </div>
-                    <div class="skill-item">
-                        <div class="skill-head"><span>EXPERIMENTAL (WIND TUNNEL)</span><span>80%</span></div>
-                        <div class="skill-track"><div class="skill-fill" style="width:80%"></div></div>
-                    </div>
-                </div>
+    <!-- Skills -->
+    <section id="skills">
+      <h2>Skills &amp; Tools</h2>
+      <div class="skill-grid">
+        <div class="skill-card">CAD &amp; Analysis: CATIA, ANSYS, SolidWorks, MATLAB</div>
+        <div class="skill-card">Programming: C, Python, MATLAB scripting</div>
+        <div class="skill-card">Simulation: Wind Tunnel Testing, Flow Visualization</div>
+        <div class="skill-card">Productivity: MS Office, LaTeX, AutoCAD</div>
+      </div>
+    </section>
 
-                <div class="glass-panel" style="text-align:center; border-style:dashed; cursor:pointer;" onclick="unlockVault()">
-                    <div style="font-size:3rem; margin-bottom:1rem;">🔒</div>
-                    <h3 style="margin-bottom:1rem;">ACADEMIC PERFORMANCE</h3>
-                    <div style="font-family:var(--f-code); color:var(--c-muted);">IOE PULCHOWK RECORDS</div>
-                    <div id="vault-viz" style="display:none; height:150px; align-items:flex-end; gap:5px; margin-top:20px;"></div>
-                    <div id="vault-res" style="display:none; margin-top:10px; font-weight:bold; color:var(--c-prim);">AGGREGATE: 76.71%</div>
-                </div>
-            </div>
+    <!-- Education -->
+    <section id="education">
+      <h2 class="section-title">Education</h2>
+      <div class="item-row">
+        <img src="ioe.png" alt="Institute of Engineering, Pulchowk Campus logo" loading="lazy">
+        <div class="item-info">
+          <h3>Institute of Engineering, Pulchowk</h3>
+          <p>Bachelor’s in Aerospace Engineering (2019–2025)</p>
+          <p>Aggregate: 76.71%</p>
         </div>
-    </div>
-
-    <!-- 2. PROJECTS -->
-    <div id="sec-2" class="sector-wrapper">
-        <div class="content-box full-box">
-            <h2>ACADEMIC PROJECTS</h2>
-            <div class="grid-cards mobile-stack">
-                <div class="card" onclick="openModal('tunnel')">
-                    <span class="tag">RESEARCH</span>
-                    <h3>SUBSONIC WIND TUNNEL</h3>
-                    <p style="font-size:0.9rem; color:#ccc;">Design and dev of open-jet tunnel with gust generator.</p>
-                </div>
-                <div class="card" onclick="openModal('b52')">
-                    <span class="tag">DESIGN</span>
-                    <h3>B-52 AIR LAUNCH</h3>
-                    <p style="font-size:0.9rem; color:#ccc;">Retrofitting B-52 for smallsat launch feasibility.</p>
-                </div>
-                <div class="card" onclick="openModal('glider')">
-                    <span class="tag">FABRICATION</span>
-                    <h3>STYROFOAM GLIDER</h3>
-                    <p style="font-size:0.9rem; color:#ccc;">Scratch-built RC aircraft with XFLR5 Analysis.</p>
-                </div>
-                <div class="card" onclick="openModal('f15')">
-                    <span class="tag">CFD</span>
-                    <h3>F-15 FLOW ANALYSIS</h3>
-                    <p style="font-size:0.9rem; color:#ccc;">Supersonic flow simulation (Mach 2.5) in ANSYS.</p>
-                </div>
-            </div>
+      </div>
+      <div class="item-row">
+        <img src="omega.png" alt="Omega International College logo" loading="lazy">
+        <div class="item-info">
+          <h3>Omega International College</h3>
+          <p>+2 Science, GPA: 3.5</p>
         </div>
-    </div>
-
-    <!-- 3. HISTORY (WORK & EDUCATION) -->
-    <div id="sec-3" class="sector-wrapper">
-        <div class="content-box full-box">
-            <div style="display:grid; grid-template-columns:1fr 1fr; gap:3rem;" class="mobile-stack">
-                <!-- WORK -->
-                <div class="glass-panel">
-                    <h3 style="color:var(--c-prim); margin-bottom:2rem;">PROFESSIONAL EXPERIENCE</h3>
-                    <div class="timeline-box">
-                        <div class="t-date">DEC 2025 - PRESENT</div>
-                        <div class="t-title">ASSOCIATE ENGINEER</div>
-                        <div class="t-sub">AIRBUS INDIA</div>
-                        <div class="t-desc">Integration testing of avionics subsystems. Data analytics for flight test optimization.</div>
-                    </div>
-                    <div class="timeline-box">
-                        <div class="t-date">JULY 2025 - NOV 2025</div>
-                        <div class="t-title">SYSTEM TESTING INTERN</div>
-                        <div class="t-sub">AIRBUS INDIA</div>
-                        <div class="t-desc">System V&V. Functional testing on simulation benches.</div>
-                    </div>
-                    <div class="timeline-box">
-                        <div class="t-date">NOV 2024 - FEB 2025</div>
-                        <div class="t-title">ENGINEERING INTERN</div>
-                        <div class="t-sub">AIRLFT TECHNOLOGY</div>
-                        <div class="t-desc">Drone mapping for Kathmandu Metropolitan City.</div>
-                    </div>
-                </div>
-
-                <!-- EDUCATION -->
-                <div class="glass-panel">
-                    <h3 style="color:var(--c-cyan); margin-bottom:2rem;">ACADEMIC TRAJECTORY</h3>
-                    <div class="timeline-box">
-                        <div class="t-date">2019 - 2025</div>
-                        <div class="t-title">B.E. AEROSPACE ENGINEERING</div>
-                        <div class="t-sub">IOE PULCHOWK CAMPUS</div>
-                        <div class="t-desc">Specialization in Aerodynamics & Structures.<br>Aggregate: 76.71%</div>
-                    </div>
-                    <div class="timeline-box">
-                        <div class="t-date">PRIOR</div>
-                        <div class="t-title">+2 SCIENCE</div>
-                        <div class="t-sub">OMEGA INT'L COLLEGE</div>
-                        <div class="t-desc">GPA: 3.5</div>
-                    </div>
-                    <div class="timeline-box">
-                        <div class="t-date">PRIOR</div>
-                        <div class="t-title">SECONDARY EDUCATION EXAMINATION</div>
-                        <div class="t-sub">WEST WING SCHOOL</div>
-                        <div class="t-desc">GPA: 4.0</div>
-                    </div>
-                </div>
-            </div>
+      </div>
+      <div class="item-row">
+        <img src="westwing.png" alt="West Wing Secondary School logo" loading="lazy">
+        <div class="item-info">
+          <h3>West Wing Secondary School</h3>
+          <p>SEE GPA: 4.0</p>
         </div>
-    </div>
+      </div>
+    </section>
 
-    <!-- 4. CONTACT -->
-    <div id="sec-4" class="sector-wrapper">
-        <div class="content-box full-box">
-            <div class="glass-panel" style="text-align:center; max-width:500px; margin:auto;">
-                <h2>GET IN TOUCH</h2>
-                <p>nischalraut6@gmail.com</p>
-                <div style="margin-bottom:2rem;">
-                    <a href="https://linkedin.com" target="_blank" class="btn-link">LINKEDIN</a>
-                    <a href="https://github.com" target="_blank" class="btn-link">GITHUB</a>
-                </div>
-                <button class="warp-btn" onclick="warpTo(0)">RETURN TO HOME</button>
-            </div>
+    <!-- Experience -->
+    <section id="experience">
+      <h2 class="section-title">Experience</h2>
+      <div class="item-row">
+        <img src="airlift.png" alt="Airlift Technology logo" loading="lazy">
+        <div class="item-info">
+          <h3>Engineering Intern – Airlift Technology, Nepal</h3>
+          <p>2024 – Present</p>
+          <p>• Drone mapping &amp; photogrammetry for Kathmandu Metropolitan City.</p>
+          <p>• Generated 3D terrain models &amp; orthomosaics.</p>
+          <p>• Supported UAV mission planning &amp; calibration.</p>
         </div>
-    </div>
+      </div>
+    </section>
 
-    <!-- WARP TRIGGER BUTTON (Dynamic Label) -->
-    <div class="warp-trigger" onclick="nextSector()">
-        <div style="font-family:var(--f-code); font-size:10px; margin-bottom:5px; color:var(--c-muted);">NAVIGATION</div>
-        <button class="warp-btn" id="warp-label">GO TO SKILLS</button>
-    </div>
+    <!-- Projects -->
+    <section id="projects">
+      <h2>Projects</h2>
+      <div class="projects-grid">
+        <button class="project-card" type="button" data-modal-target="modal1">
+          <h3>Subsonic Wind Tunnel</h3>
+          <p>Final Year Project</p>
+        </button>
+        <button class="project-card" type="button" data-modal-target="modal2">
+          <h3>B-52 Air Launch</h3>
+          <p>Conceptual Rocket Carrier</p>
+        </button>
+        <button class="project-card" type="button" data-modal-target="modal3">
+          <h3>Styrofoam Glider</h3>
+          <p>Design + Test flights</p>
+        </button>
+        <button class="project-card" type="button" data-modal-target="modal4">
+          <h3>U-2 Conversion</h3>
+          <p>Payload Testbed Study</p>
+        </button>
+        <button class="project-card" type="button" data-modal-target="modal5">
+          <h3>F-15 Scale Model</h3>
+          <p>Lift-Drag CFD Study</p>
+        </button>
+        <button class="project-card" type="button" data-modal-target="modal6">
+          <h3>Canteen Billing System</h3>
+          <p>C Program</p>
+        </button>
+      </div>
+    </section>
 
-    <!-- MODAL -->
-    <div id="modal">
-        <div class="modal-box">
-            <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--c-border); padding-bottom:1rem; margin-bottom:1rem;">
-                <h2 id="m-title" style="margin:0; font-size:1.5rem;">TITLE</h2>
-                <div style="cursor:pointer; color:var(--c-prim);" onclick="closeModal()">[ CLOSE ]</div>
-            </div>
-            
-            <!-- GALLERY -->
-            <div class="gallery-container">
-                <button class="gal-nav gal-prev" onclick="moveSlide(-1)">&#10094;</button>
-                <div id="gallery-track" style="width:100%; height:100%; display:flex; justify-content:center; align-items:center; color:#333;">
-                    <!-- IMAGES INJECTED HERE -->
-                </div>
-                <button class="gal-nav gal-next" onclick="moveSlide(1)">&#10095;</button>
-            </div>
+    <!-- Project Modals -->
 
-            <p id="m-desc" style="color:#ccc; line-height:1.7;">...</p>
+    <!-- Modal 1: Subsonic Wind Tunnel -->
+    <div class="modal" id="modal1" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="modal1-title" aria-describedby="modal1-desc">
+      <div class="modal-content" tabindex="-1">
+        <button class="modal-close" type="button" aria-label="Close dialog">&times;</button>
+        <div class="details">
+          <h2 id="modal1-title">Subsonic Wind Tunnel</h2>
+          <p id="modal1-desc">
+            Designed &amp; built an open-jet subsonic wind tunnel with a gust generator. Turbulent intensity
+            of 0.88% validated experimentally.
+          </p>
+          <ul>
+            <li>Open-jet configuration with controlled test section.</li>
+            <li>Integration of gust generator for unsteady flow experiments.</li>
+            <li>Experimental validation of turbulence characteristics.</li>
+          </ul>
         </div>
+        <div class="carousel" data-carousel>
+          <div class="carousel-images">
+            <img src="windtunnel1.jpeg" alt="Subsonic wind tunnel build - overall view" loading="lazy">
+            <img src="windtunnel2.jpeg" alt="Subsonic wind tunnel test section close-up" loading="lazy">
+            <img src="windtunnel3.jpeg" alt="Subsonic wind tunnel during operation" loading="lazy">
+          </div>
+          <button class="prev" type="button" data-carousel-prev aria-label="Previous image">&#10094;</button>
+          <button class="next" type="button" data-carousel-next aria-label="Next image">&#10095;</button>
+          <div class="carousel-status" data-carousel-status aria-live="polite"></div>
+        </div>
+      </div>
     </div>
 
-    <script>
-        /* 
-        ========================================================================
-        1. AUDIO ENGINE
-        ========================================================================
-        */
-        let audioCtx;
-        let audioEnabled = false;
+    <!-- Modal 2: B-52 Air Launch -->
+    <div class="modal" id="modal2" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="modal2-title" aria-describedby="modal2-desc">
+      <div class="modal-content" tabindex="-1">
+        <button class="modal-close" type="button" aria-label="Close dialog">&times;</button>
+        <div class="details">
+          <h2 id="modal2-title">B-52 Air Launch</h2>
+          <p id="modal2-desc">
+            Conceptual rocket carrier study using the B-52 platform for air-launch missions.
+          </p>
+          <ul>
+            <li>Configuration-level conceptual study.</li>
+            <li>Focused on carrier–payload integration and mission profile concepts.</li>
+            <li>Detailed technical documentation and imagery to be added.</li>
+          </ul>
+        </div>
+        <div class="carousel" data-carousel>
+          <div class="carousel-images">
+            <!-- No images currently available for this project. -->
+          </div>
+          <button class="prev" type="button" data-carousel-prev aria-label="Previous image">&#10094;</button>
+          <button class="next" type="button" data-carousel-next aria-label="Next image">&#10095;</button>
+          <div class="carousel-status" data-carousel-status aria-live="polite"></div>
+        </div>
+      </div>
+    </div>
 
-        function tryInitAudio() {
-            if (audioEnabled) return;
-            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            audioEnabled = true;
+    <!-- Modal 3: Styrofoam Glider -->
+    <div class="modal" id="modal3" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="modal3-title" aria-describedby="modal3-desc">
+      <div class="modal-content" tabindex="-1">
+        <button class="modal-close" type="button" aria-label="Close dialog">&times;</button>
+        <div class="details">
+          <h2 id="modal3-title">Styrofoam Glider</h2>
+          <p id="modal3-desc">
+            Hand-built styrofoam glider project involving basic aerodynamic design and test flights.
+          </p>
+          <ul>
+            <li>Conceptual and practical design of a small glider.</li>
+            <li>Physical construction using styrofoam and simple structural elements.</li>
+            <li>Test flights used for qualitative performance assessment.</li>
+          </ul>
+        </div>
+        <div class="carousel" data-carousel>
+          <div class="carousel-images">
+            <!-- No images currently available for this project. -->
+          </div>
+          <button class="prev" type="button" data-carousel-prev aria-label="Previous image">&#10094;</button>
+          <button class="next" type="button" data-carousel-next aria-label="Next image">&#10095;</button>
+          <div class="carousel-status" data-carousel-status aria-live="polite"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal 4: U-2 Conversion -->
+    <div class="modal" id="modal4" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="modal4-title" aria-describedby="modal4-desc">
+      <div class="modal-content" tabindex="-1">
+        <button class="modal-close" type="button" aria-label="Close dialog">&times;</button>
+        <div class="details">
+          <h2 id="modal4-title">U-2 Conversion</h2>
+          <p id="modal4-desc">
+            Conceptual study of converting a U-2 style platform into a payload testbed.
+          </p>
+          <ul>
+            <li>Focused on payload integration and mission concept exploration.</li>
+            <li>High-altitude operations considered at conceptual level.</li>
+            <li>Detailed analyses and imagery to be added in future updates.</li>
+          </ul>
+        </div>
+        <div class="carousel" data-carousel>
+          <div class="carousel-images">
+            <!-- No images currently available for this project. -->
+          </div>
+          <button class="prev" type="button" data-carousel-prev aria-label="Previous image">&#10094;</button>
+          <button class="next" type="button" data-carousel-next aria-label="Next image">&#10095;</button>
+          <div class="carousel-status" data-carousel-status aria-live="polite"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal 5: F-15 Scale Model -->
+    <div class="modal" id="modal5" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="modal5-title" aria-describedby="modal5-desc">
+      <div class="modal-content" tabindex="-1">
+        <button class="modal-close" type="button" aria-label="Close dialog">&times;</button>
+        <div class="details">
+          <h2 id="modal5-title">F-15 Scale Model</h2>
+          <p id="modal5-desc">
+            Scale model project focused on lift–drag CFD study of an F-15 configuration.
+          </p>
+          <ul>
+            <li>CFD-oriented investigation of aerodynamic performance.</li>
+            <li>Use of a scale model representation for analysis setup.</li>
+            <li>Further numerical details and results to be documented.</li>
+          </ul>
+        </div>
+        <div class="carousel" data-carousel>
+          <div class="carousel-images">
+            <!-- No images currently available for this project. -->
+          </div>
+          <button class="prev" type="button" data-carousel-prev aria-label="Previous image">&#10094;</button>
+          <button class="next" type="button" data-carousel-next aria-label="Next image">&#10095;</button>
+          <div class="carousel-status" data-carousel-status aria-live="polite"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal 6: Canteen Billing System -->
+    <div class="modal" id="modal6" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="modal6-title" aria-describedby="modal6-desc">
+      <div class="modal-content" tabindex="-1">
+        <button class="modal-close" type="button" aria-label="Close dialog">&times;</button>
+        <div class="details">
+          <h2 id="modal6-title">Canteen Billing System</h2>
+          <p id="modal6-desc">
+            A C language program implementing a simple canteen billing system.
+          </p>
+          <ul>
+            <li>Structured programming in C for basic billing operations.</li>
+            <li>Focus on control flow, data handling, and user interaction in console.</li>
+            <li>Source code and sample runs can be added in future updates.</li>
+          </ul>
+        </div>
+        <div class="carousel" data-carousel>
+          <div class="carousel-images">
+            <!-- No images currently available for this project. -->
+          </div>
+          <button class="prev" type="button" data-carousel-prev aria-label="Previous image">&#10094;</button>
+          <button class="next" type="button" data-carousel-next aria-label="Next image">&#10095;</button>
+          <div class="carousel-status" data-carousel-status aria-live="polite"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Contact -->
+    <section id="contact">
+      <h2>Contact</h2>
+      <p>Email: <a href="mailto:nischalraut6@gmail.com">nischalraut6@gmail.com</a></p>
+      <p>Phone: <a href="tel:+9779813980068">+977-9813980068</a></p>
+      <p>LinkedIn: <a href="https://www.linkedin.com/in/nischal-raut-1b2227314/" target="_blank" rel="noopener noreferrer">linkedin.com/in/nischal-raut</a></p>
+    </section>
+  </main>
+
+  <script>
+    (function () {
+      'use strict';
+
+      const nav = document.querySelector('nav');
+      const menuToggle = nav ? nav.querySelector('.menu-toggle') : null;
+      const navList = nav ? nav.querySelector('.nav-links') : null;
+      const navLinks = nav ? nav.querySelectorAll('.nav-links a[href^="#"]') : [];
+
+      function closeMobileMenu() {
+        if (!navList || !menuToggle) return;
+        if (window.innerWidth <= 768) {
+          navList.classList.remove('active');
+          menuToggle.setAttribute('aria-expanded', 'false');
         }
+      }
 
-        document.addEventListener('click', tryInitAudio, {once:true});
-        document.addEventListener('touchstart', tryInitAudio, {once:true});
+      // Mobile menu toggle
+      if (menuToggle && navList) {
+        menuToggle.addEventListener('click', function () {
+          const isActive = navList.classList.toggle('active');
+          menuToggle.setAttribute('aria-expanded', String(isActive));
+        });
+      }
 
-        function playWarpSound(duration) {
-            if(!audioCtx) return;
-            const osc = audioCtx.createOscillator();
-            const gain = audioCtx.createGain();
-            osc.frequency.setValueAtTime(100, audioCtx.currentTime);
-            osc.frequency.exponentialRampToValueAtTime(12000, audioCtx.currentTime + duration);
-            gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
-            osc.connect(gain);
-            gain.connect(audioCtx.destination);
-            osc.start();
-            osc.stop(audioCtx.currentTime + duration);
-        }
+      // Smooth scrolling with offset for nav links
+      if (nav && navLinks.length > 0) {
+        navLinks.forEach(function (link) {
+          link.addEventListener('click', function (event) {
+            const href = link.getAttribute('href');
+            if (!href || !href.startsWith('#')) return;
+            const targetId = href.slice(1);
+            const target = document.getElementById(targetId);
+            if (!target) return;
 
-        function playClick() {
-            if(!audioCtx) return;
-            const osc = audioCtx.createOscillator();
-            const gain = audioCtx.createGain();
-            osc.type = 'square';
-            osc.frequency.value = 800;
-            gain.gain.value = 0.05;
-            osc.connect(gain);
-            gain.connect(audioCtx.destination);
-            osc.start();
-            osc.stop(audioCtx.currentTime + 0.05);
-        }
+            event.preventDefault();
 
-        /* 
-        ========================================================================
-        2. AUTO-BOOT SEQUENCE
-        ========================================================================
-        */
-        window.onload = () => {
-            const bar = document.getElementById('load-prog');
-            let width = 0;
-            const int = setInterval(() => {
-                width += Math.random() * 5;
-                if(width > 100) width = 100;
-                bar.style.width = width + '%';
-                
-                if(width === 100) {
-                    clearInterval(int);
-                    setTimeout(() => {
-                        gsap.to('#boot-layer', { opacity: 0, duration: 1, pointerEvents:'none' });
-                        init3D();
-                    }, 500);
-                }
-            }, 50);
-        };
+            const navHeight = nav.offsetHeight || 0;
+            const rect = target.getBoundingClientRect();
+            const offsetTop = window.scrollY + rect.top - navHeight - 16;
+            const prefersReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-        /* 
-        ========================================================================
-        3. THREE.JS ENGINE
-        ========================================================================
-        */
-        let scene, camera, renderer, globe, flowField, starField;
-        let flightState = { speed: 0 };
-
-        function init3D() {
-            const canvas = document.getElementById('gl-canvas');
-            scene = new THREE.Scene();
-            camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 2000);
-            camera.position.z = 20;
-
-            renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
-            renderer.setSize(window.innerWidth, window.innerHeight);
-
-            // Globe
-            const gGeo = new THREE.IcosahedronGeometry(8, 2);
-            const gMat = new THREE.MeshBasicMaterial({ color: 0x112233, wireframe: true, transparent: true, opacity: 0.2 });
-            globe = new THREE.Mesh(gGeo, gMat);
-            scene.add(globe);
-
-            // Particles
-            const pGeo = new THREE.BufferGeometry();
-            const pCount = 2000;
-            const pPos = new Float32Array(pCount * 3);
-            for(let i=0; i<pCount*3; i++) pPos[i] = (Math.random()-0.5) * 60;
-            pGeo.setAttribute('position', new THREE.BufferAttribute(pPos, 3));
-            const pMat = new THREE.PointsMaterial({ size: 0.1, color: 0xFC3D21, transparent: true, opacity: 0.6 });
-            flowField = new THREE.Points(pGeo, pMat);
-            scene.add(flowField);
-
-            // Stars
-            const sGeo = new THREE.BufferGeometry();
-            const sCount = 5000;
-            const sPos = new Float32Array(sCount * 3);
-            for(let i=0; i<sCount*3; i++) sPos[i] = (Math.random()-0.5) * 800;
-            sGeo.setAttribute('position', new THREE.BufferAttribute(sPos, 3));
-            const sMat = new THREE.PointsMaterial({ size: 0.5, color: 0xFFFFFF });
-            starField = new THREE.Points(sGeo, sMat);
-            starField.visible = false;
-            scene.add(starField);
-
-            animate();
-        }
-
-        function animate() {
-            globe.rotation.y += 0.002;
-            flowField.rotation.y -= 0.001;
-            globe.rotation.x += (window.mouseY * 0.0001 - globe.rotation.x) * 0.05;
-            globe.rotation.y += (window.mouseX * 0.0001 - globe.rotation.y) * 0.05;
-
-            // WARP VISUALS
-            if(flightState.speed > 0.5) {
-                starField.visible = true;
-                globe.visible = false;
-                flowField.visible = false;
-                const pos = starField.geometry.attributes.position.array;
-                for(let i=2; i<pos.length; i+=3) {
-                    pos[i] += flightState.speed * 5;
-                    if(pos[i] > 200) pos[i] = -600;
-                }
-                starField.geometry.attributes.position.needsUpdate = true;
-                starField.scale.z = 1 + flightState.speed;
-            } else {
-                starField.visible = false;
-                globe.visible = true;
-                flowField.visible = true;
-            }
-
-            renderer.render(scene, camera);
-            requestAnimationFrame(animate);
-        }
-
-        /* 
-        ========================================================================
-        4. NAVIGATION LOGIC
-        ========================================================================
-        */
-        let currentIdx = 0;
-        const totalSec = 5;
-        let isWarping = false;
-        const sectionNames = ["HOME", "SKILLS", "PROJECTS", "HISTORY", "CONTACT"];
-
-        function nextSector() {
-            warpTo((currentIdx + 1) % totalSec);
-        }
-
-        function updateButtonLabel(idx) {
-            const nextIdx = (idx + 1) % totalSec;
-            document.getElementById('warp-label').innerText = `GO TO ${sectionNames[nextIdx]}`;
-        }
-
-        function warpTo(idx) {
-            if(isWarping || idx === currentIdx) return;
-            isWarping = true;
-            playClick();
-
-            const dist = Math.abs(idx - currentIdx);
-            const duration = 1.0 + (dist * 0.3);
-            playWarpSound(duration);
-
-            const oldSec = document.getElementById(`sec-${currentIdx}`);
-            const newSec = document.getElementById(`sec-${idx}`);
-            const oldDot = document.querySelectorAll('.nav-icon')[currentIdx];
-            const newDot = document.querySelectorAll('.nav-icon')[idx];
-
-            oldSec.classList.remove('active');
-            if(oldDot) oldDot.classList.remove('active');
-            document.querySelector('.warp-trigger').style.opacity = 0;
-
-            gsap.to(flightState, {
-                speed: 20, 
-                duration: duration * 0.4,
-                ease: "power2.in",
-                onComplete: () => {
-                    gsap.to(flightState, {
-                        speed: 0,
-                        duration: duration * 0.6,
-                        ease: "power2.out",
-                        onComplete: () => {
-                            isWarping = false;
-                            newSec.classList.add('active');
-                            if(newDot) newDot.classList.add('active');
-                            currentIdx = idx;
-                            updateButtonLabel(currentIdx);
-                            document.querySelector('.warp-trigger').style.opacity = 1;
-                        }
-                    });
-                }
+            window.scrollTo({
+              top: offsetTop < 0 ? 0 : offsetTop,
+              behavior: prefersReducedMotion ? 'auto' : 'smooth'
             });
-        }
 
-        /* 
-        ========================================================================
-        5. INTERACTIONS
-        ========================================================================
-        */
-        window.mouseX = 0; window.mouseY = 0;
-        document.addEventListener('mousemove', e => {
-            window.mouseX = e.clientX - window.innerWidth/2;
-            window.mouseY = e.clientY - window.innerHeight/2;
-            const cursor = document.getElementById('cursor');
-            const follow = document.getElementById('cursor-follower');
-            gsap.to(cursor, { x: e.clientX, y: e.clientY, duration: 0 });
-            gsap.to(follow, { x: e.clientX, y: e.clientY, duration: 0.15 });
-            
-            if(e.target.tagName === 'BUTTON' || e.target.classList.contains('card') || e.target.classList.contains('nav-icon')) {
-                document.body.classList.add('hovering');
-            } else {
-                document.body.classList.remove('hovering');
+            closeMobileMenu();
+          });
+        });
+      }
+
+      // Active nav link via IntersectionObserver
+      const sections = document.querySelectorAll('main section[id]');
+      const sectionIdToNavLink = {};
+      navLinks.forEach(function (link) {
+        const href = link.getAttribute('href');
+        if (href && href.startsWith('#')) {
+          sectionIdToNavLink[href.slice(1)] = link;
+        }
+      });
+
+      if ('IntersectionObserver' in window && sections.length > 0) {
+        const observer = new IntersectionObserver(function (entries) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+              const id = entry.target.id;
+              const activeLink = sectionIdToNavLink[id];
+              if (activeLink) {
+                Object.keys(sectionIdToNavLink).forEach(function (key) {
+                  sectionIdToNavLink[key].classList.remove('active');
+                });
+                activeLink.classList.add('active');
+              }
             }
+          });
+        }, {
+          root: null,
+          threshold: 0.25,
+          rootMargin: '0px 0px -50% 0px'
         });
 
-        setInterval(() => {
-            const n = new Date();
-            document.getElementById('time').innerText = n.toISOString().split('T')[1].split('.')[0];
-        }, 1000);
+        sections.forEach(function (section) {
+          observer.observe(section);
+        });
+      }
 
-        // Vault
-        const marks = [{v:59.68},{v:67.43},{v:65.29},{v:69.14},{v:78.4},{v:83.75},{v:86.15},{v:89.2}];
-        function unlockVault() {
-            playClick();
-            const viz = document.getElementById('vault-viz');
-            viz.style.display = 'flex';
-            document.getElementById('vault-res').style.display = 'block';
-            viz.innerHTML = marks.map(m => `<div style="flex:1; background:var(--c-prim); height:0%; transition:height 1s ease;" data-h="${m.v}%"></div>`).join('');
-            setTimeout(() => viz.querySelectorAll('div').forEach(d => d.style.height = d.getAttribute('data-h')), 100);
+      // Modal logic
+      let activeModal = null;
+      let lastFocusedElement = null;
+
+      function openModal(modal) {
+        if (!modal) return;
+        lastFocusedElement = document.activeElement;
+        modal.classList.add('open');
+        modal.setAttribute('aria-hidden', 'false');
+        document.body.classList.add('modal-open');
+        activeModal = modal;
+
+        const focusableSelectors = 'button,[href],input,select,textarea,[tabindex]:not([tabindex="-1"])';
+        const focusable = modal.querySelectorAll(focusableSelectors);
+        if (focusable.length > 0) {
+          focusable[0].focus();
+        } else {
+          const content = modal.querySelector('.modal-content');
+          if (content) {
+            content.focus();
+          } else {
+            modal.focus();
+          }
+        }
+      }
+
+      function closeModal(modal) {
+        if (!modal) return;
+        modal.classList.remove('open');
+        modal.setAttribute('aria-hidden', 'true');
+        document.body.classList.remove('modal-open');
+        activeModal = null;
+
+        if (lastFocusedElement && typeof lastFocusedElement.focus === 'function') {
+          lastFocusedElement.focus();
+        }
+      }
+
+      // Attach modal open events to project cards
+      const projectCards = document.querySelectorAll('.project-card[data-modal-target]');
+      projectCards.forEach(function (card) {
+        card.addEventListener('click', function () {
+          const modalId = card.getAttribute('data-modal-target');
+          if (!modalId) return;
+          const modal = document.getElementById(modalId);
+          if (modal) {
+            openModal(modal);
+          }
+        });
+      });
+
+      // Attach modal close & backdrop events
+      const modals = document.querySelectorAll('.modal');
+      modals.forEach(function (modal) {
+        const closeButton = modal.querySelector('.modal-close');
+        if (closeButton) {
+          closeButton.addEventListener('click', function () {
+            closeModal(modal);
+          });
         }
 
-        /* 
-        ========================================================================
-        6. MODAL & GALLERY
-        ========================================================================
-        */
-        const mData = {
-            tunnel: { 
-                t:"WIND TUNNEL", 
-                d:"Design of open-jet tunnel. Validated 0.88% TI.",
-                imgs: ["windtunnel2.jpeg", "vane.jpg", "gust.png", "simulation.png", "team.png"] 
-            },
-            b52: { t:"B-52 LAUNCH", d:"Feasibility of B-52 as smallsat carrier.", imgs: ["apd1.jpg", "apd2.jpg", "b521.png", "b522.png"] },
-            glider: { t:"UAV GLIDER", d:"Scratch-built RC aircraft.", imgs: [] },
-            f15: { t:"CFD ANALYSIS", d:"Mach 2.5 simulation in ANSYS.", imgs: [] }
-        };
+        // Backdrop click
+        modal.addEventListener('click', function (event) {
+          if (event.target === modal) {
+            closeModal(modal);
+          }
+        });
+      });
 
-        let activeImgs = [];
-        let curSlide = 0;
+      // Escape key & focus trap
+      document.addEventListener('keydown', function (event) {
+        if (event.key === 'Escape' || event.key === 'Esc') {
+          if (activeModal) {
+            event.preventDefault();
+            closeModal(activeModal);
+          }
+        } else if (event.key === 'Tab' && activeModal) {
+          const focusableSelectors = 'button,[href],input,select,textarea,[tabindex]:not([tabindex="-1"])';
+          const focusableElements = activeModal.querySelectorAll(focusableSelectors);
+          if (focusableElements.length === 0) {
+            event.preventDefault();
+            return;
+          }
+          const first = focusableElements[0];
+          const last = focusableElements[focusableElements.length - 1];
 
-        function openModal(id) {
-            playClick();
-            const d = mData[id];
-            document.getElementById('m-title').innerText = d.t;
-            document.getElementById('m-desc').innerText = d.d;
-            
-            // Build Gallery
-            activeImgs = d.imgs;
-            curSlide = 0;
-            renderGallery();
-            
-            document.getElementById('modal').classList.add('open');
-        }
-
-        function renderGallery() {
-            const track = document.getElementById('gallery-track');
-            track.innerHTML = '';
-            
-            if(activeImgs.length === 0) {
-                track.innerHTML = '<div style="color:#555;">NO IMAGES AVAILABLE</div>';
-                return;
+          if (event.shiftKey) {
+            if (document.activeElement === first || document.activeElement === activeModal) {
+              event.preventDefault();
+              last.focus();
             }
+          } else {
+            if (document.activeElement === last) {
+              event.preventDefault();
+              first.focus();
+            }
+          }
+        }
+      });
 
-            activeImgs.forEach((src, i) => {
-                const img = document.createElement('img');
-                img.src = src;
-                img.style.display = i === curSlide ? 'block' : 'none';
-                img.classList.add('gallery-img');
-                img.onerror = () => { img.style.display = 'none'; }; // Hide if missing
-                if(i === curSlide) img.classList.add('active');
-                track.appendChild(img);
-            });
+      // Carousel initialization
+      const carousels = document.querySelectorAll('[data-carousel]');
+      carousels.forEach(function (carousel) {
+        const images = Array.from(carousel.querySelectorAll('img'));
+        const prevBtn = carousel.querySelector('[data-carousel-prev]');
+        const nextBtn = carousel.querySelector('[data-carousel-next]');
+        const statusEl = carousel.querySelector('[data-carousel-status]');
+
+        let currentIndex = 0;
+
+        function update(index) {
+          if (!images || images.length === 0) {
+            if (statusEl) {
+              statusEl.textContent = 'No images available yet.';
+            }
+            if (prevBtn) prevBtn.disabled = true;
+            if (nextBtn) nextBtn.disabled = true;
+            return;
+          }
+
+          currentIndex = (index + images.length) % images.length;
+
+          images.forEach(function (img, idx) {
+            img.classList.toggle('active', idx === currentIndex);
+          });
+
+          if (statusEl) {
+            statusEl.textContent = 'Image ' + (currentIndex + 1) + ' of ' + images.length;
+          }
+
+          const disableControls = images.length <= 1;
+          if (prevBtn) prevBtn.disabled = disableControls;
+          if (nextBtn) nextBtn.disabled = disableControls;
         }
 
-        function moveSlide(dir) {
-            if(activeImgs.length === 0) return;
-            curSlide = (curSlide + dir + activeImgs.length) % activeImgs.length;
-            renderGallery();
+        images.forEach(function (img, idx) {
+          img.addEventListener('error', function () {
+            img.classList.add('image-error');
+            if (statusEl) {
+              const remaining = images.filter(function (im) {
+                return !im.classList.contains('image-error');
+              });
+              if (remaining.length === 0) {
+                statusEl.textContent = 'Images failed to load.';
+              }
+            }
+          });
+          // Mark first image active initially
+          if (idx === 0) {
+            img.classList.add('active');
+          }
+        });
+
+        update(0);
+
+        if (prevBtn) {
+          prevBtn.addEventListener('click', function () {
+            if (!images || images.length === 0) return;
+            update(currentIndex - 1);
+          });
         }
 
-        function closeModal() {
-            playClick();
-            document.getElementById('modal').classList.remove('open');
+        if (nextBtn) {
+          nextBtn.addEventListener('click', function () {
+            if (!images || images.length === 0) return;
+            update(currentIndex + 1);
+          });
         }
+      });
 
-    </script>
+    })();
+  </script>
 </body>
 </html>
-
-
-
-
