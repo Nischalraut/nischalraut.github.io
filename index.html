@@ -1,579 +1,1781 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="js-loading">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Nischal Raut — Aerospace Engineer</title>
-<meta name="description" content="Nischal Raut — Aerospace Engineer. Experimental aerodynamics, CFD, wind-tunnel design and UAV photogrammetry portfolio.">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 fill=%22%230b1624%22/><path d=%22M20 70 L50 18 L80 70 L50 58 Z%22 fill=%22%23b8893f%22/></svg>">
-
-<!-- Early, synchronous WebGL capability check so we can set a CSS hook before first paint (no flash of broken 3D) -->
-<script>
-  (function () {
-    function hasWebGL() {
-      try {
-        var c = document.createElement('canvas');
-        return !!(window.WebGLRenderingContext &&
-          (c.getContext('webgl') || c.getContext('experimental-webgl')));
-      } catch (e) { return false; }
+  <meta charset="UTF-8">
+  <title>Nischal Raut · Aerospace Engineering Portfolio</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Portfolio of Nischal Raut, aspiring aerospace engineer focused on experimental aerodynamics, subsonic wind-tunnel design, CFD, and UAV photogrammetry.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- Typography: editorial + technical pairing -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #050914;
+      --bg-alt: #0b1624;
+      --bg-alt-soft: #0f172a;
+      --bg-light: #f5f3ef;
+      --bg-card: #111827;
+      --ink: #111827;
+      --ink-soft: #4b5563;
+      --ink-softer: #6b7280;
+      --ink-on-dark: #e5e7eb;
+      --ink-muted-dark: #9ca3af;
+      --accent-1: #b8893f;
+      --accent-1-soft: rgba(184, 137, 63, 0.12);
+      --accent-2: #3a7fd9;
+      --accent-2-soft: rgba(58, 127, 217, 0.12);
+      --danger: #e11d48;
+      --border-subtle: #e0ded8;
+      --border-subtle-dark: #1f2937;
+      --shadow-soft: 0 18px 45px rgba(15, 23, 42, 0.55);
+      --round-lg: 18px;
+      --round-sm: 10px;
+      --round-pill: 999px;
+      --font-sans: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      --font-display: "DM Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      --nav-h: 68px;
+      --z-nav: 40;
+      --z-modal: 60;
+      --z-lightbox: 55;
     }
-    window.__HAS_WEBGL__ = hasWebGL();
-    document.documentElement.classList.add(window.__HAS_WEBGL__ ? 'has-webgl' : 'no-webgl');
-    document.documentElement.classList.add('js-loading');
-  })();
-</script>
 
-<!-- Fonts: Fraunces (editorial display serif) + Inter (technical sans). Documented CDN dependency: Google Fonts. -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    * {
+      box-sizing: border-box;
+    }
 
-<!-- Three.js via CDN import map (documented dependency). No bundler required. -->
-<script type="importmap">
-{
-  "imports": {
-    "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
-    "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
-  }
-}
-</script>
+    html, body {
+      margin: 0;
+      padding: 0;
+    }
 
-<style>
-/* ============================================================
-   0. RESET & FOUNDATIONS
-   ============================================================ */
-*, *::before, *::after { box-sizing: border-box; }
-html { scroll-behavior: smooth; }
-@media (prefers-reduced-motion: reduce) {
-  html { scroll-behavior: auto; }
-  *, *::before, *::after { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; }
-}
+    body {
+      font-family: var(--font-sans);
+      color: var(--ink-on-dark);
+      background: radial-gradient(circle at top, #111827 0, #020617 55%, #000 100%);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+      scroll-behavior: smooth;
+    }
 
-:root {
-  --navy: #0b1624;
-  --navy-2: #0f1f33;
-  --navy-3: #16293f;
-  --graphite: #2a2e35;
-  --blue-grey: #5c7184;
-  --steel: #90a9bd;
-  --warm-white: #f8f6f1;
-  --paper: #fcfbf8;
-  --ink: #171a1f;
-  --ink-soft: #4a4f57;
-  --line: #e4e0d6;
-  --line-dark: #223349;
-  --accent: #335f82;
-  --accent-2: #b8893f;
-  --success: #4f7a5c;
-  --warn: #a35a2a;
-  --radius: 3px;
-  --maxw: 1240px;
-  --pad: clamp(20px, 5vw, 64px);
-  --font-serif: 'Fraunces', Georgia, serif;
-  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  --font-mono: 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace;
-  --ease: cubic-bezier(.22,.61,.36,1);
-}
+    html.js-loading body {
+      opacity: 0;
+      transform: translateY(6px);
+      transition: opacity .4s ease, transform .4s ease;
+      pointer-events: none;
+    }
 
-html, body { margin: 0; padding: 0; }
-body {
-  font-family: var(--font-sans);
-  color: var(--ink);
-  background: var(--paper);
-  line-height: 1.6;
-  -webkit-font-smoothing: antialiased;
-  overflow-x: hidden;
-}
-img { max-width: 100%; display: block; }
-a { color: inherit; text-decoration: none; }
-button { font-family: inherit; cursor: pointer; }
-h1, h2, h3, h4 { font-family: var(--font-serif); font-weight: 500; line-height: 1.12; margin: 0; letter-spacing: -0.01em; }
-p { margin: 0; }
-ul { margin: 0; padding: 0; list-style: none; }
-.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+    html:not(.js-loading) body {
+      opacity: 1;
+      transform: none;
+      pointer-events: auto;
+    }
 
-/* Section rhythm */
-.section { padding: clamp(64px, 10vw, 128px) var(--pad); }
-.section-dark { background: var(--navy); color: var(--warm-white); }
-.section-light { background: var(--paper); color: var(--ink); }
-.wrap { max-width: var(--maxw); margin: 0 auto; }
-.eyebrow {
-  font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase;
-  color: var(--accent-2); display: flex; align-items: center; gap: 10px; margin-bottom: 18px;
-}
-.eyebrow::before { content: ''; width: 28px; height: 1px; background: var(--accent-2); display: block; }
-.section-title { font-size: clamp(1.9rem, 3.4vw, 2.9rem); margin-bottom: 14px; }
-.section-dark .eyebrow { color: var(--accent-2); }
-.section-lede { max-width: 640px; color: var(--ink-soft); font-size: 1.02rem; }
-.section-dark .section-lede { color: var(--steel); }
-.section-head { margin-bottom: clamp(36px, 6vw, 64px); }
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
 
-/* ============================================================
-   1. LOADING SCREEN
-   ============================================================ */
-#loading-screen {
-  position: fixed; inset: 0; z-index: 9999; background: var(--navy);
-  display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 18px;
-  transition: opacity .6s var(--ease), visibility .6s var(--ease);
-}
-.js-loading #loading-screen { opacity: 1; visibility: visible; }
-html:not(.js-loading) #loading-screen { opacity: 0; visibility: hidden; pointer-events: none; }
-.loader-mark { width: 46px; height: 46px; position: relative; }
-.loader-mark svg { width: 100%; height: 100%; }
-.loader-ring { stroke: var(--line-dark); stroke-width: 2; fill: none; }
-.loader-arc { stroke: var(--accent-2); stroke-width: 2; fill: none; stroke-linecap: round; stroke-dasharray: 90 180; animation: spin 1.1s linear infinite; transform-origin: center; }
-@keyframes spin { to { transform: rotate(360deg); } }
-.loader-text { font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--steel); }
+    img {
+      max-width: 100%;
+      display: block;
+    }
 
-/* ============================================================
-   2. NAVIGATION
-   ============================================================ */
-#site-header {
-  position: fixed; top: 0; left: 0; right: 0; z-index: 500;
-  padding: 18px var(--pad);
-  display: flex; align-items: center; justify-content: space-between;
-  transition: background .35s var(--ease), padding .35s var(--ease), border-color .35s var(--ease);
-  border-bottom: 1px solid transparent;
-}
-#site-header.scrolled { background: rgba(11,22,36,0.92); backdrop-filter: saturate(140%) blur(10px); border-color: var(--line-dark); padding-top: 12px; padding-bottom: 12px; }
-.brand { display: flex; align-items: center; gap: 10px; font-family: var(--font-serif); font-size: 1.05rem; color: var(--warm-white); }
-.brand-mark { width: 26px; height: 26px; flex: none; }
-.brand-mark svg { width: 100%; height: 100%; }
-.brand-sub { font-family: var(--font-mono); font-size: 0.62rem; letter-spacing: 0.12em; color: var(--steel); text-transform: uppercase; display: block; }
-#nav-links { display: flex; align-items: center; gap: 30px; }
-#nav-links a {
-  font-size: 0.86rem; color: rgba(248,246,241,0.78); position: relative; padding: 4px 0;
-  letter-spacing: 0.01em; transition: color .25s;
-}
-#nav-links a::after { content: ''; position: absolute; left: 0; bottom: -2px; width: 0; height: 1px; background: var(--accent-2); transition: width .25s var(--ease); }
-#nav-links a:hover, #nav-links a.active { color: var(--warm-white); }
-#nav-links a.active::after, #nav-links a:hover::after { width: 100%; }
-.nav-cta {
-  border: 1px solid rgba(248,246,241,0.3); padding: 9px 18px; border-radius: var(--radius);
-  font-size: 0.8rem !important; letter-spacing: 0.04em;
-}
-.nav-cta:hover { border-color: var(--accent-2); background: rgba(184,137,63,0.1); }
-#nav-toggle {
-  display: none; background: none; border: 1px solid rgba(248,246,241,0.3); border-radius: var(--radius);
-  width: 42px; height: 38px; position: relative; z-index: 60;
-}
-#nav-toggle span, #nav-toggle::before, #nav-toggle::after {
-  content: ''; position: absolute; left: 10px; right: 10px; height: 1px; background: var(--warm-white);
-  transition: transform .3s var(--ease), opacity .3s var(--ease);
-}
-#nav-toggle::before { top: 14px; }
-#nav-toggle span { top: 19px; }
-#nav-toggle::after { top: 24px; }
-#nav-toggle.open::before { transform: translateY(5px) rotate(45deg); }
-#nav-toggle.open::after { transform: translateY(-5px) rotate(-45deg); }
-#nav-toggle.open span { opacity: 0; }
+    main {
+      min-height: 100vh;
+    }
 
-@media (max-width: 860px) {
-  #nav-toggle { display: block; }
-  #nav-links {
-    position: fixed; inset: 0 0 0 30%; background: var(--navy-2); flex-direction: column;
-    justify-content: center; align-items: flex-start; gap: 22px; padding: 40px;
-    transform: translateX(100%); transition: transform .4s var(--ease); z-index: 55;
-    border-left: 1px solid var(--line-dark);
-  }
-  #nav-links.open { transform: translateX(0); }
-  #nav-links a { font-size: 1.1rem; }
-}
+    /* Layout helpers */
+    .wrap {
+      width: 100%;
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
 
-/* ============================================================
-   3. HERO / HOME (3D Experience 1)
-   ============================================================ */
-#home {
-  position: relative; min-height: 100svh; background: linear-gradient(180deg, var(--navy) 0%, var(--navy-2) 100%);
-  color: var(--warm-white); display: flex; align-items: flex-end; overflow: hidden;
-  padding: 140px var(--pad) 72px;
-}
-.scene-canvas-layer { position: absolute; inset: 0; z-index: 1; }
-.scene-canvas-layer canvas { width: 100% !important; height: 100% !important; display: block; }
-#home::before {
-  content: ''; position: absolute; inset: 0; z-index: 2; pointer-events: none;
-  background: linear-gradient(180deg, rgba(11,22,36,0.1) 0%, rgba(11,22,36,0.55) 72%, var(--navy) 100%);
-}
-.hero-content { position: relative; z-index: 3; width: 100%; }
-.hero-grid { display: grid; grid-template-columns: 1fr auto; gap: 40px; align-items: end; }
-.hero-eyebrow { font-family: var(--font-mono); font-size: 0.78rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent-2); margin-bottom: 20px; display: flex; gap: 10px; align-items: center; }
-.hero-eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent-2); animation: pulse 2.4s ease-in-out infinite; }
-@keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: .3; } }
-.hero-title { font-size: clamp(2.4rem, 6vw, 4.6rem); max-width: 14ch; }
-.hero-title em { font-style: italic; color: var(--accent-2); }
-.hero-sub { margin-top: 22px; max-width: 46ch; color: var(--steel); font-size: 1.05rem; }
-.hero-actions { display: flex; gap: 14px; margin-top: 34px; flex-wrap: wrap; }
-.btn {
-  display: inline-flex; align-items: center; gap: 8px; padding: 13px 26px; border-radius: var(--radius);
-  font-size: 0.86rem; letter-spacing: 0.03em; font-weight: 500; transition: all .25s var(--ease); border: 1px solid transparent;
-}
-.btn-primary { background: var(--accent-2); color: var(--navy); }
-.btn-primary:hover { background: #cf9c4e; transform: translateY(-1px); }
-.btn-outline { border-color: rgba(248,246,241,0.35); color: var(--warm-white); }
-.btn-outline:hover { border-color: var(--warm-white); background: rgba(248,246,241,0.06); }
-.btn-outline.dark { border-color: rgba(23,26,31,0.3); color: var(--ink); }
-.btn-outline.dark:hover { border-color: var(--ink); background: rgba(23,26,31,0.05); }
-.hero-meta { text-align: right; color: var(--steel); font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.05em; line-height: 2; }
-.hero-caption {
-  position: absolute; bottom: 20px; left: var(--pad); z-index: 3; font-family: var(--font-mono);
-  font-size: 0.68rem; color: rgba(248,246,241,0.4); letter-spacing: 0.05em; max-width: 360px;
-}
-.scroll-cue { position: absolute; right: var(--pad); bottom: 20px; z-index: 3; writing-mode: vertical-rl; color: rgba(248,246,241,0.4); font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.15em; display: flex; align-items: center; gap: 10px; }
-.scroll-cue::after { content: ''; width: 1px; height: 36px; background: rgba(248,246,241,0.3); display: block; }
+    section {
+      position: relative;
+      padding: 80px 0;
+    }
 
-@media (max-width: 760px) {
-  .hero-grid { grid-template-columns: 1fr; }
-  .hero-meta { text-align: left; }
-  .scroll-cue { display: none; }
-}
+    .section-light {
+      background: var(--bg-light);
+      color: var(--ink);
+    }
 
-/* Static fallback for no-webgl devices */
-.webgl-fallback {
-  display: none; position: absolute; inset: 0; align-items: center; justify-content: center; flex-direction: column; gap: 10px;
-  text-align: center; padding: 24px; background: radial-gradient(ellipse at 50% 30%, var(--navy-3), var(--navy));
-}
-.no-webgl .webgl-fallback { display: flex; }
-.no-webgl .scene-canvas-layer canvas, .no-webgl .scene-3d-canvas { display: none !important; }
-.webgl-fallback svg { width: 64px; height: 64px; opacity: .5; margin-bottom: 6px; }
-.webgl-fallback strong { font-family: var(--font-serif); font-size: 1.1rem; color: var(--warm-white); }
-.webgl-fallback span { font-size: 0.82rem; color: var(--steel); max-width: 320px; }
-.section-light .webgl-fallback span, .section-light .webgl-fallback strong { color: var(--ink-soft); }
-.section-light .webgl-fallback { background: linear-gradient(160deg, #eef0f2, #e2e6ea); }
+    .section-dark {
+      background: radial-gradient(circle at top, #111827 0, #020617 60%, #000 100%);
+      color: var(--ink-on-dark);
+    }
 
-/* ============================================================
-   4. ABOUT (3D Experience 2)
-   ============================================================ */
-#about { background: var(--paper); }
-.about-grid { display: grid; grid-template-columns: 0.9fr 1.1fr; gap: 64px; align-items: center; }
-.about-portrait {
-  position: relative; border-radius: var(--radius); overflow: hidden; aspect-ratio: 4/5; background: var(--graphite);
-  border: 1px solid var(--line);
-}
-.about-portrait img { width: 100%; height: 100%; object-fit: cover; }
-.about-portrait .img-fallback-box {
-  display: none; position: absolute; inset: 0; align-items: center; justify-content: center; flex-direction: column; gap: 8px;
-  background: linear-gradient(160deg, var(--navy-2), var(--navy)); color: var(--steel); text-align: center; padding: 20px;
-}
-.about-portrait.img-broken img { display: none; }
-.about-portrait.img-broken .img-fallback-box { display: flex; }
-.about-portrait .tag {
-  position: absolute; left: 16px; bottom: 16px; background: rgba(11,22,36,0.85); color: var(--warm-white);
-  font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.08em; padding: 7px 12px; border-radius: var(--radius);
-}
-.about-copy p + p { margin-top: 16px; }
-.about-copy .lede { font-size: 1.18rem; color: var(--ink); font-family: var(--font-serif); line-height: 1.5; }
-.about-copy p { color: var(--ink-soft); }
-.about-stats { display: grid; grid-template-columns: repeat(3,1fr); gap: 18px; margin-top: 36px; }
-.stat { border-top: 1px solid var(--line); padding-top: 12px; }
-.stat .num { font-family: var(--font-serif); font-size: 1.7rem; color: var(--accent); display: block; }
-.stat .lbl { font-size: 0.74rem; color: var(--ink-soft); text-transform: uppercase; letter-spacing: 0.06em; }
+    .section-title {
+      font-family: var(--font-display);
+      font-size: 2.1rem;
+      letter-spacing: 0.02em;
+      margin: 0 0 16px;
+    }
 
-.aircraft-lab {
-  margin-top: 56px; background: var(--navy); border-radius: var(--radius); overflow: hidden; position: relative;
-  border: 1px solid var(--line-dark);
-}
-.lab-canvas-wrap { position: relative; height: 420px; }
-.scene-3d-canvas { width: 100%; height: 100%; display: block; touch-action: none; }
-.lab-overlay-top { position: absolute; top: 16px; left: 16px; right: 16px; display: flex; justify-content: space-between; align-items: flex-start; z-index: 5; pointer-events: none; }
-.lab-badge { font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--steel); background: rgba(11,22,36,0.6); padding: 6px 10px; border-radius: var(--radius); border: 1px solid var(--line-dark); pointer-events: auto; }
-.lab-label-panel {
-  position: absolute; bottom: 16px; left: 16px; right: 16px; z-index: 5;
-  background: rgba(11,22,36,0.82); border: 1px solid var(--line-dark); border-radius: var(--radius);
-  padding: 14px 16px; backdrop-filter: blur(6px); color: var(--warm-white); min-height: 54px;
-  display: flex; align-items: center; gap: 14px;
-}
-.lab-label-panel .lp-title { font-family: var(--font-serif); font-size: 1rem; color: var(--accent-2); white-space: nowrap; }
-.lab-label-panel .lp-desc { font-size: 0.82rem; color: var(--steel); line-height: 1.5; }
-.lab-hint { padding: 12px 16px; font-family: var(--font-mono); font-size: 0.68rem; color: var(--steel); letter-spacing: 0.04em; border-top: 1px solid var(--line-dark); display: flex; gap: 20px; flex-wrap: wrap; }
-.lab-hint b { color: var(--accent-2); }
+    .section-lede {
+      max-width: 640px;
+      margin: 0 0 32px;
+      font-size: 0.98rem;
+      color: var(--ink-muted-dark);
+    }
 
-@media (max-width: 920px) {
-  .about-grid { grid-template-columns: 1fr; }
-  .about-portrait { max-width: 340px; }
-}
+    .section-dark .section-lede {
+      color: var(--ink-muted-dark);
+    }
 
-/* ============================================================
-   5. SKILLS
-   ============================================================ */
-#skills { background: var(--navy); color: var(--warm-white); }
-.skills-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--line-dark); border: 1px solid var(--line-dark); margin-top: 20px; }
-.skill-cell { background: var(--navy); padding: 26px 22px; transition: background .3s; }
-.skill-cell:hover { background: var(--navy-2); }
-.skill-cat { font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent-2); margin-bottom: 14px; }
-.skill-cell ul li { font-size: 0.92rem; color: var(--steel); padding: 5px 0; border-top: 1px solid rgba(255,255,255,0.05); }
-.skill-cell ul li:first-child { border-top: none; }
-@media (max-width: 920px) { .skills-grid { grid-template-columns: repeat(2, 1fr); } }
-@media (max-width: 540px) { .skills-grid { grid-template-columns: 1fr; } }
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--ink-muted-dark);
+      margin-bottom: 8px;
+    }
 
-/* ============================================================
-   6. EDUCATION
-   ============================================================ */
-#education { background: var(--paper); }
-.edu-list { display: flex; flex-direction: column; border-top: 1px solid var(--line); margin-top: 20px; }
-.edu-row { display: grid; grid-template-columns: 64px 1fr auto; gap: 24px; align-items: center; padding: 26px 0; border-bottom: 1px solid var(--line); }
-.edu-logo { width: 56px; height: 56px; border-radius: var(--radius); border: 1px solid var(--line); object-fit: contain; background: #fff; padding: 6px; }
-.edu-logo-fallback {
-  width: 56px; height: 56px; border-radius: var(--radius); border: 1px solid var(--line); display: none;
-  align-items: center; justify-content: center; background: var(--navy); color: var(--accent-2);
-  font-family: var(--font-serif); font-size: 1.2rem;
-}
-.edu-logo-wrap.broken .edu-logo { display: none; }
-.edu-logo-wrap.broken .edu-logo-fallback { display: flex; }
-.edu-degree { font-family: var(--font-serif); font-size: 1.15rem; margin-bottom: 4px; }
-.edu-school { color: var(--ink-soft); font-size: 0.92rem; }
-.edu-score { text-align: right; font-family: var(--font-mono); font-size: 0.8rem; color: var(--accent); white-space: nowrap; }
-.edu-score .sub { display: block; color: var(--blue-grey); font-size: 0.7rem; margin-top: 2px; }
-@media (max-width: 640px) {
-  .edu-row { grid-template-columns: 48px 1fr; }
-  .edu-score { grid-column: 2; text-align: left; margin-top: 6px; }
-  .edu-logo, .edu-logo-fallback { width: 44px; height: 44px; }
-}
+    .eyebrow .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent-1);
+    }
 
-/* ============================================================
-   7. EXPERIENCE (+ 3D Experience 5 — UAV / Photogrammetry)
-   ============================================================ */
-#experience { background: var(--navy); color: var(--warm-white); }
-.timeline { margin-top: 10px; border-left: 2px solid var(--line-dark); position: relative; }
-.tl-item { position: relative; padding: 0 0 44px 32px; }
-.tl-item:last-child { padding-bottom: 0; }
-.tl-item::before { content: ''; position: absolute; left: -7px; top: 4px; width: 12px; height: 12px; border-radius: 50%; background: var(--navy); border: 2px solid var(--accent-2); }
-.tl-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 12px; margin-bottom: 8px; }
-.tl-role { font-family: var(--font-serif); font-size: 1.2rem; }
-.tl-org { color: var(--accent-2); font-size: 0.92rem; }
-.tl-date { font-family: var(--font-mono); font-size: 0.72rem; color: var(--steel); letter-spacing: 0.04em; margin-left: auto; }
-.tl-flag {
-  display: inline-flex; align-items: center; gap: 6px; font-family: var(--font-mono); font-size: 0.64rem;
-  color: #e3b985; background: rgba(184,137,63,0.12); border: 1px solid rgba(184,137,63,0.35);
-  padding: 3px 8px; border-radius: var(--radius); letter-spacing: 0.04em; text-transform: uppercase; margin-top: 8px;
-}
-.tl-body p { color: var(--steel); font-size: 0.92rem; max-width: 60ch; }
-.tl-body ul { margin-top: 10px; display: flex; flex-direction: column; gap: 6px; }
-.tl-body ul li { font-size: 0.9rem; color: var(--steel); padding-left: 16px; position: relative; }
-.tl-body ul li::before { content: '—'; position: absolute; left: 0; color: var(--accent-2); }
+    .section-dark .eyebrow {
+      color: #9ca3af;
+    }
 
-.uav-lab { margin-top: 64px; background: var(--navy-2); border: 1px solid var(--line-dark); border-radius: var(--radius); overflow: hidden; }
-.uav-grid { display: grid; grid-template-columns: 1fr 300px; }
-.uav-canvas-wrap { position: relative; height: 460px; }
-.uav-panel { padding: 24px; border-left: 1px solid var(--line-dark); display: flex; flex-direction: column; gap: 14px; }
-.uav-panel h4 { font-family: var(--font-serif); font-size: 1.05rem; color: var(--warm-white); }
-.uav-panel p.small { font-size: 0.82rem; color: var(--steel); line-height: 1.55; }
-.step-btn {
-  text-align: left; background: transparent; border: 1px solid var(--line-dark); border-radius: var(--radius);
-  padding: 10px 12px; color: var(--steel); font-size: 0.82rem; transition: all .2s;
-}
-.step-btn b { color: var(--accent-2); font-family: var(--font-mono); margin-right: 8px; }
-.step-btn:hover { border-color: var(--accent-2); }
-.step-btn.active { background: rgba(184,137,63,0.1); border-color: var(--accent-2); color: var(--warm-white); }
-@media (max-width: 900px) {
-  .uav-grid { grid-template-columns: 1fr; }
-  .uav-panel { border-left: none; border-top: 1px solid var(--line-dark); }
-  .tl-date { margin-left: 0; }
-}
+    /* Header / Navigation */
 
-/* ============================================================
-   8. ENGINEERING LABS (3D Experiences 3 & 4)
-   ============================================================ */
-#labs { background: var(--paper); }
-.lab-block { margin-top: 56px; }
-.lab-block:first-child { margin-top: 0; }
-.lab-frame { background: var(--navy); border-radius: var(--radius); overflow: hidden; border: 1px solid var(--line-dark); }
-.lab-intro { display: flex; justify-content: space-between; gap: 24px; align-items: flex-end; flex-wrap: wrap; margin-bottom: 18px; }
-.lab-intro h3 { font-family: var(--font-serif); font-size: 1.5rem; }
-.lab-intro p { color: var(--ink-soft); max-width: 54ch; font-size: 0.94rem; margin-top: 8px; }
-.lab-main-canvas-wrap { position: relative; height: 520px; }
-.lab-controls-bar {
-  display: flex; flex-wrap: wrap; gap: 10px; padding: 14px 18px; border-top: 1px solid var(--line-dark);
-  background: var(--navy-2); align-items: center;
-}
-.lab-btn {
-  background: transparent; border: 1px solid var(--line-dark); color: var(--steel); border-radius: var(--radius);
-  padding: 8px 14px; font-size: 0.78rem; letter-spacing: 0.02em; transition: all .2s; display: flex; align-items: center; gap: 6px;
-}
-.lab-btn:hover { border-color: var(--accent-2); color: var(--warm-white); }
-.lab-btn.active { background: var(--accent-2); color: var(--navy); border-color: var(--accent-2); }
-.lab-divider { width: 1px; height: 22px; background: var(--line-dark); margin: 0 4px; }
-.lab-check { display: flex; align-items: center; gap: 6px; font-size: 0.78rem; color: var(--steel); }
-.lab-check input { accent-color: var(--accent-2); }
-.lab-slider-group { display: flex; align-items: center; gap: 10px; font-size: 0.78rem; color: var(--steel); }
-.lab-slider-group input[type=range] { accent-color: var(--accent-2); width: 140px; }
-.lab-caption {
-  padding: 16px 18px; border-top: 1px solid var(--line-dark); font-size: 0.86rem; color: var(--warm-white);
-  display: flex; gap: 14px; align-items: flex-start; background: var(--navy);
-}
-.lab-caption .cap-label { font-family: var(--font-mono); font-size: 0.64rem; color: var(--accent-2); text-transform: uppercase; letter-spacing: 0.08em; white-space: nowrap; padding-top: 3px; }
-.lab-caption p { color: var(--steel); font-size: 0.84rem; line-height: 1.55; margin: 0; }
-.disclaimer-note {
-  margin-top: 14px; font-size: 0.76rem; color: var(--warn); background: rgba(163,90,42,0.08);
-  border: 1px solid rgba(163,90,42,0.3); padding: 10px 14px; border-radius: var(--radius);
-}
-.lab-writeup { margin-top: 28px; background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: clamp(20px,3vw,32px); }
-.lab-writeup-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 26px 40px; }
-.lw-item h5 { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); margin-bottom: 8px; }
-.lw-item p, .lw-item li { font-size: 0.9rem; color: var(--ink-soft); }
-.lw-item ul li { padding-left: 14px; position: relative; margin-bottom: 4px; }
-.lw-item ul li::before { content: '•'; position: absolute; left: 0; color: var(--accent-2); }
-@media (max-width: 760px) { .lab-writeup-grid { grid-template-columns: 1fr; } .lab-main-canvas-wrap { height: 400px; } }
+    #site-header {
+      position: sticky;
+      top: 0;
+      z-index: var(--z-nav);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 20px;
+      background: rgba(3, 7, 18, 0.82);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(31, 41, 55, 0.9);
+      transition: background .25s ease, box-shadow .25s ease, border-color .25s ease;
+    }
 
-/* ============================================================
-   9. PROJECTS
-   ============================================================ */
-#projects { background: var(--navy); color: var(--warm-white); }
-.projects-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; margin-top: 20px; }
-.proj-card {
-  background: var(--navy-2); border: 1px solid var(--line-dark); border-radius: var(--radius); overflow: hidden;
-  display: flex; flex-direction: column; transition: transform .3s var(--ease), border-color .3s;
-}
-.proj-card:hover { transform: translateY(-4px); border-color: var(--accent-2); }
-.proj-visual { height: 170px; position: relative; overflow: hidden; background: var(--navy-3); }
-.proj-visual img { width: 100%; height: 100%; object-fit: cover; }
-.proj-visual .pv-illustration { position: absolute; inset: 0; }
-.proj-tag-pill {
-  position: absolute; top: 10px; left: 10px; font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.08em;
-  text-transform: uppercase; background: rgba(11,22,36,0.75); color: var(--accent-2); padding: 5px 9px; border-radius: var(--radius);
-  border: 1px solid var(--line-dark);
-}
-.proj-body { padding: 20px 20px 22px; display: flex; flex-direction: column; gap: 10px; flex: 1; }
-.proj-body h3 { font-family: var(--font-serif); font-size: 1.18rem; }
-.proj-sub { font-size: 0.78rem; color: var(--accent-2); font-family: var(--font-mono); letter-spacing: 0.02em; }
-.proj-desc { font-size: 0.87rem; color: var(--steel); flex: 1; }
-.proj-details { margin-top: 6px; border-top: 1px solid var(--line-dark); padding-top: 10px; }
-.proj-details summary { cursor: pointer; font-size: 0.8rem; color: var(--steel); list-style: none; display: flex; align-items: center; gap: 6px; }
-.proj-details summary::before { content: '+'; color: var(--accent-2); font-family: var(--font-mono); }
-.proj-details[open] summary::before { content: '–'; }
-.proj-details summary::-webkit-details-marker { display: none; }
-.pd-block { margin-top: 12px; display: flex; flex-direction: column; gap: 10px; }
-.pd-block h6 { font-family: var(--font-mono); font-size: 0.64rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent-2); margin: 0 0 3px; }
-.pd-block p { font-size: 0.82rem; color: var(--steel); margin: 0; }
-.proj-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 14px; gap: 10px; }
-.proj-link-btn {
-  font-size: 0.78rem; color: var(--accent-2); display: inline-flex; align-items: center; gap: 6px; border-bottom: 1px solid transparent;
-}
-.proj-link-btn:hover { border-color: var(--accent-2); }
-@media (max-width: 1040px) { .projects-grid { grid-template-columns: repeat(2, 1fr); } }
-@media (max-width: 640px) { .projects-grid { grid-template-columns: 1fr; } }
+    #site-header.scrolled {
+      background: rgba(3, 7, 18, 0.96);
+      box-shadow: 0 14px 35px rgba(0, 0, 0, 0.75);
+      border-color: rgba(31, 41, 55, 1);
+    }
 
-/* B-52 / U-2 concept illustration (pure CSS, no fabricated photo) */
-.concept-diagram { width: 100%; height: 100%; position: relative; background: linear-gradient(180deg, #1c3040, #0b1624); }
-.concept-diagram .silhouette { position: absolute; }
-.b52-body { left: 10%; top: 58%; width: 70%; height: 10px; background: var(--steel); border-radius: 6px; }
-.b52-wing { left: 32%; top: 48%; width: 36%; height: 7px; background: var(--blue-grey); transform: skewX(-20deg); }
-.b52-tail { left: 74%; top: 42%; width: 6px; height: 22px; background: var(--steel); }
-.b52-rocket { left: 44%; top: 68%; width: 18%; height: 5px; background: var(--accent-2); border-radius: 3px; }
-.u2-body { left: 15%; top: 50%; width: 60%; height: 6px; background: var(--steel); border-radius: 4px; }
-.u2-wing { left: 10%; top: 48%; width: 80%; height: 4px; background: var(--blue-grey); }
-.u2-pod { left: 42%; top: 56%; width: 16%; height: 10px; background: var(--accent-2); border-radius: 2px; opacity: 0.85; }
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      color: #e5e7eb;
+    }
 
-/* ============================================================
-   10. RESEARCH INTERESTS
-   ============================================================ */
-#research { background: var(--paper); }
-.research-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); margin-top: 24px; }
-.research-cell { background: #fff; padding: 28px; }
-.research-cell .ri-index { font-family: var(--font-mono); font-size: 0.72rem; color: var(--accent-2); }
-.research-cell h4 { font-family: var(--font-serif); font-size: 1.1rem; margin: 10px 0 8px; }
-.research-cell p { font-size: 0.88rem; color: var(--ink-soft); }
-@media (max-width: 760px) { .research-grid { grid-template-columns: 1fr; } }
+    .brand-mark {
+      width: 32px;
+      height: 32px;
+      border-radius: 12px;
+      border: 1px solid rgba(148, 163, 184, 0.6);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: radial-gradient(circle at top, rgba(248, 250, 252, 0.06), transparent 50%);
+    }
 
-/* ============================================================
-   11. CONTACT
-   ============================================================ */
-#contact { background: var(--navy); color: var(--warm-white); text-align: center; }
-#contact .section-head { margin: 0 auto 48px; }
-#contact .section-lede { margin: 14px auto 0; }
-.contact-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--line-dark); border: 1px solid var(--line-dark); max-width: 900px; margin: 0 auto; }
-.contact-cell { background: var(--navy); padding: 32px 20px; display: flex; flex-direction: column; align-items: center; gap: 10px; transition: background .25s; }
-.contact-cell:hover { background: var(--navy-2); }
-.contact-cell svg { width: 26px; height: 26px; color: var(--accent-2); }
-.contact-cell .cc-label { font-family: var(--font-mono); font-size: 0.64rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--steel); }
-.contact-cell .cc-value { font-size: 0.92rem; color: var(--warm-white); word-break: break-word; }
-.contact-cv { margin-top: 36px; }
-@media (max-width: 700px) { .contact-grid { grid-template-columns: 1fr; } }
+    .brand-mark svg {
+      width: 22px;
+      height: 22px;
+      display: block;
+    }
 
-/* ============================================================
-   12. FOOTER
-   ============================================================ */
-footer { background: var(--navy); border-top: 1px solid var(--line-dark); padding: 26px var(--pad); color: var(--steel); }
-.footer-row { max-width: var(--maxw); margin: 0 auto; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px; font-size: 0.78rem; }
-.footer-row a { color: var(--accent-2); }
+    .brand-text {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.15;
+    }
 
-/* ============================================================
-   13. MODALS
-   ============================================================ */
-.modal-overlay {
-  position: fixed; inset: 0; background: rgba(8,14,22,0.82); backdrop-filter: blur(4px); z-index: 800;
-  display: flex; align-items: center; justify-content: center; padding: 24px; opacity: 0; visibility: hidden;
-  transition: opacity .3s var(--ease), visibility .3s var(--ease);
-}
-.modal-overlay.open { opacity: 1; visibility: visible; }
-.modal-box {
-  background: var(--paper); color: var(--ink); max-width: 720px; width: 100%; max-height: 88vh; overflow-y: auto;
-  border-radius: var(--radius); position: relative; transform: translateY(16px); transition: transform .35s var(--ease);
-}
-.modal-overlay.open .modal-box { transform: translateY(0); }
-.modal-head { padding: 28px 32px 18px; border-bottom: 1px solid var(--line); position: sticky; top: 0; background: var(--paper); z-index: 2; }
-.modal-head .mh-eyebrow { font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent-2); margin-bottom: 8px; }
-.modal-head h3 { font-family: var(--font-serif); font-size: 1.5rem; }
-.modal-close {
-  position: absolute; top: 20px; right: 24px; width: 34px; height: 34px; border-radius: 50%; border: 1px solid var(--line);
-  background: #fff; font-size: 1.1rem; line-height: 1; color: var(--ink-soft); display: flex; align-items: center; justify-content: center;
-}
-.modal-close:hover { border-color: var(--ink); color: var(--ink); }
-.modal-body { padding: 24px 32px 32px; display: flex; flex-direction: column; gap: 18px; }
-.modal-body h5 { font-family: var(--font-mono); font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent); margin-bottom: 6px; }
-.modal-body p { font-size: 0.92rem; color: var(--ink-soft); }
-.modal-body ul li { font-size: 0.9rem; color: var(--ink-soft); padding-left: 16px; position: relative; margin-bottom: 6px; }
-.modal-body ul li::before { content: '—'; position: absolute; left: 0; color: var(--accent-2); }
-.modal-body table { width: 100%; border-collapse: collapse; font-size: 0.86rem; }
-.modal-body table th, .modal-body table td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--line); color: var(--ink-soft); }
-.modal-body table th { font-family: var(--font-mono); font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--accent); }
-.code-block {
-  background: var(--navy); color: #d6e2ec; font-family: var(--font-mono); font-size: 0.8rem; padding: 18px;
-  border-radius: var(--radius); overflow-x: auto; line-height: 1.6;
-}
-.code-block .c-kw { color: var(--accent-2); }
-.code-block .c-str { color: #9fd8a0; }
-.code-block .c-com { color: var(--blue-grey); font-style: italic; }
-.note-box { font-size: 0.78rem; color: var(--warn); background: rgba(163,90,42,0.08); border: 1px solid rgba(163,90,42,0.25); padding: 10px 14px; border-radius: var(--radius); }
-.diagram-mini { height: 160px; border-radius: var(--radius); overflow: hidden; position: relative; }
+    .brand-text > span:first-child {
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+    }
 
-/* Gallery lightbox (wind tunnel photos) */
-.gallery-strip { display: flex; gap: 10px; margin-top: 8px; }
-.gallery-thumb { width: 90px; height: 64px; border-radius: var(--radius); overflow: hidden; border: 1px solid var(--line-dark); cursor: zoom-in; flex: none; position: relative; }
-.gallery-thumb img { width: 100%; height: 100%; object-fit: cover; }
-.gallery-thumb .thumb-fallback { display: none; position: absolute; inset: 0; background: var(--navy-3); color: var(--steel); font-size: 0.6rem; align-items: center; justify-content: center; text-align: center; padding: 4px; font-family: var(--font-mono); }
-.gallery-thumb.broken img { display: none; }
-.gallery-thumb.broken .thumb-fallback { display: flex; }
-#lightbox { position: fixed; inset: 0; background: rgba(5,10,16,0.94); z-index: 900; display: none; align-items: center; justify-content: center; padding: 30px; }
-#lightbox.open { display: flex; }
-#lightbox img { max-width: 92vw; max-height: 86vh; border-radius: var(--radius); }
-#lightbox .lb-close { position: absolute; top: 24px; right: 28px; color: #fff; font-size: 1.6rem; background: none; border: none; }
+    .brand-sub {
+      font-size: 0.75rem;
+      color: #9ca3af;
+    }
 
-/* Utility reveal-on-scroll */
-.reveal { opacity: 0; transform: translateY(18px); transition: opacity .7s var(--ease), transform .7s var(--ease); }
-.reveal.in { opacity: 1; transform: translateY(0); }
-</style>
+    #nav-links {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      font-size: 0.85rem;
+    }
+
+    #nav-links a {
+      padding: 6px 0;
+      position: relative;
+      color: #d1d5db;
+      font-weight: 400;
+    }
+
+    #nav-links a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: -4px;
+      height: 2px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, var(--accent-1), var(--accent-2));
+      transform: scaleX(0);
+      transform-origin: center;
+      transition: transform .18s ease-out;
+      opacity: 0.9;
+    }
+
+    #nav-links a:hover::after,
+    #nav-links a.active::after {
+      transform: scaleX(1);
+    }
+
+    #nav-links a.nav-cta {
+      padding: 6px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(156, 163, 175, 0.5);
+      background: linear-gradient(135deg, rgba(15, 23, 42, 0.9), rgba(15, 23, 42, 0.3));
+    }
+
+    #nav-links a.nav-cta::after {
+      display: none;
+    }
+
+    #nav-toggle {
+      display: none;
+      width: 32px;
+      height: 32px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.7);
+      background: transparent;
+      padding: 0;
+      margin-left: 8px;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+
+    #nav-toggle span,
+    #nav-toggle span::before,
+    #nav-toggle span::after {
+      display: block;
+      width: 16px;
+      height: 1.8px;
+      border-radius: 999px;
+      background: #e5e7eb;
+      position: relative;
+      transition: transform .18s ease, background .18s ease;
+    }
+
+    #nav-toggle span::before,
+    #nav-toggle span::after {
+      content: "";
+      position: absolute;
+      left: 0;
+    }
+
+    #nav-toggle span::before { top: -5px; }
+    #nav-toggle span::after { top: 5px; }
+
+    #nav-toggle.open span {
+      background: transparent;
+    }
+
+    #nav-toggle.open span::before {
+      transform: translateY(5px) rotate(45deg);
+    }
+
+    #nav-toggle.open span::after {
+      transform: translateY(-5px) rotate(-45deg);
+    }
+
+    /* Buttons */
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      border-radius: 999px;
+      border: 1px solid transparent;
+      font-size: 0.85rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      font-weight: 500;
+      padding: 9px 18px;
+      cursor: pointer;
+      text-decoration: none;
+      white-space: nowrap;
+      transition: background .2s ease, color .2s ease, border-color .2s ease, transform .15s ease, box-shadow .2s ease;
+      font-family: var(--font-mono);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
+      border-color: rgba(248, 250, 252, 0.04);
+      color: #0b1120;
+      box-shadow: 0 12px 25px rgba(15, 23, 42, 0.6);
+    }
+
+    .btn-primary:hover {
+      box-shadow: 0 16px 40px rgba(15, 23, 42, 0.9);
+      transform: translateY(-1px);
+    }
+
+    .btn-outline {
+      background: transparent;
+      border-color: rgba(148, 163, 184, 0.7);
+      color: #e5e7eb;
+    }
+
+    .btn-outline:hover {
+      background: rgba(15, 23, 42, 0.7);
+      border-color: rgba(209, 213, 219, 0.9);
+    }
+
+    .lab-btn {
+      border-radius: var(--round-pill);
+      padding: 7px 14px;
+      font-size: 0.72rem;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+      font-family: var(--font-mono);
+      background: rgba(15, 23, 42, 0.85);
+      color: #d1d5db;
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      cursor: pointer;
+      transition: background .18s ease, color .18s ease, border-color .18s ease, transform .1s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .lab-btn.active {
+      background: var(--accent-1-soft);
+      border-color: var(--accent-1);
+      color: #f9fafb;
+    }
+
+    .lab-btn:hover {
+      transform: translateY(-1px);
+    }
+
+    /* Hero / Home */
+
+    #home {
+      min-height: calc(100vh - var(--nav-h));
+      padding-top: 38px;
+      padding-bottom: 56px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+    }
+
+    .scene-canvas-layer {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    #hero-scene-wrap {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+    }
+
+    .scene-3d-canvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .webgl-fallback {
+      position: absolute;
+      inset: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 10px;
+      color: #9ca3af;
+      font-size: 0.8rem;
+      text-align: center;
+      padding: 20px;
+      background: radial-gradient(circle at top, rgba(15, 23, 42, 0.85), rgba(15, 23, 42, 0.98));
+    }
+
+    .webgl-fallback svg {
+      width: 38px;
+      height: 38px;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 2.3fr) minmax(0, 1fr);
+      gap: 40px;
+      align-items: flex-start;
+    }
+
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 3px 10px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.85);
+      border: 1px solid rgba(51, 65, 85, 0.9);
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: #cbd5f5;
+      margin-bottom: 14px;
+    }
+
+    .hero-eyebrow .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: var(--accent-1);
+    }
+
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: clamp(2.2rem, 3.1vw, 2.9rem);
+      line-height: 1.15;
+      margin: 0 0 14px;
+      color: #f9fafb;
+      max-width: 22ch;
+    }
+
+    .hero-title em {
+      font-style: normal;
+      color: var(--accent-1);
+    }
+
+    .hero-sub {
+      font-size: 0.95rem;
+      color: #9ca3af;
+      max-width: 44ch;
+      margin-bottom: 22px;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .hero-meta {
+      font-size: 0.86rem;
+      color: #9ca3af;
+      padding-top: 18px;
+      border-top: 1px solid rgba(31, 41, 55, 0.8);
+      max-width: 220px;
+      margin-left: auto;
+    }
+
+    .hero-caption {
+      margin-top: 60px;
+      font-size: 0.75rem;
+      color: #6b7280;
+      max-width: 460px;
+    }
+
+    .scroll-cue {
+      position: absolute;
+      left: 50%;
+      bottom: 18px;
+      transform: translateX(-50%);
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: #6b7280;
+    }
+
+    /* About */
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) minmax(0, 2fr);
+      gap: 42px;
+      align-items: center;
+    }
+
+    .about-portrait {
+      position: relative;
+      width: 220px;
+      border-radius: 26px;
+      overflow: hidden;
+      background: linear-gradient(135deg, #020617, #111827);
+      box-shadow: 0 18px 40px rgba(15, 23, 42, 0.55);
+      border: 1px solid rgba(31, 41, 55, 0.9);
+    }
+
+    .about-portrait img {
+      width: 100%;
+      height: 260px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .about-portrait .img-fallback-box {
+      position: absolute;
+      inset: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 8px;
+      color: #9ca3af;
+      font-size: 0.75rem;
+      background: radial-gradient(circle at top, #020617, #020617 40%, #020617);
+    }
+
+    .about-portrait .img-fallback-box svg {
+      width: 42px;
+      height: 42px;
+    }
+
+    .about-portrait.img-broken img {
+      display: none;
+    }
+
+    .about-portrait.img-broken .img-fallback-box {
+      display: flex;
+    }
+
+    .about-portrait .tag {
+      position: absolute;
+      left: 14px;
+      bottom: 14px;
+      padding: 4px 9px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      color: #e5e7eb;
+      font-size: 0.68rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      font-family: var(--font-mono);
+    }
+
+    .about-copy .lede {
+      font-size: 0.98rem;
+      margin: 0 0 6px;
+    }
+
+    .about-copy p {
+      margin-top: 0;
+      font-size: 0.93rem;
+      color: var(--ink-soft);
+    }
+
+    .about-stats {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 18px;
+      margin-top: 18px;
+    }
+
+    .about-stats .stat {
+      padding: 10px 16px;
+      border-radius: 14px;
+      border: 1px solid rgba(209, 213, 219, 0.8);
+      background: #f9fafb;
+      min-width: 130px;
+    }
+
+    .about-stats .num {
+      display: block;
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: var(--ink);
+    }
+
+    .about-stats .lbl {
+      display: block;
+      font-size: 0.75rem;
+      color: var(--ink-soft);
+    }
+
+    .aircraft-lab {
+      margin-top: 60px;
+      border-radius: 26px;
+      border: 1px solid rgba(209, 213, 219, 0.9);
+      background: #fefcf6;
+      padding: 18px;
+    }
+
+    .lab-canvas-wrap {
+      position: relative;
+      border-radius: 20px;
+      overflow: hidden;
+      border: 1px solid rgba(209, 213, 219, 0.9);
+      background: radial-gradient(circle at top, #e5effa, #cbd5e1);
+      min-height: 260px;
+    }
+
+    .lab-overlay-top {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      right: 10px;
+      display: flex;
+      justify-content: space-between;
+      pointer-events: none;
+    }
+
+    .lab-badge {
+      padding: 3px 8px;
+      border-radius: 999px;
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      background: rgba(15, 23, 42, 0.8);
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      color: #e5e7eb;
+      pointer-events: auto;
+    }
+
+    .lab-label-panel {
+      position: absolute;
+      left: 14px;
+      bottom: 14px;
+      max-width: 260px;
+      padding: 10px 12px;
+      border-radius: 16px;
+      background: rgba(248, 250, 252, 0.96);
+      box-shadow: 0 8px 22px rgba(15, 23, 42, 0.3);
+    }
+
+    .lab-label-panel .lp-title {
+      font-size: 0.82rem;
+      font-weight: 600;
+      margin-bottom: 4px;
+      color: var(--ink);
+    }
+
+    .lab-label-panel .lp-desc {
+      font-size: 0.75rem;
+      color: #4b5563;
+    }
+
+    .lab-hint {
+      margin-top: 10px;
+      font-size: 0.75rem;
+      color: #4b5563;
+    }
+
+    .lab-hint b {
+      color: var(--accent-1);
+      font-weight: 600;
+    }
+
+    /* Skills */
+
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 18px;
+      margin-top: 26px;
+    }
+
+    .skill-cell {
+      background: linear-gradient(135deg, #020617, #020617 40%, #020617);
+      border-radius: 18px;
+      padding: 14px 16px 12px;
+      border: 1px solid rgba(31, 41, 55, 0.9);
+    }
+
+    .skill-cat {
+      font-size: 0.8rem;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: #e5e7eb;
+    }
+
+    .skill-cell ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      font-size: 0.82rem;
+      color: #9ca3af;
+    }
+
+    .skill-cell li::before {
+      content: "•";
+      margin-right: 6px;
+      color: var(--accent-1);
+    }
+
+    /* Education */
+
+    .edu-list {
+      margin-top: 26px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .edu-row {
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr) auto;
+      align-items: center;
+      gap: 18px;
+      padding: 14px 16px;
+      border-radius: 18px;
+      border: 1px solid rgba(209, 213, 219, 0.9);
+      background: #fdfaf4;
+    }
+
+    .edu-logo-wrap {
+      width: 46px;
+      height: 46px;
+      border-radius: 14px;
+      border: 1px solid rgba(209, 213, 219, 0.9);
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #f9fafb;
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: #6b7280;
+    }
+
+    .edu-logo-wrap .edu-logo {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .edu-logo-wrap.broken .edu-logo {
+      display: none;
+    }
+
+    .edu-logo-wrap.broken .edu-logo-fallback {
+      display: flex;
+    }
+
+    .edu-logo-fallback {
+      width: 100%;
+      height: 100%;
+      display: none;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .edu-degree {
+      font-size: 0.95rem;
+      font-weight: 600;
+    }
+
+    .edu-school {
+      font-size: 0.8rem;
+      color: var(--ink-soft);
+    }
+
+    .edu-score {
+      font-size: 0.98rem;
+      font-weight: 600;
+      color: var(--accent-1);
+      text-align: right;
+    }
+
+    .edu-score .sub {
+      display: block;
+      font-size: 0.7rem;
+      color: var(--ink-soft);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+    }
+
+    /* Experience */
+
+    .timeline {
+      margin-top: 26px;
+      border-left: 1px solid rgba(55, 65, 81, 0.9);
+      padding-left: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+    }
+
+    .tl-item {
+      position: relative;
+      padding-left: 6px;
+    }
+
+    .tl-item::before {
+      content: "";
+      position: absolute;
+      left: -19px;
+      top: 7px;
+      width: 11px;
+      height: 11px;
+      border-radius: 999px;
+      background: radial-gradient(circle at 30% 30%, var(--accent-1), #7c2d12);
+      border: 2px solid #020617;
+      box-shadow: 0 0 0 3px rgba(184, 137, 63, 0.32);
+    }
+
+    .tl-head {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      gap: 6px;
+      margin-bottom: 4px;
+    }
+
+    .tl-role {
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+
+    .tl-org {
+      font-size: 0.85rem;
+      color: #9ca3af;
+    }
+
+    .tl-date {
+      margin-left: auto;
+      font-size: 0.78rem;
+      color: #9ca3af;
+      font-family: var(--font-mono);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+    }
+
+    .tl-body {
+      font-size: 0.86rem;
+      color: #d1d5db;
+    }
+
+    .tl-body ul {
+      margin: 6px 0 0 18px;
+      padding: 0;
+      color: #9ca3af;
+    }
+
+    .tl-body li {
+      margin-bottom: 2px;
+    }
+
+    .tl-flag {
+      display: inline-flex;
+      margin-top: 6px;
+      padding: 3px 8px;
+      font-size: 0.72rem;
+      border-radius: 999px;
+      background: rgba(30, 64, 175, 0.15);
+      border: 1px solid rgba(59, 130, 246, 0.5);
+      color: #bfdbfe;
+      font-family: var(--font-mono);
+    }
+
+    .uav-lab {
+      margin-top: 40px;
+      border-radius: 24px;
+      border: 1px solid rgba(31, 41, 55, 0.9);
+      background: radial-gradient(circle at top, #020617, #020617 55%, #020617);
+      padding: 18px;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .uav-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+      gap: 18px;
+      align-items: stretch;
+    }
+
+    .uav-canvas-wrap {
+      position: relative;
+      border-radius: 18px;
+      overflow: hidden;
+      border: 1px solid rgba(31, 41, 55, 0.9);
+      min-height: 260px;
+      background: radial-gradient(circle at top, #0b1120, #020617 55%, #020617);
+    }
+
+    .uav-panel {
+      padding: 4px 4px 4px 0;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      font-size: 0.85rem;
+      color: #9ca3af;
+    }
+
+    .uav-panel h4 {
+      margin: 0 0 4px;
+      color: #e5e7eb;
+      font-size: 0.98rem;
+      font-weight: 600;
+    }
+
+    .uav-panel .small {
+      font-size: 0.78rem;
+      color: #9ca3af;
+    }
+
+    .step-btn {
+      display: block;
+      width: 100%;
+      text-align: left;
+      border-radius: 999px;
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      background: rgba(15, 23, 42, 0.8);
+      padding: 7px 12px;
+      margin-top: 4px;
+      cursor: pointer;
+      font-size: 0.8rem;
+      color: #e5e7eb;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-family: inherit;
+      transition: background .18s ease, border-color .18s ease, transform .1s ease;
+    }
+
+    .step-btn b {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: #9ca3af;
+    }
+
+    .step-btn.active {
+      background: var(--accent-1-soft);
+      border-color: var(--accent-1);
+    }
+
+    .step-btn:hover {
+      transform: translateY(-1px);
+    }
+
+    /* Labs shared */
+
+    .lab-frame {
+      margin-top: 18px;
+      border-radius: 24px;
+      border: 1px solid rgba(209, 213, 219, 0.9);
+      overflow: hidden;
+      background: #fefcf6;
+      box-shadow: 0 14px 35px rgba(148, 163, 184, 0.35);
+    }
+
+    .lab-main-canvas-wrap {
+      position: relative;
+      border-bottom: 1px solid rgba(209, 213, 219, 0.9);
+      min-height: 260px;
+      background: radial-gradient(circle at top, #dbeafe, #e5e7eb);
+      overflow: hidden;
+    }
+
+    .lab-controls-bar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      background: #f9fafb;
+      border-bottom: 1px solid rgba(209, 213, 219, 0.9);
+    }
+
+    .lab-divider {
+      width: 1px;
+      height: 24px;
+      background: rgba(209, 213, 219, 0.9);
+    }
+
+    .lab-check {
+      font-size: 0.72rem;
+      color: #4b5563;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      cursor: pointer;
+    }
+
+    .lab-check input {
+      accent-color: var(--accent-1);
+    }
+
+    .lab-caption {
+      padding: 11px 14px 14px;
+      background: #fdfaf4;
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      font-size: 0.8rem;
+      color: #4b5563;
+    }
+
+    .lab-caption .cap-label {
+      font-family: var(--font-mono);
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      font-size: 0.7rem;
+      color: var(--accent-1);
+      margin-top: 3px;
+    }
+
+    .lab-writeup {
+      padding: 16px 16px 18px;
+      background: #fdfaf4;
+    }
+
+    .lab-writeup-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 14px;
+      font-size: 0.8rem;
+      color: #4b5563;
+    }
+
+    .lab-writeup-grid h5 {
+      margin: 0 0 4px;
+      font-size: 0.82rem;
+    }
+
+    .gallery-strip {
+      display: flex;
+      gap: 10px;
+      margin-top: 16px;
+      overflow-x: auto;
+      padding-bottom: 6px;
+    }
+
+    .gallery-thumb {
+      position: relative;
+      border-radius: 14px;
+      overflow: hidden;
+      width: 140px;
+      height: 90px;
+      flex: 0 0 auto;
+      cursor: pointer;
+      border: 1px solid rgba(209, 213, 219, 0.9);
+      background: #e5e7eb;
+    }
+
+    .gallery-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .gallery-thumb .thumb-fallback {
+      position: absolute;
+      inset: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      font-family: var(--font-mono);
+      color: #4b5563;
+      background: #e5e7eb;
+    }
+
+    .gallery-thumb.broken img {
+      display: none;
+    }
+
+    .gallery-thumb.broken .thumb-fallback {
+      display: flex;
+    }
+
+    /* CFD specific */
+
+    .lab-slider-group {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.74rem;
+      color: #4b5563;
+    }
+
+    .lab-slider-group label {
+      text-transform: uppercase;
+      font-family: var(--font-mono);
+      letter-spacing: 0.16em;
+    }
+
+    #cfd-aoa {
+      width: 160px;
+    }
+
+    input[type="range"] {
+      -webkit-appearance: none;
+      appearance: none;
+      height: 4px;
+      border-radius: 999px;
+      background: #e5e7eb;
+      outline: none;
+    }
+
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: var(--accent-1);
+      border: 2px solid #f9fafb;
+      box-shadow: 0 0 0 3px rgba(184, 137, 63, 0.4);
+      cursor: pointer;
+    }
+
+    input[type="range"]::-moz-range-thumb {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: var(--accent-1);
+      border: 2px solid #f9fafb;
+      box-shadow: 0 0 0 3px rgba(184, 137, 63, 0.4);
+      cursor: pointer;
+    }
+
+    /* Projects */
+
+    .projects-grid {
+      margin-top: 26px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
+    }
+
+    .proj-card {
+      background: linear-gradient(135deg, #020617, #020617 40%, #020617);
+      border-radius: 22px;
+      border: 1px solid rgba(31, 41, 55, 0.9);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 14px 45px rgba(15, 23, 42, 0.7);
+    }
+
+    .proj-visual {
+      position: relative;
+      height: 150px;
+      background: #020617;
+      overflow: hidden;
+    }
+
+    .proj-visual img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .proj-tag-pill {
+      position: absolute;
+      left: 10px;
+      bottom: 10px;
+      padding: 3px 9px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      font-size: 0.68rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      font-family: var(--font-mono);
+      color: #e5e7eb;
+    }
+
+    .proj-body {
+      padding: 14px 15px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      font-size: 0.9rem;
+    }
+
+    .proj-body h3 {
+      margin: 0;
+      font-size: 1rem;
+      color: #f9fafb;
+    }
+
+    .proj-sub {
+      font-size: 0.78rem;
+      color: #9ca3af;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      font-family: var(--font-mono);
+    }
+
+    .proj-desc {
+      font-size: 0.84rem;
+      color: #d1d5db;
+      margin-top: 4px;
+    }
+
+    .proj-details {
+      margin-top: 4px;
+      font-size: 0.8rem;
+      color: #9ca3af;
+    }
+
+    .proj-details summary {
+      cursor: pointer;
+      list-style: none;
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      font-family: var(--font-mono);
+      color: #9ca3af;
+    }
+
+    .proj-details summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .proj-details summary::before {
+      content: "+";
+      display: inline-block;
+      margin-right: 5px;
+    }
+
+    .proj-details[open] summary::before {
+      content: "–";
+    }
+
+    .proj-details .pd-block {
+      margin-top: 6px;
+      border-radius: 12px;
+      border: 1px dashed rgba(55, 65, 81, 0.9);
+      padding: 6px 8px;
+    }
+
+    .proj-details h6 {
+      margin: 4px 0 0;
+      font-size: 0.78rem;
+      color: #e5e7eb;
+    }
+
+    .proj-details p {
+      margin: 0;
+      font-size: 0.78rem;
+      color: #9ca3af;
+    }
+
+    .proj-footer {
+      margin-top: 10px;
+    }
+
+    .proj-link-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 0;
+      font-size: 0.8rem;
+      color: var(--accent-2);
+      border: none;
+      background: transparent;
+      cursor: pointer;
+    }
+
+    .proj-link-btn::after {
+      content: "";
+      width: 14px;
+      height: 1px;
+      background: var(--accent-2);
+      transition: width .16s ease;
+    }
+
+    .proj-link-btn:hover::after {
+      width: 22px;
+    }
+
+    .pv-illustration {
+      position: absolute;
+      inset: 0;
+    }
+
+    .concept-diagram {
+      background: radial-gradient(circle at top, #0b1120, #020617);
+      overflow: hidden;
+    }
+
+    .concept-diagram .silhouette {
+      position: absolute;
+      background: rgba(148, 163, 184, 0.3);
+      border-radius: 999px;
+    }
+
+    /* Very simplified conceptual shapes */
+    .silhouette.b52-wing { left: -10%; right: -10%; top: 55%; height: 16%; }
+    .silhouette.b52-body { width: 36%; height: 10%; left: 32%; top: 48%; }
+    .silhouette.b52-tail { width: 10%; height: 18%; right: 20%; top: 36%; }
+    .silhouette.b52-rocket { width: 12%; height: 22%; left: 44%; top: 60%; background: rgba(248, 250, 252, 0.3); }
+
+    .silhouette.u2-wing { left: -12%; right: -12%; top: 55%; height: 14%; }
+    .silhouette.u2-body { width: 32%; height: 9%; left: 34%; top: 50%; }
+    .silhouette.u2-pod { width: 8%; height: 13%; right: 22%; top: 48%; background: rgba(248, 250, 252, 0.26); }
+
+    /* Research */
+
+    .research-grid {
+      margin-top: 26px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+    }
+
+    .research-cell {
+      padding: 14px 14px 14px;
+      border-radius: 18px;
+      border: 1px solid rgba(209, 213, 219, 0.9);
+      background: #fdfaf4;
+      font-size: 0.88rem;
+      color: #4b5563;
+    }
+
+    .ri-index {
+      font-family: var(--font-mono);
+      font-size: 0.76rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent-1);
+      margin-bottom: 6px;
+    }
+
+    .research-cell h4 {
+      margin: 0 0 6px;
+      font-size: 0.96rem;
+      color: var(--ink);
+    }
+
+    /* Contact */
+
+    .section-head {
+      text-align: center;
+      margin-bottom: 26px;
+    }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+
+    .contact-cell {
+      border-radius: 18px;
+      border: 1px solid rgba(31, 41, 55, 0.9);
+      background: linear-gradient(135deg, #020617, #020617 40%, #020617);
+      padding: 14px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      font-size: 0.86rem;
+      color: #e5e7eb;
+      box-shadow: 0 14px 40px rgba(15, 23, 42, 0.7);
+      transition: transform .15s ease, box-shadow .18s ease, border-color .18s ease;
+    }
+
+    .contact-cell:hover {
+      transform: translateY(-2px);
+      border-color: rgba(55, 65, 81, 0.9);
+      box-shadow: 0 18px 55px rgba(15, 23, 42, 0.9);
+    }
+
+    .contact-cell svg {
+      width: 22px;
+      height: 22px;
+      margin-bottom: 4px;
+      color: var(--accent-1);
+    }
+
+    .cc-label {
+      font-size: 0.76rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      font-family: var(--font-mono);
+      color: #9ca3af;
+    }
+
+    .cc-value {
+      font-size: 0.88rem;
+      word-break: break-word;
+    }
+
+    .contact-cv {
+      text-align: center;
+      margin-top: 4px;
+    }
+
+    /* Footer */
+
+    footer {
+      border-top: 1px solid rgba(31, 41, 55, 0.9);
+      background: #020617;
+      color: #6b7280;
+      font-size: 0.75rem;
+      padding: 14px 20px;
+    }
+
+    .footer-row {
+      max-width: 1120px;
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    footer a {
+      color: #9ca3af;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    /* Modals */
+
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.86);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: var(--z-modal);
+      padding: 20px;
+    }
+
+    .modal-overlay.open {
+      display: flex;
+    }
+
+    .modal-box {
+      max-width: 640px;
+      width: 100%;
+      max-height: 90vh;
+      overflow: auto;
+      border-radius: 22px;
+      background: #fdfaf4;
+      box-shadow: 0 24px 60px rgba(15, 23, 42, 0.95);
+      padding: 18px 18px 18px;
+      position: relative;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      width: 26px;
+      height: 26px;
+      border-radius: 999px;
+      border: 1px solid rgba(209, 213, 219, 0.9);
+      background: #f9fafb;
+      font-size: 17px;
+      cursor: pointer;
+      line-height: 1;
+    }
+
+    .modal-head {
+      margin-bottom: 10px;
+    }
+
+    .mh-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #6b7280;
+      margin-bottom: 4px;
+    }
+
+    .modal-head h3 {
+      margin: 0;
+      font-size: 1.2rem;
+      color: var(--ink);
+    }
+
+    .modal-body {
+      font-size: 0.85rem;
+      color: #4b5563;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .modal-body h5 {
+      margin: 4px 0;
+      font-size: 0.9rem;
+    }
+
+    .note-box {
+      border-radius: 14px;
+      border: 1px solid rgba(251, 191, 36, 0.6);
+      background: #fffbeb;
+      font-size: 0.78rem;
+      padding: 8px 10px;
+      color: #854d0e;
+    }
+
+    .diagram-mini {
+      width: 100%;
+      height: 120px;
+      border-radius: 16px;
+      margin-bottom: 4px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .modal-body table {
+      border-collapse: collapse;
+      width: 100%;
+      font-size: 0.78rem;
+    }
+
+    .modal-body th,
+    .modal-body td {
+      border: 1px solid #e5e7eb;
+      padding: 4px 6px;
+      text-align: left;
+    }
+
+    .code-block {
+      font-family: var(--font-mono);
+      background: #020617;
+      color: #e5e7eb;
+      font-size: 0.78rem;
+      padding: 10px;
+      border-radius: 10px;
+      overflow-x: auto;
+      border: 1px solid rgba(31, 41, 55, 0.9);
+    }
+
+    .c-com { color: #6b7280; }
+    .c-kw { color: #38bdf8; }
+
+    /* Lightbox */
+
+    #lightbox {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.9);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: var(--z-lightbox);
+      padding: 20px;
+    }
+
+    #lightbox.open {
+      display: flex;
+    }
+
+    #lb-img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      border-radius: 10px;
+      box-shadow: 0 24px 70px rgba(0, 0, 0, 0.95);
+    }
+
+    .lb-close {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      width: 30px;
+      height: 30px;
+      border-radius: 999px;
+      border: 1px solid rgba(249, 250, 251, 0.4);
+      background: rgba(15, 23, 42, 0.9);
+      color: #f9fafb;
+      font-size: 18px;
+      cursor: pointer;
+    }
+
+    /* Reveal on scroll */
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(18px);
+      transition: opacity .45s ease, transform .45s ease;
+    }
+
+    .reveal.in {
+      opacity: 1;
+      transform: none;
+    }
+
+    /* WebGL fallbacks */
+
+    html.no-webgl .scene-3d-canvas {
+      display: none;
+    }
+
+    html.no-webgl .webgl-fallback {
+      display: flex;
+    }
+
+    /* Responsive */
+
+    @media (max-width: 960px) {
+      .hero-grid {
+        grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+        gap: 24px;
+      }
+      .about-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+      .about-portrait {
+        margin: 0 auto;
+      }
+      .aircraft-lab {
+        margin-top: 36px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      #site-header {
+        padding: 8px 14px;
+      }
+
+      #nav-links {
+        position: fixed;
+        inset: var(--nav-h) 0 auto 0;
+        height: auto;
+        padding: 12px 16px 14px;
+        background: rgba(3, 7, 18, 0.98);
+        border-bottom: 1px solid rgba(31, 41, 55, 0.9);
+        display: none;
+        flex-direction: column;
+        gap: 6px;
+      }
+
+      #nav-links.open {
+        display: flex;
+      }
+
+      #nav-toggle {
+        display: inline-flex;
+      }
+
+      #home {
+        padding-top: 30px;
+      }
+
+      .hero-grid {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 26px;
+      }
+
+      .hero-meta {
+        max-width: none;
+        margin-left: 0;
+        border-top: none;
+        padding-top: 0;
+      }
+
+      section {
+        padding: 64px 0;
+      }
+
+      .uav-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .timeline {
+        padding-left: 10px;
+      }
+
+      .edu-row {
+        grid-template-columns: auto minmax(0, 1fr);
+        grid-template-rows: auto auto;
+      }
+
+      .edu-score {
+        grid-column: 1 / -1;
+        text-align: left;
+        margin-top: 6px;
+      }
+
+      .lab-controls-bar {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .lab-slider-group {
+        width: 100%;
+        justify-content: space-between;
+      }
+
+      #cfd-aoa {
+        width: 120px;
+      }
+
+      .section-head .section-title {
+        font-size: 1.6rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .about-portrait {
+        width: 190px;
+      }
+      .hero-title {
+        font-size: 1.9rem;
+      }
+      .projects-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+      .lab-main-canvas-wrap,
+      .lab-canvas-wrap,
+      .uav-canvas-wrap {
+        min-height: 220px;
+      }
+    }
+  </style>
 </head>
 <body>
 
-<!-- ============================================================
-     LOADING SCREEN
-     ============================================================ -->
-<div id="loading-screen" aria-hidden="true">
-  <div class="loader-mark">
-    <svg viewBox="0 0 48 48"><circle class="loader-ring" cx="24" cy="24" r="20"/><circle class="loader-arc" cx="24" cy="24" r="20"/></svg>
-  </div>
-  <div class="loader-text">Preparing aerospace environment</div>
-</div>
-
-<!-- ============================================================
-     NAVIGATION
-     ============================================================ -->
 <header id="site-header">
   <a href="#home" class="brand">
-    <span class="brand-mark" aria-hidden="true">
-      <svg viewBox="0 0 100 100"><path d="M10 72 L50 14 L90 72 L50 58 Z" fill="#b8893f"/></svg>
+    <span class="brand-mark">
+      <svg viewBox="0 0 100 100" aria-hidden="true">
+        <path d="M10 72 L50 14 L90 72 L50 58 Z" fill="#b8893f"/>
+      </svg>
     </span>
-    <span>Nischal Raut<span class="brand-sub">Aerospace Engineer</span></span>
+    <span class="brand-text">
+      <span>Nischal Raut</span>
+      <span class="brand-sub">Aerospace Engineer</span>
+    </span>
   </a>
   <nav id="nav-links" aria-label="Primary">
     <a href="#home" data-nav>Home</a>
@@ -591,19 +1793,20 @@ footer { background: var(--navy); border-top: 1px solid var(--line-dark); paddin
 
 <main>
 
-<!-- ============================================================
-     1. HOME — 3D EXPERIENCE 1: WIND TUNNEL AMBIENT ENVIRONMENT
-     ============================================================ -->
+<!-- 1. HOME — 3D EXPERIENCE 1: WIND TUNNEL AMBIENT ENVIRONMENT -->
 <section id="home">
   <div class="scene-canvas-layer" id="hero-scene-wrap">
     <canvas id="hero-canvas" class="scene-3d-canvas" aria-hidden="true"></canvas>
     <div class="webgl-fallback">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"/></svg>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2">
+        <circle cx="12" cy="12" r="9"/>
+        <path d="M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"/>
+      </svg>
       <strong>Wind-Tunnel Visualization</strong>
       <span>Your browser/device cannot render WebGL. A static conceptual illustration is shown instead of the interactive scene.</span>
     </div>
   </div>
-  <div class="hero-content">
+  <div class="hero-content wrap">
     <div class="hero-grid">
       <div>
         <div class="hero-eyebrow"><span class="dot"></span> Experimental Aerodynamics &amp; CFD</div>
@@ -620,14 +1823,12 @@ footer { background: var(--navy); border-top: 1px solid var(--line-dark); paddin
         <a href="mailto:nischalraut6@gmail.com" style="color:var(--accent-2)">nischalraut6@gmail.com</a>
       </div>
     </div>
+    <div class="hero-caption">Conceptual airflow visualization — illustrative particle streaks through a wind-tunnel test section, not solved flow-field data.</div>
   </div>
-  <div class="hero-caption">Conceptual airflow visualization — illustrative particle streaks through a wind-tunnel test section, not solved flow-field data.</div>
   <div class="scroll-cue">SCROLL</div>
 </section>
 
-<!-- ============================================================
-     2. ABOUT — 3D EXPERIENCE 2: INTERACTIVE AIRCRAFT MODEL
-     ============================================================ -->
+<!-- 2. ABOUT — 3D EXPERIENCE 2: INTERACTIVE AIRCRAFT MODEL -->
 <section id="about" class="section section-light">
   <div class="wrap">
     <div class="about-grid">
@@ -635,14 +1836,17 @@ footer { background: var(--navy); border-top: 1px solid var(--line-dark); paddin
         <div class="about-portrait" id="portrait-wrap">
           <img src="profile.jpg" alt="Portrait of Nischal Raut" id="profile-img">
           <div class="img-fallback-box">
-            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>
-            <span style="font-family:var(--font-mono);font-size:.7rem;letter-spacing:.05em;">profile.jpg<br>not found</span>
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <circle cx="12" cy="8" r="4"/>
+              <path d="M4 21c0-4 4-6 8-6s8 2 8 6"/>
+            </svg>
+            <span>profile.jpg<br>not found</span>
           </div>
           <span class="tag">Nischal Raut — Aerospace Engineer</span>
         </div>
       </div>
       <div class="reveal">
-        <div class="eyebrow">About</div>
+        <div class="eyebrow"><span class="dot"></span>About</div>
         <h2 class="section-title" style="color:var(--ink)">Grounded in theory, driven toward the test chamber.</h2>
         <div class="about-copy">
           <p class="lede">An aspiring aerospace engineer interested in experimental aerodynamics and CFD, with an interest in bridging computational models with experimental validation.</p>
@@ -658,9 +1862,11 @@ footer { background: var(--navy); border-top: 1px solid var(--line-dark); paddin
 
     <div class="aircraft-lab reveal">
       <div class="lab-canvas-wrap" id="about-scene-wrap">
-        <canvas id="about-canvas" class="scene-3d-canvas"></canvas>
+        <canvas id="about-canvas" class="scene-3d-canvas" aria-hidden="true"></canvas>
         <div class="webgl-fallback">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M2 16l9-4 9 4-4-9-9 4-4 9z"/></svg>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2">
+            <path d="M2 16l9-4 9 4-4-9-9 4-4 9z"/>
+          </svg>
           <strong>Conceptual Aircraft Model</strong>
           <span>Interactive 3D unavailable on this device. This is a simplified, illustrative primitive-based model — not a validated CAD design.</span>
         </div>
@@ -680,12 +1886,10 @@ footer { background: var(--navy); border-top: 1px solid var(--line-dark); paddin
   </div>
 </section>
 
-<!-- ============================================================
-     3. TECHNICAL SKILLS
-     ============================================================ -->
+<!-- 3. TECHNICAL SKILLS -->
 <section id="skills" class="section section-dark">
   <div class="wrap">
-    <div class="eyebrow">Capability</div>
+    <div class="eyebrow"><span class="dot"></span>Capability</div>
     <h2 class="section-title">Technical skills</h2>
     <p class="section-lede">Tools and methods used across design, analysis, fabrication and reporting work.</p>
     <div class="skills-grid">
@@ -698,12 +1902,10 @@ footer { background: var(--navy); border-top: 1px solid var(--line-dark); paddin
   </div>
 </section>
 
-<!-- ============================================================
-     4. EDUCATION
-     ============================================================ -->
+<!-- 4. EDUCATION -->
 <section id="education" class="section section-light">
   <div class="wrap">
-    <div class="eyebrow">Academic Background</div>
+    <div class="eyebrow"><span class="dot"></span>Academic Background</div>
     <h2 class="section-title" style="color:var(--ink)">Education</h2>
     <div class="edu-list">
       <div class="edu-row reveal">
@@ -743,12 +1945,10 @@ footer { background: var(--navy); border-top: 1px solid var(--line-dark); paddin
   </div>
 </section>
 
-<!-- ============================================================
-     5. PROFESSIONAL EXPERIENCE + 3D EXPERIENCE 5 (UAV / Photogrammetry)
-     ============================================================ -->
+<!-- 5. PROFESSIONAL EXPERIENCE + 3D EXPERIENCE 5 (UAV / Photogrammetry) -->
 <section id="experience" class="section section-dark">
   <div class="wrap">
-    <div class="eyebrow">Career</div>
+    <div class="eyebrow"><span class="dot"></span>Career</div>
     <h2 class="section-title">Professional experience</h2>
     <p class="section-lede">Internship and industry engineering roles across UAV operations and aircraft integration/system testing.</p>
 
@@ -793,9 +1993,11 @@ footer { background: var(--navy); border-top: 1px solid var(--line-dark); paddin
     <div class="uav-lab reveal">
       <div class="uav-grid">
         <div class="uav-canvas-wrap" id="uav-scene-wrap">
-          <canvas id="uav-canvas" class="scene-3d-canvas"></canvas>
+          <canvas id="uav-canvas" class="scene-3d-canvas" aria-hidden="true"></canvas>
           <div class="webgl-fallback">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M3 20l6-16 3 7 3-7 6 16"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2">
+              <path d="M3 20l6-16 3 7 3-7 6 16"/>
+            </svg>
             <strong>UAV Terrain Mapping</strong>
             <span>Interactive 3D unavailable on this device. Procedural terrain shown as static concept only.</span>
           </div>
@@ -818,12 +2020,10 @@ footer { background: var(--navy); border-top: 1px solid var(--line-dark); paddin
   </div>
 </section>
 
-<!-- ============================================================
-     6. ENGINEERING LABS — 3D EXPERIENCES 3 & 4
-     ============================================================ -->
+<!-- 6. ENGINEERING LABS — 3D EXPERIENCES 3 & 4 -->
 <section id="labs" class="section section-light">
   <div class="wrap">
-    <div class="eyebrow">Interactive 3D</div>
+    <div class="eyebrow"><span class="dot"></span>Interactive 3D</div>
     <h2 class="section-title" style="color:var(--ink)">Engineering labs</h2>
     <p class="section-lede">Two interactive, illustrative 3D experiences built to explain engineering concepts behind flagship projects. These are conceptual demonstrations for explanatory purposes, not validated CAD or solved CFD output.</p>
 
@@ -837,9 +2037,11 @@ footer { background: var(--navy); border-top: 1px solid var(--line-dark); paddin
       </div>
       <div class="lab-frame">
         <div class="lab-main-canvas-wrap" id="wt-scene-wrap">
-          <canvas id="wt-canvas" class="scene-3d-canvas"></canvas>
+          <canvas id="wt-canvas" class="scene-3d-canvas" aria-hidden="true"></canvas>
           <div class="webgl-fallback">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="2" y="9" width="20" height="6" rx="1"/><path d="M2 12h20"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2">
+              <rect x="2" y="9" width="20" height="6" rx="1"/><path d="M2 12h20"/>
+            </svg>
             <strong>Wind-Tunnel Assembly</strong>
             <span>Interactive 3D unavailable on this device. This is a simplified conceptual assembly, not a certified engineering drawing.</span>
           </div>
@@ -893,9 +2095,18 @@ footer { background: var(--navy); border-top: 1px solid var(--line-dark); paddin
           </div>
         </div>
         <div class="gallery-strip" id="wt-gallery">
-          <div class="gallery-thumb" data-full="windtunnel1.jpeg"><img src="windtunnel1.jpeg" alt="Wind tunnel build photo 1"><div class="thumb-fallback">windtunnel1.jpeg</div></div>
-          <div class="gallery-thumb" data-full="windtunnel2.jpeg"><img src="windtunnel2.jpeg" alt="Wind tunnel build photo 2"><div class="thumb-fallback">windtunnel2.jpeg</div></div>
-          <div class="gallery-thumb" data-full="windtunnel3.jpeg"><img src="windtunnel3.jpeg" alt="Wind tunnel build photo 3"><div class="thumb-fallback">windtunnel3.jpeg</div></div>
+          <div class="gallery-thumb" data-full="windtunnel1.jpeg">
+            <img src="windtunnel1.jpeg" alt="Wind tunnel build photo 1">
+            <div class="thumb-fallback">windtunnel1.jpeg</div>
+          </div>
+          <div class="gallery-thumb" data-full="windtunnel2.jpeg">
+            <img src="windtunnel2.jpeg" alt="Wind tunnel build photo 2">
+            <div class="thumb-fallback">windtunnel2.jpeg</div>
+          </div>
+          <div class="gallery-thumb" data-full="windtunnel3.jpeg">
+            <img src="windtunnel3.jpeg" alt="Wind tunnel build photo 3">
+            <div class="thumb-fallback">windtunnel3.jpeg</div>
+          </div>
         </div>
       </div>
     </div>
@@ -910,9 +2121,11 @@ footer { background: var(--navy); border-top: 1px solid var(--line-dark); paddin
       </div>
       <div class="lab-frame">
         <div class="lab-main-canvas-wrap" id="cfd-scene-wrap">
-          <canvas id="cfd-canvas" class="scene-3d-canvas"></canvas>
+          <canvas id="cfd-canvas" class="scene-3d-canvas" aria-hidden="true"></canvas>
           <div class="webgl-fallback">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M3 14c4-6 14-6 18 0"/><path d="M3 17c4-4 14-4 18 0"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2">
+              <path d="M3 14c4-6 14-6 18 0"/><path d="M3 17c4-4 14-4 18 0"/>
+            </svg>
             <strong>Illustrative Airflow Model</strong>
             <span>Interactive 3D unavailable on this device. Diagram shown is illustrative only, not solved CFD data.</span>
           </div>
@@ -968,12 +2181,10 @@ footer { background: var(--navy); border-top: 1px solid var(--line-dark); paddin
   </div>
 </section>
 
-<!-- ============================================================
-     7. PROJECTS
-     ============================================================ -->
+<!-- 7. PROJECTS -->
 <section id="projects" class="section section-dark">
   <div class="wrap">
-    <div class="eyebrow">Selected Work</div>
+    <div class="eyebrow"><span class="dot"></span>Selected Work</div>
     <h2 class="section-title">Projects</h2>
     <p class="section-lede">Six projects spanning experimental hardware, conceptual design studies, CFD analysis and software development.</p>
 
@@ -999,7 +2210,10 @@ footer { background: var(--navy); border-top: 1px solid var(--line-dark); paddin
       <article class="proj-card reveal">
         <div class="proj-visual">
           <div class="pv-illustration concept-diagram">
-            <div class="silhouette b52-wing"></div><div class="silhouette b52-body"></div><div class="silhouette b52-tail"></div><div class="silhouette b52-rocket"></div>
+            <div class="silhouette b52-wing"></div>
+            <div class="silhouette b52-body"></div>
+            <div class="silhouette b52-tail"></div>
+            <div class="silhouette b52-rocket"></div>
           </div>
           <span class="proj-tag-pill">Conceptual Study</span>
         </div>
@@ -1025,7 +2239,9 @@ footer { background: var(--navy); border-top: 1px solid var(--line-dark); paddin
       <article class="proj-card reveal">
         <div class="proj-visual">
           <div class="pv-illustration concept-diagram" style="background:linear-gradient(180deg,#203446,#0b1624)">
-            <svg viewBox="0 0 100 40" style="position:absolute;inset:0;width:100%;height:100%"><path d="M10 20 L50 20 L90 20 M50 20 L50 6 M30 28 L70 28" stroke="#90a9bd" stroke-width="1.4" fill="none"/></svg>
+            <svg viewBox="0 0 100 40" style="position:absolute;inset:0;width:100%;height:100%">
+              <path d="M10 20 L50 20 L90 20 M50 20 L50 6 M30 28 L70 28" stroke="#90a9bd" stroke-width="1.4" fill="none"/>
+            </svg>
           </div>
           <span class="proj-tag-pill">Build &amp; Flight Test</span>
         </div>
@@ -1051,7 +2267,9 @@ footer { background: var(--navy); border-top: 1px solid var(--line-dark); paddin
       <article class="proj-card reveal">
         <div class="proj-visual">
           <div class="pv-illustration concept-diagram">
-            <div class="silhouette u2-wing"></div><div class="silhouette u2-body"></div><div class="silhouette u2-pod"></div>
+            <div class="silhouette u2-wing"></div>
+            <div class="silhouette u2-body"></div>
+            <div class="silhouette u2-pod"></div>
           </div>
           <span class="proj-tag-pill">Conceptual Study</span>
         </div>
@@ -1077,7 +2295,10 @@ footer { background: var(--navy); border-top: 1px solid var(--line-dark); paddin
       <article class="proj-card reveal">
         <div class="proj-visual">
           <div class="pv-illustration concept-diagram" style="background:linear-gradient(180deg,#1a2e3f,#0b1624)">
-            <svg viewBox="0 0 100 40" style="position:absolute;inset:0;width:100%;height:100%"><path d="M5 25c20-14 70-14 90 0" stroke="#b8893f" stroke-width="1.2" fill="none"/><path d="M5 30c20-10 70-10 90 0" stroke="#90a9bd" stroke-width="1" fill="none"/></svg>
+            <svg viewBox="0 0 100 40" style="position:absolute;inset:0;width:100%;height:100%">
+              <path d="M5 25c20-14 70-14 90 0" stroke="#b8893f" stroke-width="1.2" fill="none"/>
+              <path d="M5 30c20-10 70-10 90 0" stroke="#90a9bd" stroke-width="1" fill="none"/>
+            </svg>
           </div>
           <span class="proj-tag-pill">CFD · ANSYS</span>
         </div>
@@ -1121,12 +2342,10 @@ footer { background: var(--navy); border-top: 1px solid var(--line-dark); paddin
   </div>
 </section>
 
-<!-- ============================================================
-     8. RESEARCH INTERESTS
-     ============================================================ -->
+<!-- 8. RESEARCH INTERESTS -->
 <section id="research" class="section section-light">
   <div class="wrap">
-    <div class="eyebrow">Looking Forward</div>
+    <div class="eyebrow"><span class="dot"></span>Looking Forward</div>
     <h2 class="section-title" style="color:var(--ink)">Research interests</h2>
     <p class="section-lede">Areas I want to pursue further, building directly on the wind-tunnel and UAV mapping work above.</p>
     <div class="research-grid">
@@ -1154,29 +2373,33 @@ footer { background: var(--navy); border-top: 1px solid var(--line-dark); paddin
   </div>
 </section>
 
-<!-- ============================================================
-     9. CONTACT
-     ============================================================ -->
+<!-- 9. CONTACT -->
 <section id="contact" class="section section-dark">
   <div class="wrap">
     <div class="section-head">
-      <div class="eyebrow" style="justify-content:center">Get in touch</div>
+      <div class="eyebrow" style="justify-content:center"><span class="dot"></span>Get in touch</div>
       <h2 class="section-title">Contact</h2>
       <p class="section-lede">Open to opportunities in experimental aerodynamics, CFD, and aerospace systems engineering.</p>
     </div>
     <div class="contact-grid">
       <a class="contact-cell" href="mailto:nischalraut6@gmail.com">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3" y="5" width="18" height="14" rx="1"/><path d="M3 7l9 6 9-6"/></svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">
+          <rect x="3" y="5" width="18" height="14" rx="1"/><path d="M3 7l9 6 9-6"/>
+        </svg>
         <span class="cc-label">Email</span>
         <span class="cc-value">nischalraut6@gmail.com</span>
       </a>
       <a class="contact-cell" href="https://www.linkedin.com/in/nischal-raut-1b2227314/" target="_blank" rel="noopener">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M7 10v7M7 7v.01M11 17v-4.5c0-1.5 1-2.5 2.5-2.5S16 11 16 12.5V17"/></svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">
+          <rect x="3" y="3" width="18" height="18" rx="2"/><path d="M7 10v7M7 7v.01M11 17v-4.5c0-1.5 1-2.5 2.5-2.5S16 11 16 12.5V17"/>
+        </svg>
         <span class="cc-label">LinkedIn</span>
         <span class="cc-value">nischal-raut-1b2227314</span>
       </a>
       <a class="contact-cell" href="tel:+9779813980068">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M4 4h4l2 5-2.5 1.5a11 11 0 005 5L14 13l5 2v4a2 2 0 01-2 2A16 16 0 014 6a2 2 0 012-2z"/></svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">
+          <path d="M4 4h4l2 5-2.5 1.5a11 11 0 005 5L14 13l5 2v4a2 2 0 01-2 2A16 16 0 014 6a2 2 0 012-2z"/>
+        </svg>
         <span class="cc-label">Phone</span>
         <span class="cc-value">+977-9813980068</span>
       </a>
@@ -1196,9 +2419,7 @@ footer { background: var(--navy); border-top: 1px solid var(--line-dark); paddin
   </div>
 </footer>
 
-<!-- ============================================================
-     MODALS (each bespoke — distinct content & layout)
-     ============================================================ -->
+<!-- MODALS -->
 
 <!-- MODAL: B-52 -->
 <div class="modal-overlay" id="modal-b52" role="dialog" aria-modal="true" aria-labelledby="m-b52-title">
@@ -1335,11 +2556,28 @@ footer { background: var(--navy); border-top: 1px solid var(--line-dark); paddin
 <!-- Lightbox for wind-tunnel gallery -->
 <div id="lightbox"><button class="lb-close" id="lb-close">×</button><img id="lb-img" src="" alt="Enlarged wind tunnel photo"></div>
 
-<!-- ============================================================
-     JAVASCRIPT
-     ============================================================ -->
+<!-- WebGL detection (sets window.__HAS_WEBGL__ and html.no-webgl) -->
 <script>
-  // ----- Non-3D UI logic (always runs, no dependency on WebGL/Three.js) -----
+  (function () {
+    function webglAvailable() {
+      try {
+        var canvas = document.createElement('canvas');
+        return !!window.WebGLRenderingContext && !!(
+          canvas.getContext('webgl') || canvas.getContext('experimental-webgl')
+        );
+      } catch (e) {
+        return false;
+      }
+    }
+    window.__HAS_WEBGL__ = webglAvailable();
+    if (!window.__HAS_WEBGL__) {
+      document.documentElement.classList.add('no-webgl');
+    }
+  })();
+</script>
+
+<!-- Non-3D UI logic -->
+<script>
   document.getElementById('cur-year').textContent = new Date().getFullYear();
 
   // Loading screen: hide once window fully loaded, with a safety timeout
@@ -1348,139 +2586,187 @@ footer { background: var(--navy); border-top: 1px solid var(--line-dark); paddin
   setTimeout(finishLoading, 4000);
 
   // Image fallback handling (missing asset files should not break layout)
-  document.getElementById('profile-img').addEventListener('error', function () {
-    document.getElementById('portrait-wrap').classList.add('img-broken');
-  });
-  document.querySelectorAll('[data-logo]').forEach(wrap => {
-    const img = wrap.querySelector('img');
-    img.addEventListener('error', () => wrap.classList.add('broken'));
-  });
-  document.querySelectorAll('.gallery-thumb').forEach(thumb => {
-    const img = thumb.querySelector('img');
-    img.addEventListener('error', () => thumb.classList.add('broken'));
-  });
-
-  // Navigation: scroll shadow, mobile toggle, scrollspy, smooth anchor close
-  const header = document.getElementById('site-header');
-  window.addEventListener('scroll', () => {
-    header.classList.toggle('scrolled', window.scrollY > 40);
-  }, { passive: true });
-
-  const navToggle = document.getElementById('nav-toggle');
-  const navLinks = document.getElementById('nav-links');
-  navToggle.addEventListener('click', () => {
-    const open = navLinks.classList.toggle('open');
-    navToggle.classList.toggle('open', open);
-    navToggle.setAttribute('aria-expanded', open);
-  });
-  navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
-    navLinks.classList.remove('open'); navToggle.classList.remove('open');
-    navToggle.setAttribute('aria-expanded', false);
-  }));
-
-  const navAnchors = document.querySelectorAll('a[data-nav]');
-  const navSections = Array.from(navAnchors).map(a => document.querySelector(a.getAttribute('href'))).filter(Boolean);
-  const spy = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        const id = '#' + entry.target.id;
-        navAnchors.forEach(a => a.classList.toggle('active', a.getAttribute('href') === id));
-      }
+  (function () {
+    var profileImg = document.getElementById('profile-img');
+    if (profileImg) {
+      profileImg.addEventListener('error', function () {
+        document.getElementById('portrait-wrap').classList.add('img-broken');
+      });
+    }
+    document.querySelectorAll('[data-logo]').forEach(function (wrap) {
+      var img = wrap.querySelector('img');
+      img.addEventListener('error', function () { wrap.classList.add('broken'); });
     });
-  }, { rootMargin: '-45% 0px -50% 0px' });
-  navSections.forEach(s => spy.observe(s));
+    document.querySelectorAll('.gallery-thumb').forEach(function (thumb) {
+      var img = thumb.querySelector('img');
+      img.addEventListener('error', function () { thumb.classList.add('broken'); });
+    });
+  })();
+
+  // Navigation: scroll shadow, mobile toggle, scrollspy
+  (function () {
+    var header = document.getElementById('site-header');
+    window.addEventListener('scroll', function () {
+      header.classList.toggle('scrolled', window.scrollY > 40);
+    }, { passive: true });
+
+    var navToggle = document.getElementById('nav-toggle');
+    var navLinks = document.getElementById('nav-links');
+    navToggle.addEventListener('click', function () {
+      var open = navLinks.classList.toggle('open');
+      navToggle.classList.toggle('open', open);
+      navToggle.setAttribute('aria-expanded', open);
+    });
+    navLinks.querySelectorAll('a').forEach(function (a) {
+      a.addEventListener('click', function () {
+        navLinks.classList.remove('open');
+        navToggle.classList.remove('open');
+        navToggle.setAttribute('aria-expanded', 'false');
+      });
+    });
+
+    var navAnchors = document.querySelectorAll('a[data-nav]');
+    var navSections = Array.from(navAnchors).map(function (a) {
+      return document.querySelector(a.getAttribute('href'));
+    }).filter(Boolean);
+
+    if ('IntersectionObserver' in window) {
+      var spy = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            var id = '#' + entry.target.id;
+            navAnchors.forEach(function (a) {
+              a.classList.toggle('active', a.getAttribute('href') === id);
+            });
+          }
+        });
+      }, { rootMargin: '-45% 0px -50% 0px' });
+      navSections.forEach(function (s) { spy.observe(s); });
+    }
+  })();
 
   // Reveal-on-scroll
-  const revealObserver = new IntersectionObserver((entries) => {
-    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); revealObserver.unobserve(e.target); } });
-  }, { threshold: 0.15 });
-  document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+  (function () {
+    if (!('IntersectionObserver' in window)) {
+      document.querySelectorAll('.reveal').forEach(function (el) { el.classList.add('in'); });
+      return;
+    }
+    var revealObserver = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) {
+          e.target.classList.add('in');
+          revealObserver.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.15 });
+    document.querySelectorAll('.reveal').forEach(function (el) { revealObserver.observe(el); });
+  })();
 
   // Modal system
-  function openModal(id) {
-    const m = document.getElementById(id);
-    if (!m) return;
-    m.classList.add('open');
-    document.body.style.overflow = 'hidden';
-  }
-  function closeModal(m) {
-    m.classList.remove('open');
-    document.body.style.overflow = '';
-  }
-  document.querySelectorAll('[data-modal]').forEach(btn => {
-    btn.addEventListener('click', () => openModal(btn.getAttribute('data-modal')));
-  });
-  document.querySelectorAll('.modal-overlay').forEach(overlay => {
-    overlay.addEventListener('click', (e) => { if (e.target === overlay) closeModal(overlay); });
-    overlay.querySelector('[data-close-modal]').addEventListener('click', () => closeModal(overlay));
-  });
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') {
-      document.querySelectorAll('.modal-overlay.open').forEach(closeModal);
-      document.getElementById('lightbox').classList.remove('open');
+  (function () {
+    function openModal(id) {
+      var m = document.getElementById(id);
+      if (!m) return;
+      m.classList.add('open');
+      document.body.style.overflow = 'hidden';
     }
-  });
+    function closeModal(m) {
+      m.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+    document.querySelectorAll('[data-modal]').forEach(function (btn) {
+      btn.addEventListener('click', function () { openModal(btn.getAttribute('data-modal')); });
+    });
+    document.querySelectorAll('.modal-overlay').forEach(function (overlay) {
+      overlay.addEventListener('click', function (e) {
+        if (e.target === overlay) closeModal(overlay);
+      });
+      var closeBtn = overlay.querySelector('[data-close-modal]');
+      if (closeBtn) {
+        closeBtn.addEventListener('click', function () { closeModal(overlay); });
+      }
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') {
+        document.querySelectorAll('.modal-overlay.open').forEach(function (m) { closeModal(m); });
+        document.getElementById('lightbox').classList.remove('open');
+      }
+    });
+  })();
 
   // Gallery lightbox
-  const lightbox = document.getElementById('lightbox');
-  const lbImg = document.getElementById('lb-img');
-  document.querySelectorAll('.gallery-thumb').forEach(thumb => {
-    thumb.addEventListener('click', () => {
-      if (thumb.classList.contains('broken')) return;
-      lbImg.src = thumb.getAttribute('data-full');
-      lightbox.classList.add('open');
+  (function () {
+    var lightbox = document.getElementById('lightbox');
+    var lbImg = document.getElementById('lb-img');
+    document.querySelectorAll('.gallery-thumb').forEach(function (thumb) {
+      thumb.addEventListener('click', function () {
+        if (thumb.classList.contains('broken')) return;
+        lbImg.src = thumb.getAttribute('data-full');
+        lightbox.classList.add('open');
+      });
     });
-  });
-  document.getElementById('lb-close').addEventListener('click', () => lightbox.classList.remove('open'));
-  lightbox.addEventListener('click', (e) => { if (e.target === lightbox) lightbox.classList.remove('open'); });
+    document.getElementById('lb-close').addEventListener('click', function () {
+      lightbox.classList.remove('open');
+    });
+    lightbox.addEventListener('click', function (e) {
+      if (e.target === lightbox) lightbox.classList.remove('open');
+    });
+  })();
 
-  // UAV workflow step buttons (text/state only here; 3D hook attached below if WebGL available)
-  const uavStepDescriptions = {
-    1: 'A lawnmower-pattern flight path is planned over the survey area at a constant altitude to ensure consistent image overlap.',
-    2: 'The UAV captures overlapping photographs at regular intervals along the planned grid pattern.',
-    3: 'Captured images are matched and stitched using overlapping features to build a continuous orthomosaic.',
-    4: 'Matched image data is used to reconstruct a 3D terrain surface representing the mapped area.'
-  };
-  window.__uavSetStep = null; // 3D module attaches a handler here if available
-  document.querySelectorAll('.step-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      document.querySelectorAll('.step-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      const step = btn.getAttribute('data-step');
-      document.getElementById('uav-step-desc').textContent = uavStepDescriptions[step];
-      if (window.__uavSetStep) window.__uavSetStep(Number(step));
+  // UAV workflow step buttons (2D UI; 3D hook attached below if WebGL available)
+  (function () {
+    var uavStepDescriptions = {
+      1: 'A lawnmower-pattern flight path is planned over the survey area at a constant altitude to ensure consistent image overlap.',
+      2: 'The UAV captures overlapping photographs at regular intervals along the planned grid pattern.',
+      3: 'Captured images are matched and stitched using overlapping features to build a continuous orthomosaic.',
+      4: 'Matched image data is used to reconstruct a 3D terrain surface representing the mapped area.'
+    };
+    window.__uavSetStep = null; // 3D module attaches a handler here if available
+    document.querySelectorAll('.step-btn').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        document.querySelectorAll('.step-btn').forEach(function (b) { b.classList.remove('active'); });
+        btn.classList.add('active');
+        var step = btn.getAttribute('data-step');
+        document.getElementById('uav-step-desc').textContent = uavStepDescriptions[step];
+        if (window.__uavSetStep) window.__uavSetStep(Number(step));
+      });
     });
-  });
+  })();
 </script>
 
-<!-- ============================================================
-     THREE.JS MODULE — all five 3D experiences, lazy-loaded and
-     paused off-screen. Only runs if WebGL is available.
-     ============================================================ -->
+<!-- THREE.JS MODULE — all five 3D experiences -->
 <script type="module">
   if (!window.__HAS_WEBGL__) {
     // No WebGL: static fallbacks (already in markup/CSS) are sufficient. Nothing further to load.
   } else {
-    const THREE = await import('three');
-    const { OrbitControls } = await import('three/addons/controls/OrbitControls.js');
+    const THREE = await import('https://unpkg.com/three@0.160.0/build/three.module.js');
+    const { OrbitControls } = await import('https://unpkg.com/three@0.160.0/examples/jsm/controls/OrbitControls.js');
 
-    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const DPR = Math.min(window.devicePixelRatio || 1, 2);
 
-    // ---------- Shared helpers ----------
+    // Shared helpers
     function makeRenderer(canvas) {
-      const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true, powerPreference: 'high-performance' });
+      const renderer = new THREE.WebGLRenderer({
+        canvas,
+        antialias: true,
+        alpha: true,
+        powerPreference: 'high-performance'
+      });
       renderer.setPixelRatio(DPR);
       renderer.outputColorSpace = THREE.SRGBColorSpace;
       return renderer;
     }
+
     function sizeToContainer(renderer, camera, container) {
-      const w = container.clientWidth, h = container.clientHeight;
+      const w = container.clientWidth;
+      const h = container.clientHeight;
       if (w === 0 || h === 0) return;
       renderer.setSize(w, h, false);
       camera.aspect = w / h;
       camera.updateProjectionMatrix();
     }
+
     function fitLight(scene, color = 0xffffff) {
       const amb = new THREE.AmbientLight(0x89a0b8, 0.55);
       const key = new THREE.DirectionalLight(color, 1.1);
@@ -1492,15 +2778,23 @@ footer { background: var(--navy); border-top: 1px solid var(--line-dark); paddin
 
     // Registry for lazy init + pause/resume based on visibility
     const sceneRegistry = [];
+
     function registerLazyScene(containerId, initFn) {
       const container = document.getElementById(containerId);
-      if (!container) return;
+      if (!container || !('IntersectionObserver' in window)) {
+        // If no container or no IO, just eagerly init
+        initFn();
+        return;
+      }
       const entry = { container, initFn, started: false, handle: null };
       sceneRegistry.push(entry);
       const io = new IntersectionObserver((entries) => {
-        entries.forEach(e => {
+        entries.forEach((e) => {
           if (e.isIntersecting) {
-            if (!entry.started) { entry.started = true; entry.handle = entry.initFn(); }
+            if (!entry.started) {
+              entry.started = true;
+              entry.handle = entry.initFn();
+            }
             if (entry.handle && entry.handle.resume) entry.handle.resume();
           } else {
             if (entry.handle && entry.handle.pause) entry.handle.pause();
@@ -1511,17 +2805,28 @@ footer { background: var(--navy); border-top: 1px solid var(--line-dark); paddin
     }
 
     function makeLoopController(renderFn) {
-      let raf = null, running = false;
-      function loop() { if (!running) return; renderFn(); raf = requestAnimationFrame(loop); }
+      let raf = null;
+      let running = false;
+      function loop() {
+        if (!running) return;
+        renderFn();
+        raf = requestAnimationFrame(loop);
+      }
       return {
-        resume() { if (!running) { running = true; loop(); } },
-        pause() { running = false; if (raf) cancelAnimationFrame(raf); }
+        resume() {
+          if (!running) {
+            running = true;
+            loop();
+          }
+        },
+        pause() {
+          running = false;
+          if (raf) cancelAnimationFrame(raf);
+        }
       };
     }
 
-    // ============================================================
     // EXPERIENCE 1 — HERO WIND TUNNEL AMBIENT ENVIRONMENT
-    // ============================================================
     function initHeroScene() {
       const container = document.getElementById('hero-scene-wrap');
       const canvas = document.getElementById('hero-canvas');
@@ -1533,17 +2838,27 @@ footer { background: var(--navy); border-top: 1px solid var(--line-dark); paddin
       fitLight(scene);
 
       // Tunnel outline
-      const tunnelLen = 34, tunnelRadius = 4.2;
+      const tunnelLen = 34;
+      const tunnelRadius = 4.2;
       const tunnelGeo = new THREE.CylinderGeometry(tunnelRadius, tunnelRadius, tunnelLen, 24, 1, true);
-      const tunnelMat = new THREE.MeshBasicMaterial({ color: 0x27415a, wireframe: true, transparent: true, opacity: 0.22 });
+      const tunnelMat = new THREE.MeshBasicMaterial({
+        color: 0x27415a,
+        wireframe: true,
+        transparent: true,
+        opacity: 0.22
+      });
       const tunnelMesh = new THREE.Mesh(tunnelGeo, tunnelMat);
       tunnelMesh.rotation.z = Math.PI / 2;
       scene.add(tunnelMesh);
 
-      // Airflow streak particles (instanced thin boxes moving along tunnel axis)
+      // Airflow streak particles
       const STREAK_COUNT = 160;
       const streakGeo = new THREE.BoxGeometry(1.1, 0.02, 0.02);
-      const streakMat = new THREE.MeshBasicMaterial({ color: 0xb8893f, transparent: true, opacity: 0.55 });
+      const streakMat = new THREE.MeshBasicMaterial({
+        color: 0xb8893f,
+        transparent: true,
+        opacity: 0.55
+      });
       const streaks = new THREE.InstancedMesh(streakGeo, streakMat, STREAK_COUNT);
       const streakData = [];
       const dummy = new THREE.Object3D();
@@ -1556,7 +2871,8 @@ footer { background: var(--navy); border-top: 1px solid var(--line-dark); paddin
       }
       scene.add(streaks);
 
-      let mx = 0, my = 0;
+      let mx = 0;
+      let my = 0;
       container.addEventListener('pointermove', (e) => {
         const rect = container.getBoundingClientRect();
         mx = ((e.clientX - rect.left) / rect.width - 0.5) * 2;
@@ -1597,9 +2913,7 @@ footer { background: var(--navy); border-top: 1px solid var(--line-dark); paddin
     }
     registerLazyScene('hero-scene-wrap', initHeroScene);
 
-    // ============================================================
     // EXPERIENCE 2 — ABOUT: INTERACTIVE AIRCRAFT MODEL
-    // ============================================================
     function initAboutScene() {
       const container = document.getElementById('about-scene-wrap');
       const canvas = document.getElementById('about-canvas');
@@ -1617,40 +2931,80 @@ footer { background: var(--navy); border-top: 1px solid var(--line-dark); paddin
       controls.maxPolarAngle = Math.PI * 0.85;
       controls.target.set(0, 0, 0);
 
-      const metal = (c) => new THREE.MeshStandardMaterial({ color: c, metalness: 0.4, roughness: 0.45 });
+      const metal = (c) => new THREE.MeshStandardMaterial({
+        color: c,
+        metalness: 0.4,
+        roughness: 0.45
+      });
       const aircraft = new THREE.Group();
 
-      const fuselage = new THREE.Mesh(new THREE.CylinderGeometry(0.42, 0.55, 5.2, 20), metal(0xd7dde2));
+      const fuselage = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.42, 0.55, 5.2, 20),
+        metal(0xd7dde2)
+      );
       fuselage.rotation.z = Math.PI / 2;
-      fuselage.userData = { label: 'Fuselage', desc: 'Primary structural body housing payload, systems and crew volume (conceptual geometry).' };
+      fuselage.userData = {
+        label: 'Fuselage',
+        desc: 'Primary structural body housing payload, systems and crew volume (conceptual geometry).'
+      };
       aircraft.add(fuselage);
 
-      const nose = new THREE.Mesh(new THREE.ConeGeometry(0.42, 1.1, 20), metal(0xc3cbd3));
+      const nose = new THREE.Mesh(
+        new THREE.ConeGeometry(0.42, 1.1, 20),
+        metal(0xc3cbd3)
+      );
       nose.rotation.z = -Math.PI / 2;
       nose.position.x = 3.15;
-      nose.userData = { label: 'Nose Cone', desc: 'Forward fairing shaping airflow into the fuselage leading edge.' };
+      nose.userData = {
+        label: 'Nose Cone',
+        desc: 'Forward fairing shaping airflow into the fuselage leading edge.'
+      };
       aircraft.add(nose);
 
-      const wing = new THREE.Mesh(new THREE.BoxGeometry(1.5, 0.08, 6.4), metal(0x90a9bd));
+      const wing = new THREE.Mesh(
+        new THREE.BoxGeometry(1.5, 0.08, 6.4),
+        metal(0x90a9bd)
+      );
       wing.position.set(-0.2, -0.05, 0);
-      wing.userData = { label: 'Main Wing', desc: 'Primary lift-generating surface, swept here as a simplified illustrative planform.' };
+      wing.userData = {
+        label: 'Main Wing',
+        desc: 'Primary lift-generating surface, swept here as a simplified illustrative planform.'
+      };
       aircraft.add(wing);
 
-      const hTail = new THREE.Mesh(new THREE.BoxGeometry(0.8, 0.06, 2.6), metal(0x7c93a8));
+      const hTail = new THREE.Mesh(
+        new THREE.BoxGeometry(0.8, 0.06, 2.6),
+        metal(0x7c93a8)
+      );
       hTail.position.set(-2.3, 0.05, 0);
-      hTail.userData = { label: 'Horizontal Stabilizer', desc: 'Provides longitudinal (pitch) stability and trim control.' };
+      hTail.userData = {
+        label: 'Horizontal Stabilizer',
+        desc: 'Provides longitudinal (pitch) stability and trim control.'
+      };
       aircraft.add(hTail);
 
-      const vTail = new THREE.Mesh(new THREE.BoxGeometry(0.9, 1.3, 0.08), metal(0x7c93a8));
+      const vTail = new THREE.Mesh(
+        new THREE.BoxGeometry(0.9, 1.3, 0.08),
+        metal(0x7c93a8)
+      );
       vTail.position.set(-2.3, 0.75, 0);
-      vTail.userData = { label: 'Vertical Stabilizer', desc: 'Provides directional (yaw) stability and houses the rudder.' };
+      vTail.userData = {
+        label: 'Vertical Stabilizer',
+        desc: 'Provides directional (yaw) stability and houses the rudder.'
+      };
       aircraft.add(vTail);
 
-      [-1.6, 1.6].forEach(z => {
-        const nacelle = new THREE.Mesh(new THREE.CylinderGeometry(0.28, 0.28, 1.3, 16), metal(0x5c7184));
+      [-1.6, 1.6].forEach((z) => {
+        const nacelle = new THREE.Mesh(
+          new THREE.CylinderGeometry(0.28, 0.28, 1.3, 16),
+          metal(0x5c7184)
+        );
         nacelle.rotation.z = Math.PI / 2;
         nacelle.position.set(-0.1, -0.5, z);
-        nacelle.userData = { label: 'Engine Nacelle', desc: 'Conceptual engine housing mounted beneath the wing.' };
+        nacelle.userData = {
+          label: 'Engine Nacelle',
+          desc: 'Conceptual engine housing mounted beneath the wing.'
+        };
         aircraft.add(nacelle);
       });
 
@@ -1671,14 +3025,21 @@ footer { background: var(--navy); border-top: 1px solid var(--line-dark); paddin
         pointer.x = ((cx - rect.left) / rect.width) * 2 - 1;
         pointer.y = -((cy - rect.top) / rect.height) * 2 + 1;
       }
+
       function pick(e) {
         setPointer(e);
         raycaster.setFromCamera(pointer, camera);
         const hits = raycaster.intersectObjects(aircraft.children, false);
-        if (selected) { selected.material.emissive.copy(originalEmissive.get(selected) || new THREE.Color(0x000000)); }
+        if (selected) {
+          selected.material.emissive.copy(
+            originalEmissive.get(selected) || new THREE.Color(0x000000)
+          );
+        }
         if (hits.length) {
           selected = hits[0].object;
-          if (!originalEmissive.has(selected)) originalEmissive.set(selected, selected.material.emissive.clone());
+          if (!originalEmissive.has(selected)) {
+            originalEmissive.set(selected, selected.material.emissive.clone());
+          }
           selected.material.emissive = new THREE.Color(0xb8893f);
           selected.material.emissiveIntensity = 0.5;
           titleEl.textContent = selected.userData.label;
@@ -1704,9 +3065,7 @@ footer { background: var(--navy); border-top: 1px solid var(--line-dark); paddin
     }
     registerLazyScene('about-scene-wrap', initAboutScene);
 
-    // ============================================================
     // EXPERIENCE 3 — WIND TUNNEL INTERACTIVE ASSEMBLY
-    // ============================================================
     function initWindTunnelScene() {
       const container = document.getElementById('wt-scene-wrap');
       const canvas = document.getElementById('wt-canvas');
@@ -1723,7 +3082,13 @@ footer { background: var(--navy); border-top: 1px solid var(--line-dark); paddin
       controls.maxDistance = 24;
       controls.target.set(0, 0, 0);
 
-      const compMat = (c, op = 1) => new THREE.MeshStandardMaterial({ color: c, metalness: 0.3, roughness: 0.55, transparent: op < 1, opacity: op });
+      const compMat = (c, op = 1) => new THREE.MeshStandardMaterial({
+        color: c,
+        metalness: 0.3,
+        roughness: 0.55,
+        transparent: op < 1,
+        opacity: op
+      });
 
       const components = [];
       function addComponent(key, name, desc, order, mesh, basePos) {
@@ -1733,17 +3098,27 @@ footer { background: var(--navy); border-top: 1px solid var(--line-dark); paddin
         components.push({ key, name, desc, order, mesh, basePos: basePos.clone() });
       }
 
-      // 0: Settling chamber
+      // Settling chamber
       const settlingGroup = new THREE.Group();
-      const settlingBox = new THREE.Mesh(new THREE.BoxGeometry(2.2, 2.6, 2.6), compMat(0x5c7184, 0.35));
+      const settlingBox = new THREE.Mesh(
+        new THREE.BoxGeometry(2.2, 2.6, 2.6),
+        compMat(0x5c7184, 0.35)
+      );
       settlingGroup.add(settlingBox);
       const grid = new THREE.GridHelper(2.4, 8, 0xb8893f, 0x90a9bd);
       grid.rotation.x = Math.PI / 2;
       grid.position.x = -1.05;
       settlingGroup.add(grid);
-      addComponent('settling', 'Settling Chamber', 'Straightens and calms incoming air, reducing turbulence before contraction. Honeycomb/grid screens shown schematically.', 0, settlingGroup, new THREE.Vector3(-9, 0, 0));
+      addComponent(
+        'settling',
+        'Settling Chamber',
+        'Straightens and calms incoming air, reducing turbulence before contraction. Honeycomb/grid screens shown schematically.',
+        0,
+        settlingGroup,
+        new THREE.Vector3(-9, 0, 0)
+      );
 
-      // 1: Contraction cone
+      // Contraction cone
       function contractionGeometry() {
         const pts = [];
         for (let i = 0; i <= 12; i++) {
@@ -1755,27 +3130,62 @@ footer { background: var(--navy); border-top: 1px solid var(--line-dark); paddin
       }
       const contraction = new THREE.Mesh(contractionGeometry(), compMat(0x7c93a8, 0.55));
       contraction.rotation.z = Math.PI / 2;
-      addComponent('contraction', 'Contraction Cone', 'Accelerates and uniformly conditions the flow by reducing cross-sectional area ahead of the test section.', 1, contraction, new THREE.Vector3(-5.5, 0, 0));
+      addComponent(
+        'contraction',
+        'Contraction Cone',
+        'Accelerates and uniformly conditions the flow by reducing cross-sectional area ahead of the test section.',
+        1,
+        contraction,
+        new THREE.Vector3(-5.5, 0, 0)
+      );
 
-      // 2: Test section
+      // Test section
       const testGroup = new THREE.Group();
-      const testBox = new THREE.Mesh(new THREE.BoxGeometry(3.2, 1.3, 1.3), new THREE.MeshPhysicalMaterial({ color: 0xdce8f2, transparent: true, opacity: 0.18, roughness: 0.1, transmission: 0.6, metalness: 0 }));
+      const testBox = new THREE.Mesh(
+        new THREE.BoxGeometry(3.2, 1.3, 1.3),
+        new THREE.MeshPhysicalMaterial({
+          color: 0xdce8f2,
+          transparent: true,
+          opacity: 0.18,
+          roughness: 0.1,
+          transmission: 0.6,
+          metalness: 0
+        })
+      );
       testGroup.add(testBox);
-      const testFrame = new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.BoxGeometry(3.2, 1.3, 1.3)), new THREE.LineBasicMaterial({ color: 0xb8893f }));
+      const testFrame = new THREE.LineSegments(
+        new THREE.EdgesGeometry(new THREE.BoxGeometry(3.2, 1.3, 1.3)),
+        new THREE.LineBasicMaterial({ color: 0xb8893f })
+      );
       testGroup.add(testFrame);
-      addComponent('test', 'Test Section (Open-Jet)', 'Open-jet working section where the model/instrumentation is placed within the accelerated, conditioned flow.', 2, testGroup, new THREE.Vector3(-1.5, 0, 0));
+      addComponent(
+        'test',
+        'Test Section (Open-Jet)',
+        'Open-jet working section where the model/instrumentation is placed within the accelerated, conditioned flow.',
+        2,
+        testGroup,
+        new THREE.Vector3(-1.5, 0, 0)
+      );
 
-      // 3: Gust generator (oscillating vanes)
+      // Gust generator
       const gustGroup = new THREE.Group();
       const vaneMat = compMat(0xb8893f, 1);
       const vane1 = new THREE.Mesh(new THREE.BoxGeometry(0.05, 1.1, 0.35), vaneMat);
       vane1.position.set(0, 0, -0.3);
-      const vane2 = vane1.clone(); vane2.position.z = 0.3;
+      const vane2 = vane1.clone();
+      vane2.position.z = 0.3;
       gustGroup.add(vane1, vane2);
       gustGroup.userData.vanes = [vane1, vane2];
-      addComponent('gust', 'Gust Generator (Oscillating Vanes)', 'Paired vanes near the test-section inlet oscillate to introduce controlled unsteady inflow — related to ongoing research on synchronized gust generation.', 2.5, gustGroup, new THREE.Vector3(-3.2, 0, 0));
+      addComponent(
+        'gust',
+        'Gust Generator (Oscillating Vanes)',
+        'Paired vanes near the test-section inlet oscillate to introduce controlled unsteady inflow — related to ongoing research on synchronized gust generation.',
+        2.5,
+        gustGroup,
+        new THREE.Vector3(-3.2, 0, 0)
+      );
 
-      // 4: Diffuser
+      // Diffuser
       function diffuserGeometry() {
         const pts = [];
         for (let i = 0; i <= 12; i++) {
@@ -1787,24 +3197,44 @@ footer { background: var(--navy); border-top: 1px solid var(--line-dark); paddin
       }
       const diffuser = new THREE.Mesh(diffuserGeometry(), compMat(0x7c93a8, 0.55));
       diffuser.rotation.z = Math.PI / 2;
-      addComponent('diffuser', 'Diffuser', 'Gradually expands the duct to decelerate flow and recover pressure downstream of the test section.', 3, diffuser, new THREE.Vector3(3, 0, 0));
+      addComponent(
+        'diffuser',
+        'Diffuser',
+        'Gradually expands the duct to decelerate flow and recover pressure downstream of the test section.',
+        3,
+        diffuser,
+        new THREE.Vector3(3, 0, 0)
+      );
 
-      // 5: Fan / drive
+      // Fan / drive
       const fanGroup = new THREE.Group();
-      const fanHousing = new THREE.Mesh(new THREE.CylinderGeometry(1.5, 1.5, 1.4, 24, 1, true), compMat(0x5c7184, 0.3));
+      const fanHousing = new THREE.Mesh(
+        new THREE.CylinderGeometry(1.5, 1.5, 1.4, 24, 1, true),
+        compMat(0x5c7184, 0.3)
+      );
       fanHousing.rotation.z = Math.PI / 2;
       fanGroup.add(fanHousing);
       const bladeGroup = new THREE.Group();
       for (let i = 0; i < 6; i++) {
-        const blade = new THREE.Mesh(new THREE.BoxGeometry(0.08, 1.3, 0.3), compMat(0xd7dde2, 1));
+        const blade = new THREE.Mesh(
+          new THREE.BoxGeometry(0.08, 1.3, 0.3),
+          compMat(0xd7dde2, 1)
+        );
         blade.rotation.x = (i / 6) * Math.PI * 2;
         bladeGroup.add(blade);
       }
       fanGroup.add(bladeGroup);
       fanGroup.userData.blades = bladeGroup;
-      addComponent('fan', 'Fan / Drive Section', 'Axial fan driving flow through the circuit at the required test-section velocity.', 4, fanGroup, new THREE.Vector3(6.5, 0, 0));
+      addComponent(
+        'fan',
+        'Fan / Drive Section',
+        'Axial fan driving flow through the circuit at the required test-section velocity.',
+        4,
+        fanGroup,
+        new THREE.Vector3(6.5, 0, 0)
+      );
 
-      // Airflow particles through the assembled axis (visible when not exploded)
+      // Airflow particles
       const flowCount = 60;
       const flowGeo = new THREE.SphereGeometry(0.06, 6, 6);
       const flowMat = new THREE.MeshBasicMaterial({ color: 0xb8893f });
@@ -1822,13 +3252,16 @@ footer { background: var(--navy); border-top: 1px solid var(--line-dark); paddin
       let flowOn = true;
 
       // Exploded view state
-      let explodeTarget = 0, explodeAmount = 0;
-      document.getElementById('wt-explode-btn').addEventListener('click', (e) => {
+      let explodeTarget = 0;
+      let explodeAmount = 0;
+      const explodeBtn = document.getElementById('wt-explode-btn');
+      explodeBtn.addEventListener('click', (e) => {
         explodeTarget = explodeTarget === 0 ? 1 : 0;
         e.target.classList.toggle('active', explodeTarget === 1);
         e.target.textContent = explodeTarget === 1 ? 'Assembled View' : 'Exploded View';
       });
-      document.getElementById('wt-flow-btn').addEventListener('click', (e) => {
+      const flowBtn = document.getElementById('wt-flow-btn');
+      flowBtn.addEventListener('click', (e) => {
         flowOn = !flowOn;
         e.target.textContent = 'Airflow: ' + (flowOn ? 'On' : 'Off');
         e.target.classList.toggle('active', flowOn);
@@ -1836,10 +3269,10 @@ footer { background: var(--navy); border-top: 1px solid var(--line-dark); paddin
       });
 
       // Visibility toggles
-      document.querySelectorAll('[data-wt-vis]').forEach(cb => {
+      document.querySelectorAll('[data-wt-vis]').forEach((cb) => {
         cb.addEventListener('change', () => {
           const key = cb.getAttribute('data-wt-vis');
-          const comp = components.find(c => c.key === key);
+          const comp = components.find((c) => c.key === key);
           if (comp) comp.mesh.visible = cb.checked;
         });
       });
@@ -1851,23 +3284,32 @@ footer { background: var(--navy); border-top: 1px solid var(--line-dark); paddin
       const badge = document.getElementById('wt-selected-badge');
       const captionText = document.getElementById('wt-caption-text');
       function resetHighlight(comp) {
-        comp.mesh.traverse(obj => { if (obj.isMesh && obj.material && obj.material.emissive) obj.material.emissive.setHex(0x000000); });
+        comp.mesh.traverse((obj) => {
+          if (obj.isMesh && obj.material && obj.material.emissive) {
+            obj.material.emissive.setHex(0x000000);
+          }
+        });
       }
       function highlight(comp) {
-        comp.mesh.traverse(obj => { if (obj.isMesh && obj.material && obj.material.emissive) { obj.material.emissive.setHex(0xb8893f); obj.material.emissiveIntensity = 0.4; } });
+        comp.mesh.traverse((obj) => {
+          if (obj.isMesh && obj.material && obj.material.emissive) {
+            obj.material.emissive.setHex(0xb8893f);
+            obj.material.emissiveIntensity = 0.4;
+          }
+        });
       }
       canvas.addEventListener('click', (e) => {
         const rect = canvas.getBoundingClientRect();
         pointer.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
         pointer.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
         raycaster.setFromCamera(pointer, camera);
-        const meshes = components.filter(c => c.mesh.visible).map(c => c.mesh);
+        const meshes = components.filter((c) => c.mesh.visible).map((c) => c.mesh);
         const hits = raycaster.intersectObjects(meshes, true);
         if (selectedComp) resetHighlight(selectedComp);
         if (hits.length) {
           let obj = hits[0].object;
           while (obj && !obj.userData.isComponent && obj.parent) obj = obj.parent;
-          const comp = components.find(c => c.mesh === obj);
+          const comp = components.find((c) => c.mesh === obj);
           if (comp) {
             selectedComp = comp;
             highlight(comp);
@@ -1885,24 +3327,30 @@ footer { background: var(--navy); border-top: 1px solid var(--line-dark); paddin
       sizeToContainer(renderer, camera, container);
 
       let t = 0;
+      const dummy = new THREE.Object3D();
+
       function render() {
         t += 0.016;
         controls.update();
+
+        // Exploded layout interpolation
         explodeAmount += (explodeTarget - explodeAmount) * 0.06;
-        components.forEach(c => {
-          const dir = Math.sign(c.basePos.x) || (c.order < 2 ? -1 : 1);
-          const offset = explodeAmount * (1.6 + c.order * 0.9) * (c.basePos.x === 0 ? 1 : Math.sign(c.basePos.x));
+        components.forEach((c) => {
+          const offsetSign = c.basePos.x === 0 ? (c.order < 2 ? -1 : 1) : Math.sign(c.basePos.x);
+          const offset = explodeAmount * (1.6 + c.order * 0.9) * offsetSign;
           c.mesh.position.x = c.basePos.x + offset;
         });
 
         if (!reduceMotion) {
-          gustGroup.userData.vanes.forEach((v, i) => { v.rotation.x = Math.sin(t * 2.2 + i) * 0.5; });
+          gustGroup.userData.vanes.forEach((v, i) => {
+            v.rotation.x = Math.sin(t * 2.2 + i) * 0.5;
+          });
           fanGroup.userData.blades.rotation.x += 0.25;
         }
 
+        // Flow
         flowMesh.visible = flowOn && explodeAmount < 0.1;
         if (flowOn) {
-          const dummy = new THREE.Object3D();
           for (let i = 0; i < flowCount; i++) {
             const d = flowData[i];
             if (!reduceMotion) d.x += d.speed;
@@ -1922,9 +3370,7 @@ footer { background: var(--navy); border-top: 1px solid var(--line-dark); paddin
     }
     registerLazyScene('wt-scene-wrap', initWindTunnelScene);
 
-    // ============================================================
     // EXPERIENCE 4 — AERODYNAMICS & CFD ILLUSTRATIVE MODEL
-    // ============================================================
     function initCfdScene() {
       const container = document.getElementById('cfd-scene-wrap');
       const canvas = document.getElementById('cfd-canvas');
@@ -1942,7 +3388,7 @@ footer { background: var(--navy); border-top: 1px solid var(--line-dark); paddin
       controls.target.set(0, 0, 0);
       controls.enablePan = false;
 
-      // Airfoil shape (illustrative, simplified cambered profile)
+      // Airfoil shape (illustrative)
       const shape = new THREE.Shape();
       shape.moveTo(-1.6, 0);
       shape.quadraticCurveTo(-0.8, 0.26, 0, 0.2);
@@ -1954,46 +3400,63 @@ footer { background: var(--navy); border-top: 1px solid var(--line-dark); paddin
       airfoilGeo.center();
       airfoilGeo.computeVertexNormals();
 
-      // Vertex colors for illustrative pressure representation
       const pos = airfoilGeo.attributes.position;
       const colors = new Float32Array(pos.count * 3);
-      const low = new THREE.Color(0xd96b3a);   // illustrative low pressure (upper surface)
-      const high = new THREE.Color(0x3a7fd9);  // illustrative high pressure (lower surface)
+      const low = new THREE.Color(0xd96b3a);
+      const high = new THREE.Color(0x3a7fd9);
       const neutral = new THREE.Color(0x8a94a0);
       for (let i = 0; i < pos.count; i++) {
         const y = pos.getY(i);
-        const t = THREE.MathUtils.clamp((y + 0.26) / 0.52, 0, 1);
-        const col = y >= 0 ? low.clone().lerp(neutral, 1 - Math.min(1, Math.abs(y) * 3)) : high.clone().lerp(neutral, 1 - Math.min(1, Math.abs(y) * 3));
-        colors[i * 3] = col.r; colors[i * 3 + 1] = col.g; colors[i * 3 + 2] = col.b;
+        const col = y >= 0
+          ? low.clone().lerp(neutral, 1 - Math.min(1, Math.abs(y) * 3))
+          : high.clone().lerp(neutral, 1 - Math.min(1, Math.abs(y) * 3));
+        colors[i * 3] = col.r;
+        colors[i * 3 + 1] = col.g;
+        colors[i * 3 + 2] = col.b;
       }
       airfoilGeo.setAttribute('color', new THREE.BufferAttribute(colors, 3));
 
-      const neutralMat = new THREE.MeshStandardMaterial({ color: 0x90a9bd, metalness: 0.3, roughness: 0.5 });
-      const pressureMat = new THREE.MeshStandardMaterial({ vertexColors: true, metalness: 0.2, roughness: 0.55 });
+      const neutralMat = new THREE.MeshStandardMaterial({
+        color: 0x90a9bd,
+        metalness: 0.3,
+        roughness: 0.5
+      });
+      const pressureMat = new THREE.MeshStandardMaterial({
+        vertexColors: true,
+        metalness: 0.2,
+        roughness: 0.55
+      });
       const airfoilGroup = new THREE.Group();
       const airfoil = new THREE.Mesh(airfoilGeo, pressureMat);
       airfoilGroup.add(airfoil);
       scene.add(airfoilGroup);
 
       let pressureOn = true;
-      document.getElementById('cfd-pressure-btn').addEventListener('click', (e) => {
+      const pressureBtn = document.getElementById('cfd-pressure-btn');
+      pressureBtn.addEventListener('click', (e) => {
         pressureOn = !pressureOn;
         airfoil.material = pressureOn ? pressureMat : neutralMat;
         e.target.textContent = 'Pressure View: ' + (pressureOn ? 'On' : 'Off');
         e.target.classList.toggle('active', pressureOn);
       });
 
-      // Streamlines using dashed-texture animated tubes
+      // Streamlines
       function makeDashTexture() {
-        const c = document.createElement('canvas'); c.width = 64; c.height = 8;
+        const c = document.createElement('canvas');
+        c.width = 64;
+        c.height = 8;
         const ctx = c.getContext('2d');
-        ctx.fillStyle = '#0b1624'; ctx.fillRect(0, 0, 64, 8);
-        ctx.fillStyle = '#e3b985'; ctx.fillRect(0, 0, 32, 8);
+        ctx.fillStyle = '#0b1624';
+        ctx.fillRect(0, 0, 64, 8);
+        ctx.fillStyle = '#e3b985';
+        ctx.fillRect(0, 0, 32, 8);
         const tex = new THREE.CanvasTexture(c);
-        tex.wrapS = THREE.RepeatWrapping; tex.wrapT = THREE.RepeatWrapping;
+        tex.wrapS = THREE.RepeatWrapping;
+        tex.wrapT = THREE.RepeatWrapping;
         tex.repeat.set(8, 1);
         return tex;
       }
+
       const streamGroup = new THREE.Group();
       const streamLines = [];
       const streamCount = 7;
@@ -2010,30 +3473,31 @@ footer { background: var(--navy); border-top: 1px solid var(--line-dark); paddin
         const tex = makeDashTexture();
         const mat = new THREE.MeshBasicMaterial({ map: tex, transparent: true, opacity: 0.8 });
         const tube = new THREE.Mesh(tubeGeo, mat);
-        tube.userData = { tex, baseCurve: curve, yOff, upper: yOff > 0 };
+        tube.userData = { tex, yOff, upper: yOff > 0 };
         streamGroup.add(tube);
         streamLines.push(tube);
       }
       scene.add(streamGroup);
 
       let streamsOn = true;
-      document.getElementById('cfd-stream-btn').addEventListener('click', (e) => {
+      const streamsBtn = document.getElementById('cfd-stream-btn');
+      streamsBtn.addEventListener('click', (e) => {
         streamsOn = !streamsOn;
         streamGroup.visible = streamsOn;
         e.target.textContent = 'Streamlines: ' + (streamsOn ? 'On' : 'Off');
         e.target.classList.toggle('active', streamsOn);
       });
 
-      // Angle of attack control + simplified separation illustration
       const aoaSlider = document.getElementById('cfd-aoa');
       const aoaBadge = document.getElementById('cfd-aoa-badge');
       const captionText = document.getElementById('cfd-caption-text');
+
       function updateAoA() {
         const deg = Number(aoaSlider.value);
         airfoilGroup.rotation.z = -THREE.MathUtils.degToRad(deg);
         aoaBadge.textContent = 'AoA: ' + deg + '°';
         const separated = deg > 15;
-        streamLines.forEach(tube => {
+        streamLines.forEach((tube) => {
           if (tube.userData.upper && separated) {
             tube.material.color.set(0xd96b3a);
             tube.material.opacity = 0.55 + Math.random() * 0.2;
@@ -2056,7 +3520,9 @@ footer { background: var(--navy); border-top: 1px solid var(--line-dark); paddin
       function render() {
         controls.update();
         if (!reduceMotion && streamsOn) {
-          streamLines.forEach(tube => { tube.userData.tex.offset.x -= 0.012; });
+          streamLines.forEach((tube) => {
+            tube.userData.tex.offset.x -= 0.012;
+          });
         }
         renderer.render(scene, camera);
       }
@@ -2066,9 +3532,7 @@ footer { background: var(--navy); border-top: 1px solid var(--line-dark); paddin
     }
     registerLazyScene('cfd-scene-wrap', initCfdScene);
 
-    // ============================================================
     // EXPERIENCE 5 — UAV / PHOTOGRAMMETRY TERRAIN VISUALIZATION
-    // ============================================================
     function initUavScene() {
       const container = document.getElementById('uav-scene-wrap');
       const canvas = document.getElementById('uav-canvas');
@@ -2088,52 +3552,97 @@ footer { background: var(--navy); border-top: 1px solid var(--line-dark); paddin
       controls.target.set(0, 1, 0);
 
       // Procedural terrain
-      const size = 24, seg = 64;
+      const size = 24;
+      const seg = 64;
       const terrainGeo = new THREE.PlaneGeometry(size, size, seg, seg);
       terrainGeo.rotateX(-Math.PI / 2);
       const posAttr = terrainGeo.attributes.position;
+
       function heightAt(x, z) {
-        return Math.sin(x * 0.28) * 0.9 + Math.cos(z * 0.22) * 0.8 + Math.sin((x + z) * 0.12) * 1.4 + Math.sin(x * 0.6) * 0.15;
+        return (
+          Math.sin(x * 0.28) * 0.9 +
+          Math.cos(z * 0.22) * 0.8 +
+          Math.sin((x + z) * 0.12) * 1.4 +
+          Math.sin(x * 0.6) * 0.15
+        );
       }
+
       const colorsArr = new Float32Array(posAttr.count * 3);
-      const low = new THREE.Color(0x4a4028), mid = new THREE.Color(0x4f6b45), high = new THREE.Color(0x8d9499);
+      const lowCol = new THREE.Color(0x4a4028);
+      const midCol = new THREE.Color(0x4f6b45);
+      const highCol = new THREE.Color(0x8d9499);
       for (let i = 0; i < posAttr.count; i++) {
-        const x = posAttr.getX(i), z = posAttr.getZ(i);
+        const x = posAttr.getX(i);
+        const z = posAttr.getZ(i);
         const h = heightAt(x, z);
         posAttr.setY(i, h);
         const t = THREE.MathUtils.clamp((h + 1) / 3.2, 0, 1);
-        const col = t < 0.5 ? low.clone().lerp(mid, t * 2) : mid.clone().lerp(high, (t - 0.5) * 2);
-        colorsArr[i * 3] = col.r; colorsArr[i * 3 + 1] = col.g; colorsArr[i * 3 + 2] = col.b;
+        const col =
+          t < 0.5
+            ? lowCol.clone().lerp(midCol, t * 2)
+            : midCol.clone().lerp(highCol, (t - 0.5) * 2);
+        colorsArr[i * 3] = col.r;
+        colorsArr[i * 3 + 1] = col.g;
+        colorsArr[i * 3 + 2] = col.b;
       }
       terrainGeo.setAttribute('color', new THREE.BufferAttribute(colorsArr, 3));
       terrainGeo.computeVertexNormals();
-      const terrainMat = new THREE.MeshStandardMaterial({ vertexColors: true, roughness: 0.9, metalness: 0.05 });
+      const terrainMat = new THREE.MeshStandardMaterial({
+        vertexColors: true,
+        roughness: 0.9,
+        metalness: 0.05
+      });
       const terrain = new THREE.Mesh(terrainGeo, terrainMat);
       scene.add(terrain);
 
-      const terrainWire = new THREE.Mesh(terrainGeo, new THREE.MeshBasicMaterial({ color: 0xb8893f, wireframe: true, transparent: true, opacity: 0.25 }));
+      const terrainWire = new THREE.Mesh(
+        terrainGeo,
+        new THREE.MeshBasicMaterial({
+          color: 0xb8893f,
+          wireframe: true,
+          transparent: true,
+          opacity: 0.25
+        })
+      );
       terrainWire.visible = false;
       scene.add(terrainWire);
 
-      // Flight path (lawnmower pattern)
+      // Flight path (lawnmower)
       const flyHeight = 4.2;
       const waypoints = [];
-      const lines = 6, half = size / 2 - 1.5;
+      const lines = 6;
+      const half = size / 2 - 1.5;
       for (let i = 0; i < lines; i++) {
         const z = THREE.MathUtils.lerp(-half, half, i / (lines - 1));
         const a = new THREE.Vector3(-half, flyHeight, z);
         const b = new THREE.Vector3(half, flyHeight, z);
-        if (i % 2 === 0) waypoints.push(a, b); else waypoints.push(b, a);
+        if (i % 2 === 0) waypoints.push(a, b);
+        else waypoints.push(b, a);
       }
       const pathGeo = new THREE.BufferGeometry().setFromPoints(waypoints);
-      const pathLine = new THREE.Line(pathGeo, new THREE.LineBasicMaterial({ color: 0xb8893f, transparent: true, opacity: 0.8 }));
+      const pathLine = new THREE.Line(
+        pathGeo,
+        new THREE.LineBasicMaterial({
+          color: 0xb8893f,
+          transparent: true,
+          opacity: 0.8
+        })
+      );
       scene.add(pathLine);
 
-      // Camera footprint markers (step 2)
+      // Camera footprint markers
       const footprintGroup = new THREE.Group();
       waypoints.forEach((wp, i) => {
         if (i % 2 === 0) return;
-        const marker = new THREE.Mesh(new THREE.RingGeometry(0.5, 0.6, 16), new THREE.MeshBasicMaterial({ color: 0x3a7fd9, side: THREE.DoubleSide, transparent: true, opacity: 0.5 }));
+        const marker = new THREE.Mesh(
+          new THREE.RingGeometry(0.5, 0.6, 16),
+          new THREE.MeshBasicMaterial({
+            color: 0x3a7fd9,
+            side: THREE.DoubleSide,
+            transparent: true,
+            opacity: 0.5
+          })
+        );
         marker.rotation.x = -Math.PI / 2;
         marker.position.set(wp.x, 0.05, wp.z);
         footprintGroup.add(marker);
@@ -2141,11 +3650,19 @@ footer { background: var(--navy); border-top: 1px solid var(--line-dark); paddin
       footprintGroup.visible = false;
       scene.add(footprintGroup);
 
-      // Orthomosaic overlap tiles (step 3)
+      // Orthomosaic overlap tiles
       const overlapGroup = new THREE.Group();
       for (let i = -2; i <= 2; i++) {
         for (let j = -2; j <= 2; j++) {
-          const tile = new THREE.Mesh(new THREE.PlaneGeometry(4.6, 4.6), new THREE.MeshBasicMaterial({ color: 0xe3b985, transparent: true, opacity: 0.12, side: THREE.DoubleSide }));
+          const tile = new THREE.Mesh(
+            new THREE.PlaneGeometry(4.6, 4.6),
+            new THREE.MeshBasicMaterial({
+              color: 0xe3b985,
+              transparent: true,
+              opacity: 0.12,
+              side: THREE.DoubleSide
+            })
+          );
           tile.rotation.x = -Math.PI / 2;
           tile.position.set(i * 4, 0.08, j * 4);
           overlapGroup.add(tile);
@@ -2156,22 +3673,47 @@ footer { background: var(--navy); border-top: 1px solid var(--line-dark); paddin
 
       // Drone model
       const drone = new THREE.Group();
-      const body = new THREE.Mesh(new THREE.BoxGeometry(0.5, 0.15, 0.5), new THREE.MeshStandardMaterial({ color: 0x1b1f24, metalness: 0.5, roughness: 0.4 }));
+      drone.userData.rotors = [];
+      const body = new THREE.Mesh(
+        new THREE.BoxGeometry(0.5, 0.15, 0.5),
+        new THREE.MeshStandardMaterial({
+          color: 0x1b1f24,
+          metalness: 0.5,
+          roughness: 0.4
+        })
+      );
       drone.add(body);
       const armMat = new THREE.MeshStandardMaterial({ color: 0x5c7184 });
-      [[0.4, 0.4], [0.4, -0.4], [-0.4, 0.4], [-0.4, -0.4]].forEach(([x, z]) => {
-        const arm = new THREE.Mesh(new THREE.CylinderGeometry(0.03, 0.03, 0.6, 6), armMat);
+      [
+        [0.4, 0.4],
+        [0.4, -0.4],
+        [-0.4, 0.4],
+        [-0.4, -0.4]
+      ].forEach(([x, z]) => {
+        const arm = new THREE.Mesh(
+          new THREE.CylinderGeometry(0.03, 0.03, 0.6, 6),
+          armMat
+        );
         arm.rotation.z = Math.PI / 2;
         arm.position.set(x * 0.5, 0, z * 0.5);
         arm.lookAt(new THREE.Vector3(x, 0, z).multiplyScalar(2));
         drone.add(arm);
-        const rotor = new THREE.Mesh(new THREE.CylinderGeometry(0.18, 0.18, 0.02, 10), new THREE.MeshBasicMaterial({ color: 0xb8893f, transparent: true, opacity: 0.7 }));
+        const rotor = new THREE.Mesh(
+          new THREE.CylinderGeometry(0.18, 0.18, 0.02, 10),
+          new THREE.MeshBasicMaterial({
+            color: 0xb8893f,
+            transparent: true,
+            opacity: 0.7
+          })
+        );
         rotor.position.set(x, 0.08, z);
         drone.add(rotor);
+        drone.userData.rotors.push(rotor);
       });
       scene.add(drone);
 
-      let dIdx = 0, dT = 0;
+      let dIdx = 0;
+      let dT = 0;
       const speed = 0.0035;
 
       // Workflow step wiring
@@ -2188,13 +3730,38 @@ footer { background: var(--navy); border-top: 1px solid var(--line-dark); paddin
       ro.observe(container);
       sizeToContainer(renderer, camera, container);
 
+      const tmp = new THREE.Vector3();
+
       function render() {
         controls.update();
         if (!reduceMotion) {
           dT += speed;
-          if (dT >= 1) { dT = 0; dIdx = (dIdx + 1) % (waypoints.length - 1); }
-          const a = waypoints[dIdx], b = waypoints[dIdx + 1] || waypoints[0];
+          if (dT >= 1) {
+            dT = 0;
+            dIdx = (dIdx + 1) % (waypoints.length - 1);
+          }
+          const a = waypoints[dIdx];
+          const b = waypoints[dIdx + 1] || waypoints[0];
           drone.position.lerpVectors(a, b, dT);
-    </script>
+          tmp.lerpVectors(a, b, Math.min(dT + 0.05, 1));
+          drone.lookAt(tmp);
+          drone.rotation.z = 0;
+
+          if (drone.userData.rotors) {
+            drone.userData.rotors.forEach((r) => {
+              r.rotation.y += 0.6;
+            });
+          }
+        }
+        renderer.render(scene, camera);
+      }
+      const ctl = makeLoopController(render);
+      ctl.resume();
+      return ctl;
+    }
+    registerLazyScene('uav-scene-wrap', initUavScene);
+  }
+</script>
+
 </body>
 </html>
