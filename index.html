@@ -87,7 +87,6 @@
       min-height: 100vh;
     }
 
-    /* Layout helpers */
     .wrap {
       width: 100%;
       max-width: 1120px;
@@ -388,13 +387,15 @@
       display: flex;
       flex-direction: column;
       justify-content: flex-start;
+      position: relative;
+      overflow: hidden;
     }
 
     .scene-canvas-layer {
       position: absolute;
       inset: 0;
       overflow: hidden;
-      pointer-events: none;
+      pointer-events: none; /* background only; interactivity handled via global pointer listeners */
     }
 
     #hero-scene-wrap {
@@ -626,20 +627,24 @@
       color: var(--ink-soft);
     }
 
+    /* Aircraft lab as background band */
+
     .aircraft-lab {
-      margin-top: 60px;
+      margin-top: 48px;
+      position: relative;
       border-radius: 26px;
-      border: 1px solid rgba(209, 213, 219, 0.9);
-      background: #fefcf6;
-      padding: 18px;
+      overflow: hidden;
+      border: 1px solid rgba(209, 213, 219, 0.7);
+      background: radial-gradient(circle at top, #e5effa, #fefcf6);
+      padding: 0;
     }
 
     .lab-canvas-wrap {
       position: relative;
-      border-radius: 20px;
+      border-radius: 26px;
       overflow: hidden;
-      border: 1px solid rgba(209, 213, 219, 0.9);
-      background: radial-gradient(circle at top, #e5effa, #cbd5e1);
+      border: none;
+      background: transparent;
       min-height: 260px;
     }
 
@@ -690,9 +695,15 @@
     }
 
     .lab-hint {
-      margin-top: 10px;
+      position: absolute;
+      right: 16px;
+      bottom: 14px;
       font-size: 0.75rem;
       color: #4b5563;
+      background: rgba(248, 250, 252, 0.9);
+      border-radius: 999px;
+      padding: 4px 10px;
+      box-shadow: 0 6px 18px rgba(15, 23, 42, 0.25);
     }
 
     .lab-hint b {
@@ -902,38 +913,47 @@
       font-family: var(--font-mono);
     }
 
+    /* UAV lab as background */
+
     .uav-lab {
       margin-top: 40px;
       border-radius: 24px;
-      border: 1px solid rgba(31, 41, 55, 0.9);
+      border: none;
       background: radial-gradient(circle at top, #020617, #020617 55%, #020617);
       padding: 18px;
-      box-shadow: var(--shadow-soft);
+      box-shadow: none;
+      position: relative;
+      overflow: hidden;
     }
 
     .uav-grid {
-      display: grid;
-      grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
-      gap: 18px;
-      align-items: stretch;
+      position: relative;
     }
 
     .uav-canvas-wrap {
-      position: relative;
-      border-radius: 18px;
+      position: absolute;
+      inset: 0;
+      border-radius: 24px;
       overflow: hidden;
-      border: 1px solid rgba(31, 41, 55, 0.9);
+      border: none;
       min-height: 260px;
       background: radial-gradient(circle at top, #0b1120, #020617 55%, #020617);
     }
 
     .uav-panel {
-      padding: 4px 4px 4px 0;
+      position: relative;
+      z-index: 1;
+      max-width: 360px;
+      margin: 140px 0 0 auto;
+      padding: 12px 14px 12px;
+      border-radius: 18px;
+      background: rgba(15, 23, 42, 0.92);
       display: flex;
       flex-direction: column;
       gap: 8px;
       font-size: 0.85rem;
       color: #9ca3af;
+      box-shadow: 0 18px 45px rgba(0, 0, 0, 0.7);
     }
 
     .uav-panel h4 {
@@ -984,23 +1004,24 @@
       transform: translateY(-1px);
     }
 
-    /* Labs shared */
+    /* Labs shared — remove heavy card window style */
 
     .lab-frame {
       margin-top: 18px;
-      border-radius: 24px;
-      border: 1px solid rgba(209, 213, 219, 0.9);
-      overflow: hidden;
-      background: #fefcf6;
-      box-shadow: 0 14px 35px rgba(148, 163, 184, 0.35);
+      border-radius: 0;
+      border: none;
+      overflow: visible;
+      background: transparent;
+      box-shadow: none;
     }
 
     .lab-main-canvas-wrap {
       position: relative;
-      border-bottom: 1px solid rgba(209, 213, 219, 0.9);
+      border-radius: 24px;
+      overflow: hidden;
+      border: none;
       min-height: 260px;
       background: radial-gradient(circle at top, #dbeafe, #e5e7eb);
-      overflow: hidden;
     }
 
     .lab-controls-bar {
@@ -1009,8 +1030,10 @@
       align-items: center;
       gap: 10px;
       padding: 10px 14px;
-      background: #f9fafb;
+      background: rgba(249, 250, 251, 0.9);
       border-bottom: 1px solid rgba(209, 213, 219, 0.9);
+      margin-top: 8px;
+      border-radius: 16px;
     }
 
     .lab-divider {
@@ -1040,6 +1063,8 @@
       align-items: flex-start;
       font-size: 0.8rem;
       color: #4b5563;
+      border-radius: 16px;
+      margin-top: 8px;
     }
 
     .lab-caption .cap-label {
@@ -1052,8 +1077,8 @@
     }
 
     .lab-writeup {
-      padding: 16px 16px 18px;
-      background: #fdfaf4;
+      padding: 16px 0 18px;
+      background: transparent;
     }
 
     .lab-writeup-grid {
@@ -1334,7 +1359,6 @@
       border-radius: 999px;
     }
 
-    /* Very simplified conceptual shapes */
     .silhouette.b52-wing { left: -10%; right: -10%; top: 55%; height: 16%; }
     .silhouette.b52-body { width: 36%; height: 10%; left: 32%; top: 48%; }
     .silhouette.b52-tail { width: 10%; height: 18%; right: 20%; top: 36%; }
@@ -1640,6 +1664,7 @@
       display: none;
     }
 
+    html.no-webGL .webgl-fallback,
     html.no-webgl .webgl-fallback {
       display: flex;
     }
@@ -1707,10 +1732,6 @@
         padding: 64px 0;
       }
 
-      .uav-grid {
-        grid-template-columns: minmax(0, 1fr);
-      }
-
       .timeline {
         padding-left: 10px;
       }
@@ -1743,6 +1764,14 @@
       .section-head .section-title {
         font-size: 1.6rem;
       }
+
+      .uav-lab {
+        padding: 16px;
+      }
+
+      .uav-panel {
+        margin: 160px auto 0 auto;
+      }
     }
 
     @media (max-width: 480px) {
@@ -1759,6 +1788,15 @@
       .lab-canvas-wrap,
       .uav-canvas-wrap {
         min-height: 220px;
+      }
+      .lab-hint {
+        position: static;
+        display: block;
+        margin: 8px 10px 0;
+        box-shadow: none;
+      }
+      .aircraft-lab {
+        border-radius: 20px;
       }
     }
   </style>
@@ -1793,7 +1831,7 @@
 
 <main>
 
-<!-- 1. HOME — 3D EXPERIENCE 1: WIND TUNNEL AMBIENT ENVIRONMENT -->
+<!-- 1. HOME — 3D EXPERIENCE 1: WIND TUNNEL BACKGROUND -->
 <section id="home">
   <div class="scene-canvas-layer" id="hero-scene-wrap">
     <canvas id="hero-canvas" class="scene-3d-canvas" aria-hidden="true"></canvas>
@@ -1828,7 +1866,7 @@
   <div class="scroll-cue">SCROLL</div>
 </section>
 
-<!-- 2. ABOUT — 3D EXPERIENCE 2: INTERACTIVE AIRCRAFT MODEL -->
+<!-- 2. ABOUT — 3D EXPERIENCE 2: AIRCRAFT AS BACKGROUND BAND -->
 <section id="about" class="section section-light">
   <div class="wrap">
     <div class="about-grid">
@@ -1945,7 +1983,7 @@
   </div>
 </section>
 
-<!-- 5. PROFESSIONAL EXPERIENCE + 3D EXPERIENCE 5 (UAV / Photogrammetry) -->
+<!-- 5. PROFESSIONAL EXPERIENCE + 3D EXPERIENCE 5 AS BACKGROUND -->
 <section id="experience" class="section section-dark">
   <div class="wrap">
     <div class="eyebrow"><span class="dot"></span>Career</div>
@@ -2020,7 +2058,7 @@
   </div>
 </section>
 
-<!-- 6. ENGINEERING LABS — 3D EXPERIENCES 3 & 4 -->
+<!-- 6. ENGINEERING LABS — 3D EXPERIENCES 3 & 4 AS WIDE BACKGROUNDS -->
 <section id="labs" class="section section-light">
   <div class="wrap">
     <div class="eyebrow"><span class="dot"></span>Interactive 3D</div>
@@ -2419,9 +2457,8 @@
   </div>
 </footer>
 
-<!-- MODALS -->
+<!-- MODALS (unchanged content) -->
 
-<!-- MODAL: B-52 -->
 <div class="modal-overlay" id="modal-b52" role="dialog" aria-modal="true" aria-labelledby="m-b52-title">
   <div class="modal-box">
     <button class="modal-close" data-close-modal aria-label="Close">×</button>
@@ -2451,7 +2488,6 @@
   </div>
 </div>
 
-<!-- MODAL: GLIDER -->
 <div class="modal-overlay" id="modal-glider" role="dialog" aria-modal="true" aria-labelledby="m-glider-title">
   <div class="modal-box">
     <button class="modal-close" data-close-modal aria-label="Close">×</button>
@@ -2485,7 +2521,6 @@
   </div>
 </div>
 
-<!-- MODAL: U-2 -->
 <div class="modal-overlay" id="modal-u2" role="dialog" aria-modal="true" aria-labelledby="m-u2-title">
   <div class="modal-box">
     <button class="modal-close" data-close-modal aria-label="Close">×</button>
@@ -2515,7 +2550,6 @@
   </div>
 </div>
 
-<!-- MODAL: CANTEEN -->
 <div class="modal-overlay" id="modal-canteen" role="dialog" aria-modal="true" aria-labelledby="m-canteen-title">
   <div class="modal-box">
     <button class="modal-close" data-close-modal aria-label="Close">×</button>
@@ -2553,10 +2587,10 @@
   </div>
 </div>
 
-<!-- Lightbox for wind-tunnel gallery -->
+<!-- Lightbox -->
 <div id="lightbox"><button class="lb-close" id="lb-close">×</button><img id="lb-img" src="" alt="Enlarged wind tunnel photo"></div>
 
-<!-- WebGL detection (sets window.__HAS_WEBGL__ and html.no-webgl) -->
+<!-- WebGL detection -->
 <script>
   (function () {
     function webglAvailable() {
@@ -2582,10 +2616,10 @@
 
   // Loading screen: hide once window fully loaded, with a safety timeout
   function finishLoading() { document.documentElement.classList.remove('js-loading'); }
-  window.addEventListener('load', () => setTimeout(finishLoading, 400));
+  window.addEventListener('load', function () { setTimeout(finishLoading, 400); });
   setTimeout(finishLoading, 4000);
 
-  // Image fallback handling (missing asset files should not break layout)
+  // Image fallback handling
   (function () {
     var profileImg = document.getElementById('profile-img');
     if (profileImg) {
@@ -2603,7 +2637,7 @@
     });
   })();
 
-  // Navigation: scroll shadow, mobile toggle, scrollspy
+  // Navigation: shadow, mobile toggle, scrollspy
   (function () {
     var header = document.getElementById('site-header');
     window.addEventListener('scroll', function () {
@@ -2713,7 +2747,7 @@
     });
   })();
 
-  // UAV workflow step buttons (2D UI; 3D hook attached below if WebGL available)
+  // UAV workflow step buttons
   (function () {
     var uavStepDescriptions = {
       1: 'A lawnmower-pattern flight path is planned over the survey area at a constant altitude to ensure consistent image overlap.',
@@ -2721,7 +2755,7 @@
       3: 'Captured images are matched and stitched using overlapping features to build a continuous orthomosaic.',
       4: 'Matched image data is used to reconstruct a 3D terrain surface representing the mapped area.'
     };
-    window.__uavSetStep = null; // 3D module attaches a handler here if available
+    window.__uavSetStep = null;
     document.querySelectorAll('.step-btn').forEach(function (btn) {
       btn.addEventListener('click', function () {
         document.querySelectorAll('.step-btn').forEach(function (b) { b.classList.remove('active'); });
@@ -2734,10 +2768,10 @@
   })();
 </script>
 
-<!-- THREE.JS MODULE — all five 3D experiences -->
+<!-- THREE.JS MODULE — all five 3D background experiences -->
 <script type="module">
   if (!window.__HAS_WEBGL__) {
-    // No WebGL: static fallbacks (already in markup/CSS) are sufficient. Nothing further to load.
+    // WebGL not available; fallbacks already visible.
   } else {
     const THREE = await import('https://unpkg.com/three@0.160.0/build/three.module.js');
     const { OrbitControls } = await import('https://unpkg.com/three@0.160.0/examples/jsm/controls/OrbitControls.js');
@@ -2745,7 +2779,6 @@
     const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const DPR = Math.min(window.devicePixelRatio || 1, 2);
 
-    // Shared helpers
     function makeRenderer(canvas) {
       const renderer = new THREE.WebGLRenderer({
         canvas,
@@ -2776,34 +2809,6 @@
       scene.add(amb, key, rim);
     }
 
-    // Registry for lazy init + pause/resume based on visibility
-    const sceneRegistry = [];
-
-    function registerLazyScene(containerId, initFn) {
-      const container = document.getElementById(containerId);
-      if (!container || !('IntersectionObserver' in window)) {
-        // If no container or no IO, just eagerly init
-        initFn();
-        return;
-      }
-      const entry = { container, initFn, started: false, handle: null };
-      sceneRegistry.push(entry);
-      const io = new IntersectionObserver((entries) => {
-        entries.forEach((e) => {
-          if (e.isIntersecting) {
-            if (!entry.started) {
-              entry.started = true;
-              entry.handle = entry.initFn();
-            }
-            if (entry.handle && entry.handle.resume) entry.handle.resume();
-          } else {
-            if (entry.handle && entry.handle.pause) entry.handle.pause();
-          }
-        });
-      }, { threshold: 0.05 });
-      io.observe(container);
-    }
-
     function makeLoopController(renderFn) {
       let raf = null;
       let running = false;
@@ -2826,7 +2831,33 @@
       };
     }
 
-    // EXPERIENCE 1 — HERO WIND TUNNEL AMBIENT ENVIRONMENT
+    const sceneRegistry = [];
+
+    function registerLazyScene(containerId, initFn) {
+      const container = document.getElementById(containerId);
+      if (!container || !('IntersectionObserver' in window)) {
+        initFn();
+        return;
+      }
+      const entry = { container, initFn, started: false, handle: null };
+      sceneRegistry.push(entry);
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) {
+            if (!entry.started) {
+              entry.started = true;
+              entry.handle = entry.initFn();
+            }
+            if (entry.handle && entry.handle.resume) entry.handle.resume();
+          } else {
+            if (entry.handle && entry.handle.pause) entry.handle.pause();
+          }
+        });
+      }, { threshold: 0.05 });
+      io.observe(container);
+    }
+
+    // EXPERIENCE 1 — HERO WIND TUNNEL BACKGROUND
     function initHeroScene() {
       const container = document.getElementById('hero-scene-wrap');
       const canvas = document.getElementById('hero-canvas');
@@ -2837,7 +2868,6 @@
       camera.position.set(0, 0.6, 9);
       fitLight(scene);
 
-      // Tunnel outline
       const tunnelLen = 34;
       const tunnelRadius = 4.2;
       const tunnelGeo = new THREE.CylinderGeometry(tunnelRadius, tunnelRadius, tunnelLen, 24, 1, true);
@@ -2851,7 +2881,6 @@
       tunnelMesh.rotation.z = Math.PI / 2;
       scene.add(tunnelMesh);
 
-      // Airflow streak particles
       const STREAK_COUNT = 160;
       const streakGeo = new THREE.BoxGeometry(1.1, 0.02, 0.02);
       const streakMat = new THREE.MeshBasicMaterial({
@@ -2873,11 +2902,16 @@
 
       let mx = 0;
       let my = 0;
-      container.addEventListener('pointermove', (e) => {
-        const rect = container.getBoundingClientRect();
+      const homeSection = document.getElementById('home');
+
+      // Pointer over whole landing section controls background camera
+      window.addEventListener('pointermove', (e) => {
+        if (!homeSection) return;
+        const rect = homeSection.getBoundingClientRect();
+        if (e.clientY < rect.top || e.clientY > rect.bottom) return;
         mx = ((e.clientX - rect.left) / rect.width - 0.5) * 2;
         my = ((e.clientY - rect.top) / rect.height - 0.5) * 2;
-      });
+      }, { passive: true });
 
       let t = 0;
       const ro = new ResizeObserver(() => sizeToContainer(renderer, camera, container));
@@ -2913,7 +2947,7 @@
     }
     registerLazyScene('hero-scene-wrap', initHeroScene);
 
-    // EXPERIENCE 2 — ABOUT: INTERACTIVE AIRCRAFT MODEL
+    // EXPERIENCE 2 — ABOUT: AIRCRAFT BACKGROUND
     function initAboutScene() {
       const container = document.getElementById('about-scene-wrap');
       const canvas = document.getElementById('about-canvas');
@@ -2936,6 +2970,7 @@
         metalness: 0.4,
         roughness: 0.45
       });
+
       const aircraft = new THREE.Group();
 
       const fuselage = new THREE.Mesh(
@@ -3048,6 +3083,7 @@
           selected = null;
         }
       }
+
       canvas.addEventListener('click', pick);
 
       const ro = new ResizeObserver(() => sizeToContainer(renderer, camera, container));
@@ -3059,13 +3095,14 @@
         if (!reduceMotion) aircraft.rotation.y += 0.0015;
         renderer.render(scene, camera);
       }
+
       const ctl = makeLoopController(render);
       ctl.resume();
       return ctl;
     }
     registerLazyScene('about-scene-wrap', initAboutScene);
 
-    // EXPERIENCE 3 — WIND TUNNEL INTERACTIVE ASSEMBLY
+    // EXPERIENCE 3 — WIND TUNNEL ASSEMBLY
     function initWindTunnelScene() {
       const container = document.getElementById('wt-scene-wrap');
       const canvas = document.getElementById('wt-canvas');
@@ -3098,7 +3135,6 @@
         components.push({ key, name, desc, order, mesh, basePos: basePos.clone() });
       }
 
-      // Settling chamber
       const settlingGroup = new THREE.Group();
       const settlingBox = new THREE.Mesh(
         new THREE.BoxGeometry(2.2, 2.6, 2.6),
@@ -3118,7 +3154,6 @@
         new THREE.Vector3(-9, 0, 0)
       );
 
-      // Contraction cone
       function contractionGeometry() {
         const pts = [];
         for (let i = 0; i <= 12; i++) {
@@ -3139,7 +3174,6 @@
         new THREE.Vector3(-5.5, 0, 0)
       );
 
-      // Test section
       const testGroup = new THREE.Group();
       const testBox = new THREE.Mesh(
         new THREE.BoxGeometry(3.2, 1.3, 1.3),
@@ -3167,7 +3201,6 @@
         new THREE.Vector3(-1.5, 0, 0)
       );
 
-      // Gust generator
       const gustGroup = new THREE.Group();
       const vaneMat = compMat(0xb8893f, 1);
       const vane1 = new THREE.Mesh(new THREE.BoxGeometry(0.05, 1.1, 0.35), vaneMat);
@@ -3185,7 +3218,6 @@
         new THREE.Vector3(-3.2, 0, 0)
       );
 
-      // Diffuser
       function diffuserGeometry() {
         const pts = [];
         for (let i = 0; i <= 12; i++) {
@@ -3206,7 +3238,6 @@
         new THREE.Vector3(3, 0, 0)
       );
 
-      // Fan / drive
       const fanGroup = new THREE.Group();
       const fanHousing = new THREE.Mesh(
         new THREE.CylinderGeometry(1.5, 1.5, 1.4, 24, 1, true),
@@ -3234,7 +3265,6 @@
         new THREE.Vector3(6.5, 0, 0)
       );
 
-      // Airflow particles
       const flowCount = 60;
       const flowGeo = new THREE.SphereGeometry(0.06, 6, 6);
       const flowMat = new THREE.MeshBasicMaterial({ color: 0xb8893f });
@@ -3251,7 +3281,6 @@
       }
       let flowOn = true;
 
-      // Exploded view state
       let explodeTarget = 0;
       let explodeAmount = 0;
       const explodeBtn = document.getElementById('wt-explode-btn');
@@ -3268,7 +3297,6 @@
         flowMesh.visible = flowOn;
       });
 
-      // Visibility toggles
       document.querySelectorAll('[data-wt-vis]').forEach((cb) => {
         cb.addEventListener('change', () => {
           const key = cb.getAttribute('data-wt-vis');
@@ -3277,7 +3305,6 @@
         });
       });
 
-      // Selection
       const raycaster = new THREE.Raycaster();
       const pointer = new THREE.Vector2();
       let selectedComp = null;
@@ -3333,7 +3360,6 @@
         t += 0.016;
         controls.update();
 
-        // Exploded layout interpolation
         explodeAmount += (explodeTarget - explodeAmount) * 0.06;
         components.forEach((c) => {
           const offsetSign = c.basePos.x === 0 ? (c.order < 2 ? -1 : 1) : Math.sign(c.basePos.x);
@@ -3348,7 +3374,6 @@
           fanGroup.userData.blades.rotation.x += 0.25;
         }
 
-        // Flow
         flowMesh.visible = flowOn && explodeAmount < 0.1;
         if (flowOn) {
           for (let i = 0; i < flowCount; i++) {
@@ -3370,7 +3395,7 @@
     }
     registerLazyScene('wt-scene-wrap', initWindTunnelScene);
 
-    // EXPERIENCE 4 — AERODYNAMICS & CFD ILLUSTRATIVE MODEL
+    // EXPERIENCE 4 — CFD ILLUSTRATIVE BACKGROUND
     function initCfdScene() {
       const container = document.getElementById('cfd-scene-wrap');
       const canvas = document.getElementById('cfd-canvas');
@@ -3388,7 +3413,6 @@
       controls.target.set(0, 0, 0);
       controls.enablePan = false;
 
-      // Airfoil shape (illustrative)
       const shape = new THREE.Shape();
       shape.moveTo(-1.6, 0);
       shape.quadraticCurveTo(-0.8, 0.26, 0, 0.2);
@@ -3440,7 +3464,6 @@
         e.target.classList.toggle('active', pressureOn);
       });
 
-      // Streamlines
       function makeDashTexture() {
         const c = document.createElement('canvas');
         c.width = 64;
@@ -3526,13 +3549,14 @@
         }
         renderer.render(scene, camera);
       }
+
       const ctl = makeLoopController(render);
       ctl.resume();
       return ctl;
     }
     registerLazyScene('cfd-scene-wrap', initCfdScene);
 
-    // EXPERIENCE 5 — UAV / PHOTOGRAMMETRY TERRAIN VISUALIZATION
+    // EXPERIENCE 5 — UAV TERRAIN BACKGROUND
     function initUavScene() {
       const container = document.getElementById('uav-scene-wrap');
       const canvas = document.getElementById('uav-canvas');
@@ -3551,7 +3575,6 @@
       controls.maxPolarAngle = Math.PI * 0.49;
       controls.target.set(0, 1, 0);
 
-      // Procedural terrain
       const size = 24;
       const seg = 64;
       const terrainGeo = new THREE.PlaneGeometry(size, size, seg, seg);
@@ -3607,7 +3630,6 @@
       terrainWire.visible = false;
       scene.add(terrainWire);
 
-      // Flight path (lawnmower)
       const flyHeight = 4.2;
       const waypoints = [];
       const lines = 6;
@@ -3630,7 +3652,6 @@
       );
       scene.add(pathLine);
 
-      // Camera footprint markers
       const footprintGroup = new THREE.Group();
       waypoints.forEach((wp, i) => {
         if (i % 2 === 0) return;
@@ -3650,7 +3671,6 @@
       footprintGroup.visible = false;
       scene.add(footprintGroup);
 
-      // Orthomosaic overlap tiles
       const overlapGroup = new THREE.Group();
       for (let i = -2; i <= 2; i++) {
         for (let j = -2; j <= 2; j++) {
@@ -3671,7 +3691,6 @@
       overlapGroup.visible = false;
       scene.add(overlapGroup);
 
-      // Drone model
       const drone = new THREE.Group();
       drone.userData.rotors = [];
       const body = new THREE.Mesh(
@@ -3716,7 +3735,6 @@
       let dT = 0;
       const speed = 0.0035;
 
-      // Workflow step wiring
       function setStep(step) {
         footprintGroup.visible = step === 2;
         overlapGroup.visible = step === 3;
@@ -3746,7 +3764,6 @@
           tmp.lerpVectors(a, b, Math.min(dT + 0.05, 1));
           drone.lookAt(tmp);
           drone.rotation.z = 0;
-
           if (drone.userData.rotors) {
             drone.userData.rotors.forEach((r) => {
               r.rotation.y += 0.6;
