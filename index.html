@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Nischal Raut | Aerospace Engineer</title>
-  <meta name="description" content="Portfolio of Nischal Raut, aerospace engineer focused on experimental aerodynamics, CFD, UAV applications and avionics testing." />
+  <meta name="description" content="Portfolio of Nischal Raut, aerospace engineer focused on experimental aerodynamics, CFD, UAV systems and avionics testing." />
 
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -12,50 +12,44 @@
 
   <style>
     :root {
-      /* Colors */
       --bg-body: #020617;
       --bg-shell: #020617;
       --bg-surface: #020617;
-      --bg-surface-elevated: #020617;
-      --bg-section: #020617;
       --bg-card: #020617;
-      --color-border-subtle: rgba(148, 163, 184, 0.35);
-      --color-border-soft: rgba(148, 163, 184, 0.16);
-      --color-border-strong: rgba(30, 64, 175, 0.7);
+      --border-subtle: rgba(148, 163, 184, 0.35);
+      --border-soft: rgba(148, 163, 184, 0.16);
 
-      --color-text: #e5e7eb;
-      --color-text-muted: #9ca3af;
-      --color-heading: #f9fafb;
-      --color-accent: #FC3D21;
-      --color-accent-soft: rgba(252, 61, 33, 0.18);
-      --color-accent-strong: #ff7b61;
+      --text-main: #e5e7eb;
+      --text-muted: #9ca3af;
+      --text-heading: #f9fafb;
 
-      /* Layout */
+      --accent: #FC3D21;
+      --accent-soft: rgba(252, 61, 33, 0.18);
+      --accent-strong: #ff7b61;
+
+      --shadow-soft: 0 24px 60px rgba(15, 23, 42, 0.95);
+
       --max-width: 1120px;
-      --page-gutter: 1.5rem;
+      --page-gutter: 1.6rem;
       --section-y: 4.5rem;
 
-      /* Radius & shadow */
       --radius-lg: 18px;
       --radius-md: 12px;
       --radius-sm: 8px;
-      --shadow-soft: 0 24px 60px rgba(15, 23, 42, 0.95);
 
-      /* Typography scale */
       --fs-xs: 0.75rem;
       --fs-sm: 0.875rem;
       --fs-base: 1rem;
       --fs-md: 1.0625rem;
       --fs-lg: 1.25rem;
       --fs-xl: 1.5rem;
-      --fs-2xl: 2rem;
-      --fs-3xl: 2.6rem;
+      --fs-2xl: 2.1rem;
+      --fs-3xl: 2.7rem;
       --fs-4xl: 3.1rem;
 
-      /* Motion */
-      --transition-fast: 150ms ease-out;
-      --transition-med: 220ms ease-out;
-      --transition-slow: 480ms cubic-bezier(0.22, 0.61, 0.36, 1);
+      --t-fast: 150ms ease-out;
+      --t-med: 220ms ease-out;
+      --t-slow: 480ms cubic-bezier(0.22, 0.61, 0.36, 1);
     }
 
     * {
@@ -81,22 +75,22 @@
 
     body {
       font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      color: var(--color-text);
+      color: var(--text-main);
       background: radial-gradient(circle at top, #020617 0, #020617 45%, #020617 100%);
       min-height: 100vh;
     }
 
-    /* Technical background grid & glow */
+    /* Technical background */
     body::before {
       content: "";
       position: fixed;
       inset: 0;
       pointer-events: none;
       background-image:
-        linear-gradient(rgba(15, 23, 42, 0.7) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(15, 23, 42, 0.7) 1px, transparent 1px);
-      background-size: 72px 72px;
-      opacity: 0.28;
+        linear-gradient(rgba(15, 23, 42, 0.75) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(15, 23, 42, 0.75) 1px, transparent 1px);
+      background-size: 80px 80px;
+      opacity: 0.25;
       z-index: -2;
     }
 
@@ -106,10 +100,10 @@
       inset: 0;
       pointer-events: none;
       background:
-        radial-gradient(circle at 12% 0%, rgba(59, 130, 246, 0.24) 0, transparent 55%),
-        radial-gradient(circle at 80% 18%, rgba(252, 61, 33, 0.2) 0, transparent 55%);
-      opacity: 0.9;
+        radial-gradient(circle at 14% 0%, rgba(59, 130, 246, 0.28) 0, transparent 56%),
+        radial-gradient(circle at 80% 20%, rgba(252, 61, 33, 0.2) 0, transparent 55%);
       mix-blend-mode: screen;
+      opacity: 0.9;
       z-index: -1;
     }
 
@@ -117,7 +111,7 @@
       font-family: "Space Grotesk", system-ui, sans-serif;
       font-weight: 600;
       letter-spacing: 0.02em;
-      color: var(--color-heading);
+      color: var(--text-heading);
     }
 
     a {
@@ -133,14 +127,13 @@
       font-family: inherit;
     }
 
-    :focus-visible {
-      outline: 2px solid var(--color-accent);
-      outline-offset: 3px;
+    .mono {
+      font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
     }
 
-    .text-mono {
-      font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
-        "Liberation Mono", "Courier New", monospace;
+    :focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 3px;
     }
 
     /* Skip link */
@@ -152,7 +145,7 @@
       color: #f9fafb;
       padding: 0.5em 1em;
       border-radius: 999px;
-      border: 1px solid var(--color-border-subtle);
+      border: 1px solid var(--border-subtle);
       z-index: 1001;
       font-size: var(--fs-sm);
     }
@@ -163,24 +156,24 @@
     }
 
     /* Shell */
-    .page-shell {
+    .shell {
       max-width: 1440px;
       margin: 0 auto;
       min-height: 100vh;
-      background: radial-gradient(circle at top, rgba(15, 23, 42, 0.96) 0, rgba(15, 23, 42, 0.98) 48%, #020617 100%);
-      box-shadow: 0 0 0 1px #020617, 0 40px 120px rgba(0, 0, 0, 0.95);
+      background: radial-gradient(circle at top, rgba(15, 23, 42, 0.97) 0, rgba(15, 23, 42, 0.99) 50%, #020617 100%);
+      box-shadow: 0 0 0 1px #020617, 0 40px 120px rgba(0, 0, 0, 0.96);
     }
 
-    header {
+    header.site-header {
       position: sticky;
       top: 0;
       z-index: 1000;
       backdrop-filter: blur(18px);
-      background: linear-gradient(to bottom, rgba(2, 6, 23, 0.96), rgba(2, 6, 23, 0.9));
+      background: linear-gradient(to bottom, rgba(2, 6, 23, 0.97), rgba(2, 6, 23, 0.92));
       border-bottom: 1px solid rgba(15, 23, 42, 0.95);
     }
 
-    nav {
+    nav.site-nav {
       max-width: var(--max-width);
       margin: 0 auto;
       padding: 0.9rem var(--page-gutter);
@@ -193,31 +186,31 @@
     .brand {
       display: flex;
       align-items: center;
-      gap: 0.6rem;
+      gap: 0.5rem;
       font-family: "Space Grotesk", system-ui, sans-serif;
       letter-spacing: 0.22em;
       font-size: 0.82rem;
       text-transform: uppercase;
-      color: var(--color-text-muted);
+      color: var(--text-muted);
     }
 
-    .brand-mark {
+    .brand__mark {
       width: 28px;
       height: 28px;
       border-radius: 999px;
-      border: 1px solid var(--color-accent-soft);
+      border: 1px solid var(--accent-soft);
       display: inline-flex;
       align-items: center;
       justify-content: center;
       font-size: 0.8rem;
-      color: var(--color-accent);
+      color: var(--accent);
+      background: radial-gradient(circle at 30% 0%, rgba(252, 61, 33, 0.22) 0, transparent 65%);
       box-shadow: 0 0 0 1px rgba(15, 23, 42, 0.9);
-      background: radial-gradient(circle at 30% 0%, rgba(252, 61, 33, 0.14) 0, transparent 60%);
     }
 
-    .brand span + span {
+    .brand__name {
       font-weight: 600;
-      color: var(--color-heading);
+      color: var(--text-heading);
     }
 
     .nav-links {
@@ -231,7 +224,7 @@
     }
 
     .nav-links a {
-      color: var(--color-text-muted);
+      color: var(--text-muted);
       padding-bottom: 0.3rem;
       border-bottom: 2px solid transparent;
       position: relative;
@@ -244,27 +237,27 @@
       bottom: 0;
       height: 2px;
       width: 0;
-      background: linear-gradient(90deg, var(--color-accent), var(--color-accent-strong));
-      transition: width var(--transition-med);
+      background: linear-gradient(90deg, var(--accent), var(--accent-strong));
+      transition: width var(--t-med);
     }
 
     .nav-links a:hover {
-      color: var(--color-heading);
+      color: var(--text-heading);
     }
 
     .nav-links a:hover::after {
       width: 100%;
     }
 
-    .nav-links a.active {
-      color: var(--color-accent);
+    .nav-links a.is-active {
+      color: var(--accent);
     }
 
-    .nav-links a.active::after {
+    .nav-links a.is-active::after {
       width: 100%;
     }
 
-    .menu-toggle {
+    .nav-toggle {
       display: none;
       font-size: 1.8rem;
       color: #e5e7eb;
@@ -274,7 +267,7 @@
     }
 
     @media (max-width: 820px) {
-      nav {
+      nav.site-nav {
         padding-inline: 1.25rem;
       }
       .nav-links {
@@ -286,22 +279,21 @@
         background: #020617;
         border-radius: 0 0 var(--radius-md) var(--radius-md);
         padding: 0.7rem 0.9rem 0.9rem;
-        border: 1px solid rgba(31, 41, 55, 0.95);
+        border: 1px solid rgba(31, 41, 55, 0.96);
         box-shadow: 0 18px 40px rgba(15, 23, 42, 0.96);
         transform-origin: top right;
         transform: scaleY(0.9);
         opacity: 0;
         visibility: hidden;
         pointer-events: none;
-        transition: opacity var(--transition-med), transform var(--transition-med),
-          visibility 0s linear 200ms;
+        transition: opacity var(--t-med), transform var(--t-med), visibility 0s linear 200ms;
       }
-      .nav-links.active {
+      .nav-links.is-open {
         opacity: 1;
         visibility: visible;
         pointer-events: auto;
         transform: scaleY(1);
-        transition: opacity var(--transition-med), transform var(--transition-med), visibility 0s;
+        transition: opacity var(--t-med), transform var(--t-med), visibility 0s;
       }
       .nav-links li {
         width: 100%;
@@ -310,7 +302,7 @@
         display: block;
         padding: 0.35rem 0.3rem;
       }
-      .menu-toggle {
+      .nav-toggle {
         display: inline-flex;
         align-items: center;
         justify-content: center;
@@ -328,7 +320,8 @@
       position: relative;
     }
 
-    .section-header {
+    /* Section header */
+    .section-heading {
       display: flex;
       align-items: baseline;
       justify-content: space-between;
@@ -336,45 +329,45 @@
       margin-bottom: 2.4rem;
     }
 
-    .section-kicker {
-      font-family: "Space Grotesk", system-ui, sans-serif;
+    .section-label {
       font-size: var(--fs-xs);
       text-transform: uppercase;
       letter-spacing: 0.22em;
-      color: var(--color-text-muted);
+      color: var(--text-muted);
       display: flex;
       align-items: center;
       gap: 0.75rem;
       white-space: nowrap;
+      font-family: "Space Grotesk", system-ui, sans-serif;
     }
 
-    .section-kicker::before {
-      content: attr(data-section);
+    .section-label::before {
+      content: attr(data-code);
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      padding-inline: 0.6rem;
+      padding-inline: 0.55rem;
       padding-block: 0.2rem;
       border-radius: 999px;
-      border: 1px solid var(--color-border-subtle);
-      color: var(--color-accent);
-      background: radial-gradient(circle at 10% 0%, rgba(252, 61, 33, 0.16) 0, transparent 65%);
+      border: 1px solid var(--border-subtle);
+      color: var(--accent);
+      background: radial-gradient(circle at 10% 0%, rgba(252, 61, 33, 0.2) 0, transparent 65%);
     }
 
     .section-title {
       font-size: var(--fs-2xl);
-      letter-spacing: 0.04em;
+      letter-spacing: 0.05em;
     }
 
     .section-subtitle {
       margin-top: 0.4rem;
       font-size: var(--fs-sm);
-      color: var(--color-text-muted);
-      max-width: 480px;
+      color: var(--text-muted);
+      max-width: 26rem;
     }
 
     @media (max-width: 700px) {
-      .section-header {
+      .section-heading {
         flex-direction: column;
         align-items: flex-start;
         gap: 0.8rem;
@@ -385,78 +378,78 @@
     }
 
     /* Hero */
-    #hero {
+    #intro {
       padding-top: 4.2rem;
       padding-bottom: 4.2rem;
       border-bottom: 1px solid rgba(15, 23, 42, 0.95);
     }
 
-    .hero-grid {
+    .hero {
       display: grid;
-      grid-template-columns: minmax(0, 1.55fr) minmax(0, 1.1fr);
+      grid-template-columns: minmax(0, 1.6fr) minmax(0, 1.1fr);
       gap: 3.2rem;
       align-items: center;
     }
 
-    .hero-tagline {
+    .hero__tag {
       font-size: var(--fs-xs);
       text-transform: uppercase;
       letter-spacing: 0.2em;
-      color: var(--color-text-muted);
-      margin-bottom: 0.75rem;
+      color: var(--text-muted);
+      margin-bottom: 0.8rem;
       display: inline-flex;
       align-items: center;
       gap: 0.5rem;
     }
 
-    .hero-tagline::before {
+    .hero__tag::before {
       content: "";
-      width: 28px;
+      width: 30px;
       height: 1px;
-      background: linear-gradient(90deg, rgba(148, 163, 184, 0.1), rgba(252, 61, 33, 0.9));
+      background: linear-gradient(90deg, rgba(148, 163, 184, 0.2), rgba(252, 61, 33, 0.9));
     }
 
-    .hero-heading {
+    .hero__title {
       font-size: var(--fs-4xl);
       line-height: 1.02;
-      margin-bottom: 0.6rem;
+      margin-bottom: 0.5rem;
     }
 
-    .hero-role {
+    .hero__role {
       font-size: var(--fs-lg);
-      color: var(--color-heading);
+      color: var(--text-heading);
       margin-bottom: 1.2rem;
     }
 
-    .hero-body {
+    .hero__intro {
       font-size: var(--fs-md);
       line-height: 1.85;
-      color: var(--color-text-muted);
+      color: var(--text-muted);
       max-width: 39rem;
-      margin-bottom: 1.3rem;
+      margin-bottom: 1.1rem;
     }
 
-    .hero-body b {
+    .hero__intro b {
       color: #fefce8;
     }
 
-    .hero-focus {
+    .hero__focus {
       font-size: var(--fs-sm);
-      line-height: 1.7;
-      color: var(--color-text-muted);
+      line-height: 1.8;
+      color: var(--text-muted);
       max-width: 38rem;
-      margin-bottom: 1.4rem;
+      margin-bottom: 1.3rem;
     }
 
-    .hero-meta {
+    .hero__meta {
       font-size: var(--fs-xs);
       text-transform: uppercase;
       letter-spacing: 0.18em;
-      color: var(--color-text-muted);
+      color: var(--text-muted);
       margin-bottom: 1.2rem;
     }
 
-    .hero-actions {
+    .hero__actions {
       display: flex;
       flex-wrap: wrap;
       align-items: center;
@@ -470,26 +463,20 @@
       gap: 0.45rem;
       padding: 0.8rem 1.5rem;
       border-radius: 999px;
-      border: 1px solid rgba(252, 61, 33, 0.8);
-      background: radial-gradient(circle at 10% 0%, rgba(252, 61, 33, 0.19) 0, transparent 55%),
-        #020617;
+      border: 1px solid rgba(252, 61, 33, 0.85);
+      background: radial-gradient(circle at 10% 0%, rgba(252, 61, 33, 0.18) 0, transparent 55%), #020617;
       color: #fefce8;
       font-size: var(--fs-sm);
       font-weight: 600;
       text-transform: uppercase;
       letter-spacing: 0.18em;
       cursor: pointer;
-      transition: background var(--transition-med), transform var(--transition-fast),
-        box-shadow var(--transition-fast), border-color var(--transition-fast);
-      box-shadow: 0 14px 34px rgba(15, 23, 42, 0.96);
-    }
-
-    .btn-primary span {
-      font-size: 0.95em;
+      transition: background var(--t-med), transform var(--t-fast), box-shadow var(--t-fast), border-color var(--t-fast);
+      box-shadow: 0 14px 36px rgba(15, 23, 42, 0.96);
     }
 
     .btn-primary:hover {
-      background: linear-gradient(90deg, var(--color-accent), var(--color-accent-strong));
+      background: linear-gradient(90deg, var(--accent), var(--accent-strong));
       border-color: transparent;
       transform: translateY(-1px);
       box-shadow: 0 18px 44px rgba(15, 23, 42, 0.98);
@@ -498,19 +485,18 @@
 
     .btn-ghost {
       border-radius: 999px;
-      border: 1px solid var(--color-border-subtle);
+      border: 1px solid var(--border-subtle);
       padding: 0.7rem 1.3rem;
       background: rgba(15, 23, 42, 0.9);
       font-size: var(--fs-sm);
       text-transform: uppercase;
       letter-spacing: 0.16em;
-      color: var(--color-text-muted);
+      color: var(--text-muted);
       display: inline-flex;
       align-items: center;
       gap: 0.5rem;
       cursor: pointer;
-      transition: background var(--transition-med), color var(--transition-med),
-        border-color var(--transition-med), transform var(--transition-fast);
+      transition: background var(--t-med), color var(--t-med), border-color var(--t-med), transform var(--t-fast);
     }
 
     .btn-ghost::after {
@@ -522,53 +508,51 @@
     .btn-ghost:hover {
       background: rgba(15, 23, 42, 0.98);
       border-color: rgba(148, 163, 184, 0.7);
-      color: var(--color-heading);
+      color: var(--text-heading);
       transform: translateY(-1px);
       text-decoration: none;
     }
 
-    .hero-photo-wrap {
+    .hero-media {
       position: relative;
       justify-self: center;
     }
 
-    .hero-orbit {
+    .hero-media__orbit {
       position: absolute;
       inset: -16%;
       border-radius: 32%;
-      border: 1px solid rgba(148, 163, 184, 0.25);
+      border: 1px solid rgba(148, 163, 184, 0.3);
       transform: rotate(4deg);
     }
 
-    .hero-orbit::before {
+    .hero-media__orbit::before {
       content: "";
       position: absolute;
       inset: 12%;
       border-radius: 40%;
-      border: 1px dashed rgba(148, 163, 184, 0.2);
+      border: 1px dashed rgba(148, 163, 184, 0.25);
       transform: rotate(8deg);
     }
 
-    .hero-photo-card {
+    .hero-card {
       position: relative;
+      max-width: 320px;
       border-radius: var(--radius-lg);
       padding: 0.8rem;
-      background: radial-gradient(circle at 10% 0%, rgba(252, 61, 33, 0.22) 0, transparent 55%),
-        rgba(15, 23, 42, 0.98);
-      border: 1px solid var(--color-border-subtle);
+      background: radial-gradient(circle at 10% 0%, rgba(252, 61, 33, 0.25) 0, transparent 55%), rgba(15, 23, 42, 0.98);
+      border: 1px solid var(--border-subtle);
       box-shadow: var(--shadow-soft);
-      max-width: 320px;
     }
 
-    .hero-photo-inner {
+    .hero-card__inner {
       border-radius: calc(var(--radius-lg) - 4px);
       background: linear-gradient(160deg, #020617, #020617 40%, #111827 100%);
       overflow: hidden;
       position: relative;
-      isolation: isolate;
     }
 
-    .hero-photo-inner::before {
+    .hero-card__inner::before {
       content: "";
       position: absolute;
       inset: 0;
@@ -579,91 +563,91 @@
       pointer-events: none;
     }
 
-    .hero-photo-inner img {
+    .hero-card__inner img {
       display: block;
       width: 100%;
       height: 320px;
       object-fit: cover;
     }
 
-    .hero-photo-meta {
+    .hero-card__meta {
       display: flex;
       justify-content: space-between;
       align-items: center;
       padding: 0.5rem 0.05rem 0.25rem;
       font-size: var(--fs-xs);
-      color: var(--color-text-muted);
+      color: var(--text-muted);
       text-transform: uppercase;
       letter-spacing: 0.18em;
     }
 
-    .hero-photo-meta span:first-child {
-      color: var(--color-accent);
+    .hero-card__meta span:first-child {
+      color: var(--accent);
     }
 
     @media (max-width: 960px) {
-      #hero {
+      #intro {
         padding-top: 3.5rem;
       }
-      .hero-grid {
+      .hero {
         grid-template-columns: minmax(0, 1fr);
         gap: 2.6rem;
       }
-      .hero-photo-wrap {
+      .hero-media {
         order: -1;
       }
-      .hero-heading {
+      .hero__title {
         font-size: 2.4rem;
       }
     }
 
     @media (max-width: 640px) {
-      #hero {
-        padding-top: 2.7rem;
+      #intro {
+        padding-top: 2.8rem;
       }
-      .hero-grid {
-        gap: 2.2rem;
+      .hero {
+        gap: 2.1rem;
       }
-      .hero-heading {
+      .hero__title {
         font-size: 2.05rem;
       }
-      .hero-body {
+      .hero__intro {
         font-size: 0.98rem;
       }
-      .hero-photo-inner img {
+      .hero-card__inner img {
         height: 280px;
       }
-      .hero-actions {
+      .hero__actions {
         flex-direction: column;
         align-items: flex-start;
       }
     }
 
-    /* Skills / About */
-    #skills {
+    /* Profile & Skills */
+    #profile {
       padding-top: 4rem;
       padding-bottom: 4.5rem;
       border-bottom: 1px solid rgba(15, 23, 42, 0.95);
     }
 
-    .skills-layout {
+    .profile-layout {
       display: grid;
-      grid-template-columns: minmax(0, 1.15fr) minmax(0, 1.25fr);
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.3fr);
       gap: 2.6rem;
       align-items: flex-start;
     }
 
-    .skills-intro {
+    .profile-text {
       font-size: var(--fs-sm);
-      color: var(--color-text-muted);
+      color: var(--text-muted);
       line-height: 1.8;
     }
 
-    .skills-intro p + p {
+    .profile-text p + p {
       margin-top: 0.75rem;
     }
 
-    .interests-grid {
+    .interest-grid {
       margin-top: 1.5rem;
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -671,12 +655,12 @@
     }
 
     .interest-pill {
-      background: rgba(15, 23, 42, 0.96);
       border-radius: 999px;
-      border: 1px solid rgba(148, 163, 184, 0.3);
+      border: 1px solid rgba(148, 163, 184, 0.32);
       padding: 0.45rem 0.8rem;
       font-size: var(--fs-xs);
-      color: var(--color-text-muted);
+      color: var(--text-muted);
+      background: rgba(15, 23, 42, 0.96);
     }
 
     .skills-grid {
@@ -687,40 +671,40 @@
 
     .skill-card {
       border-radius: var(--radius-md);
-      background: radial-gradient(circle at 0 0, rgba(15, 23, 42, 0.96) 0, #020617 70%);
-      border: 1px solid var(--color-border-soft);
+      background: radial-gradient(circle at 0 0, rgba(15, 23, 42, 0.98) 0, #020617 70%);
+      border: 1px solid var(--border-soft);
       padding: 1rem 1.1rem;
       font-size: var(--fs-sm);
-      color: var(--color-text-muted);
-      line-height: 1.6;
+      color: var(--text-muted);
+      line-height: 1.7;
       position: relative;
       overflow: hidden;
-      transition: border-color var(--transition-med), background var(--transition-med),
-        transform var(--transition-fast), box-shadow var(--transition-fast);
+      transition: border-color var(--t-med), background var(--t-med),
+        transform var(--t-fast), box-shadow var(--t-fast);
     }
 
     .skill-card::before {
       content: "";
       position: absolute;
       inset: 0;
-      background: radial-gradient(circle at 0 0, rgba(252, 61, 33, 0.14) 0, transparent 60%);
+      background: radial-gradient(circle at 0 0, rgba(252, 61, 33, 0.18) 0, transparent 60%);
       opacity: 0;
-      transition: opacity var(--transition-med);
+      transition: opacity var(--t-med);
       pointer-events: none;
     }
 
-    .skill-label {
+    .skill-card__label {
       font-family: "Space Grotesk", system-ui, sans-serif;
       font-size: var(--fs-xs);
       text-transform: uppercase;
       letter-spacing: 0.18em;
-      color: var(--color-heading);
+      color: var(--text-heading);
       margin-bottom: 0.35rem;
     }
 
     .skill-card:hover {
       border-color: rgba(252, 61, 33, 0.6);
-      background: radial-gradient(circle at 0 0, rgba(252, 61, 33, 0.18) 0, rgba(2, 6, 23, 1) 70%);
+      background: radial-gradient(circle at 0 0, rgba(252, 61, 33, 0.2) 0, rgba(2, 6, 23, 1) 70%);
       transform: translateY(-2px);
       box-shadow: 0 12px 32px rgba(15, 23, 42, 0.9);
     }
@@ -730,7 +714,7 @@
     }
 
     @media (max-width: 880px) {
-      .skills-layout {
+      .profile-layout {
         grid-template-columns: minmax(0, 1fr);
       }
       .skills-grid {
@@ -743,17 +727,17 @@
       border-bottom: 1px solid rgba(15, 23, 42, 0.95);
     }
 
-    .timeline-grid {
+    .edu-exp-grid {
       display: grid;
       grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.3fr);
       gap: 2.8rem;
     }
 
-    .timeline-column-header {
+    .timeline-label {
       font-size: var(--fs-xs);
       text-transform: uppercase;
       letter-spacing: 0.18em;
-      color: var(--color-text-muted);
+      color: var(--text-muted);
       margin-bottom: 1.1rem;
     }
 
@@ -770,7 +754,7 @@
       top: 0;
       width: 3px;
       height: 14px;
-      background: linear-gradient(to bottom, var(--color-accent), transparent);
+      background: linear-gradient(to bottom, var(--accent), transparent);
     }
 
     .timeline-entry {
@@ -785,13 +769,13 @@
     .timeline-marker {
       position: absolute;
       left: -1.9rem;
-      top: 0.2rem;
+      top: 0.25rem;
       width: 10px;
       height: 10px;
       border-radius: 999px;
       box-shadow: 0 0 0 4px rgba(15, 23, 42, 1);
-      background: radial-gradient(circle, var(--color-accent) 0, #7f1d1d 60%, #020617 100%);
-      border: 1px solid rgba(248, 113, 113, 0.6);
+      background: radial-gradient(circle, var(--accent) 0, #7f1d1d 60%, #020617 100%);
+      border: 1px solid rgba(248, 113, 113, 0.65);
     }
 
     .timeline-card {
@@ -801,10 +785,10 @@
       align-items: center;
       background: linear-gradient(145deg, rgba(15, 23, 42, 0.96), rgba(15, 23, 42, 0.99));
       border-radius: var(--radius-md);
-      border: 1px solid var(--color-border-soft);
+      border: 1px solid var(--border-soft);
       padding: 0.9rem 1.1rem;
-      transition: border-color var(--transition-med), box-shadow var(--transition-med),
-        transform var(--transition-fast), background var(--transition-med);
+      transition: border-color var(--t-med), box-shadow var(--t-med),
+        transform var(--t-fast), background var(--t-med);
     }
 
     .timeline-card:hover {
@@ -827,18 +811,17 @@
     .timeline-info h3 {
       font-size: var(--fs-md);
       margin-bottom: 0.25rem;
-      color: var(--color-heading);
     }
 
     .timeline-meta {
       font-size: var(--fs-xs);
-      color: var(--color-text-muted);
+      color: var(--text-muted);
       margin-bottom: 0.4rem;
     }
 
     .timeline-info p {
       font-size: var(--fs-sm);
-      color: var(--color-text-muted);
+      color: var(--text-muted);
       line-height: 1.7;
     }
 
@@ -846,18 +829,18 @@
       margin-top: 0.12rem;
     }
 
-    .academic-card {
+    .academics-card {
       margin-top: 1.5rem;
       border-radius: var(--radius-md);
-      border: 1px dashed rgba(252, 61, 33, 0.6);
-      background: radial-gradient(circle at 0 0, rgba(252, 61, 33, 0.16) 0, rgba(2, 6, 23, 1) 70%);
+      border: 1px dashed rgba(252, 61, 33, 0.78);
+      background: radial-gradient(circle at 0 0, rgba(252, 61, 33, 0.2) 0, rgba(2, 6, 23, 1) 70%);
       padding: 1rem 1.1rem;
       font-size: var(--fs-xs);
-      color: var(--color-text-muted);
+      color: var(--text-muted);
     }
 
-    .academic-card-title {
-      color: var(--color-accent);
+    .academics-card__title {
+      color: var(--accent);
       font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
         "Liberation Mono", "Courier New", monospace;
       margin-bottom: 0.4rem;
@@ -865,27 +848,27 @@
       letter-spacing: 0.18em;
     }
 
-    .academic-grid {
+    .academics-grid {
       display: grid;
       grid-template-columns: repeat(4, minmax(0, 1fr));
       gap: 0.35rem 0.9rem;
-      margin-top: 0.4rem;
+      margin-top: 0.35rem;
     }
 
     @media (max-width: 880px) {
-      .timeline-grid {
+      .edu-exp-grid {
         grid-template-columns: minmax(0, 1fr);
       }
     }
 
-    @media (max-width: 580px) {
+    @media (max-width: 600px) {
       .timeline-card {
         grid-template-columns: minmax(0, 1fr);
       }
       .timeline-card img {
         margin-bottom: 0.25rem;
       }
-      .academic-grid {
+      .academics-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
       }
     }
@@ -893,25 +876,25 @@
     /* Projects */
     #projects {
       padding-top: 4.5rem;
-      padding-bottom: 4.75rem;
+      padding-bottom: 4.7rem;
       border-bottom: 1px solid rgba(15, 23, 42, 0.95);
     }
 
     .projects-grid {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 1.35rem;
+      gap: 1.3rem;
     }
 
     .project-card {
-      background: radial-gradient(circle at 0 0, rgba(15, 23, 42, 0.96) 0, #020617 70%);
+      background: radial-gradient(circle at 0 0, rgba(15, 23, 42, 0.98) 0, #020617 70%);
       border-radius: var(--radius-md);
-      border: 1px solid var(--color-border-soft);
+      border: 1px solid var(--border-soft);
       padding: 1.05rem 1.15rem 1rem;
       text-align: left;
       cursor: pointer;
-      transition: border-color var(--transition-med), box-shadow var(--transition-med),
-        transform var(--transition-fast), background var(--transition-med);
+      transition: border-color var(--t-med), box-shadow var(--t-med),
+        transform var(--t-fast), background var(--t-med);
       position: relative;
       overflow: hidden;
       width: 100%;
@@ -924,30 +907,29 @@
       inset: 0;
       background: radial-gradient(circle at 0 0, rgba(252, 61, 33, 0.16) 0, transparent 60%);
       opacity: 0;
-      transition: opacity var(--transition-med);
+      transition: opacity var(--t-med);
     }
 
-    .project-kicker {
-      font-family: "Space Grotesk", system-ui, sans-serif;
+    .project-card__kicker {
       font-size: var(--fs-xs);
       text-transform: uppercase;
       letter-spacing: 0.16em;
-      color: var(--color-text-muted);
+      color: var(--text-muted);
       margin-bottom: 0.3rem;
+      font-family: "Space Grotesk", system-ui, sans-serif;
     }
 
     .project-card h3 {
       margin: 0.1rem 0 0.3rem;
       font-size: var(--fs-md);
-      color: var(--color-heading);
     }
 
     .project-card p {
       font-size: var(--fs-sm);
-      color: var(--color-text-muted);
+      color: var(--text-muted);
     }
 
-    .project-meta-line {
+    .project-card__meta {
       margin-top: 0.75rem;
       display: flex;
       align-items: center;
@@ -955,11 +937,11 @@
       font-size: var(--fs-xs);
       text-transform: uppercase;
       letter-spacing: 0.18em;
-      color: var(--color-text-muted);
+      color: var(--text-muted);
     }
 
-    .project-meta-line span:last-child {
-      color: var(--color-accent);
+    .project-card__meta span:last-child {
+      color: var(--accent);
     }
 
     .project-card:hover {
@@ -988,8 +970,8 @@
 
     /* Contact */
     #contact {
-      padding-top: 3.75rem;
-      padding-bottom: 4.25rem;
+      padding-top: 3.7rem;
+      padding-bottom: 4.3rem;
     }
 
     .contact-grid {
@@ -999,55 +981,55 @@
       align-items: flex-start;
     }
 
-    .contact-intro {
+    .contact-text {
       font-size: var(--fs-sm);
-      color: var(--color-text-muted);
-      line-height: 1.8;
-      max-width: 460px;
+      color: var(--text-muted);
+      line-height: 1.85;
+      max-width: 28rem;
     }
 
-    .contact-details {
+    .contact-card {
       border-radius: var(--radius-md);
-      border: 1px solid var(--color-border-soft);
+      border: 1px solid var(--border-soft);
       background: radial-gradient(circle at 0 0, rgba(15, 23, 42, 0.96) 0, #020617 70%);
-      padding: 1.25rem 1.4rem;
+      padding: 1.25rem 1.45rem;
       display: grid;
-      gap: 0.8rem;
+      gap: 0.85rem;
     }
 
-    .contact-label {
+    .contact-item__label {
       font-size: var(--fs-xs);
       text-transform: uppercase;
       letter-spacing: 0.18em;
-      color: var(--color-text-muted);
+      color: var(--text-muted);
       margin-bottom: 0.2rem;
     }
 
-    .contact-item a {
-      color: var(--color-heading);
+    .contact-item__value a {
       font-size: var(--fs-sm);
-      text-decoration: none;
+      color: var(--text-heading);
       position: relative;
       padding-bottom: 0.12rem;
+      text-decoration: none;
     }
 
-    .contact-item a::after {
+    .contact-item__value a::after {
       content: "";
       position: absolute;
       left: 0;
       bottom: 0;
       height: 1px;
       width: 0;
-      background: linear-gradient(90deg, var(--color-accent), var(--color-accent-strong));
-      transition: width var(--transition-med);
+      background: linear-gradient(90deg, var(--accent), var(--accent-strong));
+      transition: width var(--t-med);
     }
 
-    .contact-item a:hover {
-      color: var(--color-accent);
+    .contact-item__value a:hover {
+      color: var(--accent);
       text-decoration: none;
     }
 
-    .contact-item a:hover::after {
+    .contact-item__value a:hover::after {
       width: 100%;
     }
 
@@ -1065,21 +1047,21 @@
       display: none;
       align-items: center;
       justify-content: center;
-      padding: 2rem 1.2rem;
+      padding: 2rem 1.25rem;
       z-index: 9999;
       opacity: 0;
       visibility: hidden;
-      transition: opacity var(--transition-med), visibility 0s linear 200ms;
+      transition: opacity var(--t-med), visibility 0s linear 200ms;
     }
 
-    .modal.open {
+    .modal.is-open {
       display: flex;
       opacity: 1;
       visibility: visible;
-      transition: opacity var(--transition-med), visibility 0s;
+      transition: opacity var(--t-med), visibility 0s;
     }
 
-    .modal-content {
+    .modal__dialog {
       background: #020617;
       border-radius: var(--radius-lg);
       border: 1px solid rgba(31, 41, 55, 0.95);
@@ -1095,19 +1077,19 @@
       position: relative;
       transform: translateY(12px);
       opacity: 0;
-      transition: opacity var(--transition-med), transform var(--transition-med);
+      transition: opacity var(--t-med), transform var(--t-med);
     }
 
-    .modal.open .modal-content {
+    .modal.is-open .modal__dialog {
       opacity: 1;
       transform: translateY(0);
     }
 
-    .modal-content:focus {
+    .modal__dialog:focus {
       outline: none;
     }
 
-    .modal-close {
+    .modal__close {
       position: absolute;
       top: 0.85rem;
       right: 0.95rem;
@@ -1122,44 +1104,43 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      transition: background var(--transition-med), transform var(--transition-fast),
-        border-color var(--transition-med);
+      transition: background var(--t-med), transform var(--t-fast), border-color var(--t-med);
     }
 
-    .modal-close:hover {
-      background: rgba(30, 64, 175, 0.45);
+    .modal__close:hover {
+      background: rgba(30, 64, 175, 0.5);
       border-color: rgba(148, 163, 184, 0.95);
       transform: translateY(-1px);
     }
 
-    .modal-meta {
+    .modal__meta {
       font-size: var(--fs-xs);
-      color: var(--color-text-muted);
+      color: var(--text-muted);
       text-transform: uppercase;
       letter-spacing: 0.2em;
       margin-bottom: 0.8rem;
     }
 
-    .modal-details h2 {
+    .modal__title {
       font-size: var(--fs-xl);
       margin-bottom: 0.6rem;
     }
 
-    .modal-details p {
+    .modal__body p {
       font-size: var(--fs-sm);
-      color: var(--color-text-muted);
+      color: var(--text-muted);
       line-height: 1.8;
       margin-bottom: 0.7rem;
     }
 
-    .modal-details p + p {
+    .modal__body p + p {
       margin-top: 0.1rem;
     }
 
-    .modal-hint {
+    .modal__hint {
       margin-top: 0.75rem;
       font-size: var(--fs-xs);
-      color: var(--color-text-muted);
+      color: var(--text-muted);
     }
 
     .carousel {
@@ -1172,22 +1153,18 @@
       gap: 0.6rem;
     }
 
-    .carousel-images {
+    .carousel__viewport {
       position: relative;
       border-radius: calc(var(--radius-md) - 4px);
       overflow: hidden;
-      background: radial-gradient(
-        circle at 50% 0%,
-        rgba(148, 163, 184, 0.18) 0,
-        rgba(15, 23, 42, 1) 60%
-      );
+      background: radial-gradient(circle at 50% 0%, rgba(148, 163, 184, 0.18) 0, rgba(15, 23, 42, 1) 60%);
       min-height: 230px;
       display: flex;
       align-items: center;
       justify-content: center;
     }
 
-    .carousel img {
+    .carousel__img {
       width: 100%;
       display: none;
       border-radius: calc(var(--radius-md) - 4px);
@@ -1195,12 +1172,11 @@
       max-height: 340px;
     }
 
-    .carousel img.active {
+    .carousel__img.is-active {
       display: block;
     }
 
-    .carousel .prev,
-    .carousel .next {
+    .carousel__btn {
       position: absolute;
       top: 50%;
       transform: translateY(-50%);
@@ -1215,57 +1191,55 @@
       justify-content: center;
       font-size: 1.25rem;
       cursor: pointer;
-      transition: background var(--transition-med), border-color var(--transition-med),
-        transform var(--transition-fast), opacity var(--transition-fast);
+      transition: background var(--t-med), border-color var(--t-med),
+        transform var(--t-fast), opacity var(--t-fast);
     }
 
-    .carousel .prev {
+    .carousel__btn--prev {
       left: 0.6rem;
     }
 
-    .carousel .next {
+    .carousel__btn--next {
       right: 0.6rem;
     }
 
-    .carousel .prev:hover,
-    .carousel .next:hover {
+    .carousel__btn:hover {
       background: rgba(30, 64, 175, 0.5);
       border-color: rgba(148, 163, 184, 0.95);
       transform: translateY(-50%) translateY(-1px);
     }
 
-    .carousel .prev:disabled,
-    .carousel .next:disabled {
+    .carousel__btn:disabled {
       opacity: 0.35;
       cursor: default;
       transform: translateY(-50%);
     }
 
-    .carousel-status {
+    .carousel__status {
       font-size: var(--fs-xs);
-      color: var(--color-text-muted);
+      color: var(--text-muted);
       text-align: center;
       text-transform: uppercase;
       letter-spacing: 0.18em;
       padding-top: 0.25rem;
     }
 
-    .image-error {
+    .carousel__img.is-error {
       opacity: 0.35;
     }
 
     @media (max-width: 960px) {
-      .modal-content {
+      .modal__dialog {
         grid-template-columns: minmax(0, 1fr);
         max-height: 92vh;
       }
-      .carousel img {
+      .carousel__img {
         max-height: 260px;
       }
     }
 
     @media (max-width: 600px) {
-      .modal-content {
+      .modal__dialog {
         padding: 1.3rem 1.25rem 1.4rem;
       }
     }
@@ -1274,11 +1248,11 @@
       overflow: hidden;
     }
 
-    /* Scroll reveal */
+    /* Reveal animation */
     .reveal {
       opacity: 0;
       transform: translateY(24px);
-      transition: opacity var(--transition-slow), transform var(--transition-slow);
+      transition: opacity var(--t-slow), transform var(--t-slow);
     }
 
     .reveal.is-visible {
@@ -1293,12 +1267,12 @@
       }
     }
 
-    footer {
+    footer.site-footer {
       max-width: var(--max-width);
       margin: 0 auto;
       padding: 1.3rem var(--page-gutter) 1.7rem;
       font-size: var(--fs-xs);
-      color: rgba(148, 163, 184, 0.78);
+      color: rgba(148, 163, 184, 0.8);
       display: flex;
       justify-content: space-between;
       gap: 0.8rem;
@@ -1306,7 +1280,7 @@
     }
 
     @media (max-width: 640px) {
-      footer {
+      footer.site-footer {
         flex-direction: column;
         align-items: flex-start;
       }
@@ -1314,21 +1288,21 @@
   </style>
 </head>
 <body>
-  <a href="#hero" class="skip-link">Skip to main content</a>
+  <a href="#intro" class="skip-link">Skip to main content</a>
 
-  <div class="page-shell">
-    <header>
-      <nav aria-label="Main navigation">
+  <div class="shell">
+    <header class="site-header">
+      <nav class="site-nav" aria-label="Main navigation">
         <div class="brand">
-          <span class="brand-mark">NR</span>
-          <span>NISCHAL&nbsp;RAUT</span>
+          <span class="brand__mark">NR</span>
+          <span class="brand__name">Nischal&nbsp;Raut</span>
         </div>
-        <button class="menu-toggle" type="button" aria-expanded="false" aria-label="Toggle navigation menu">
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-label="Toggle navigation menu">
           ☰
         </button>
         <ul class="nav-links">
-          <li><a href="#hero">Home</a></li>
-          <li><a href="#skills">Skills</a></li>
+          <li><a href="#intro">Intro</a></li>
+          <li><a href="#profile">Profile</a></li>
           <li><a href="#education">Education</a></li>
           <li><a href="#experience">Experience</a></li>
           <li><a href="#projects">Projects</a></li>
@@ -1337,45 +1311,46 @@
       </nav>
     </header>
 
-    <main id="main-content">
-      <!-- Hero -->
-      <section id="hero">
-        <div class="hero-grid reveal is-visible">
+    <main id="main">
+      <!-- HERO -->
+      <section id="intro">
+        <div class="hero reveal is-visible">
           <div>
-            <p class="hero-tagline text-mono">Aerospace Engineer</p>
-            <h1 class="hero-heading">Nischal&nbsp;Raut</h1>
-            <p class="hero-role">Aerospace engineer with focus on experimental aerodynamics &amp; CFD.</p>
+            <p class="hero__tag mono">Aerospace Engineer</p>
+            <h1 class="hero__title">Nischal&nbsp;Raut</h1>
+            <p class="hero__role">Aerospace engineer with focus on experimental aerodynamics &amp; CFD.</p>
 
-            <p class="hero-body">
+            <p class="hero__intro">
               Hi! I'm an aspiring aerospace engineer passionate about experimental aerodynamics &amp; CFD.
               Bridging computational models with experimental validation. <br />
               Bachelor’s Aggregate: <b>76.71%</b>.
             </p>
 
-            <p class="hero-focus">
-              Merging Computational Fluid Dynamics with Experimental Aerodynamics.
-              Specializing in Wind Tunnel testing, UAV systems, and Avionics integration.
+            <p class="hero__focus">
+              Merging Computational Fluid Dynamics with Experimental Aerodynamics. Specializing in wind tunnel testing,
+              UAV systems, and avionics integration.
             </p>
 
-            <p class="hero-meta text-mono">
-              Based in Nepal · Open to aerospace, R&amp;D, test and CFD opportunities
+            <p class="hero__meta mono">
+              Location: Bangalore, IN · Open to aerospace, R&amp;D, test and CFD opportunities
             </p>
 
-            <div class="hero-actions">
+            <div class="hero__actions">
               <a class="btn-primary" href="Nischal_Raut_CV.pdf" download="Nischal_Raut_CV.pdf">
-                <span>📄</span><span>Download CV</span>
+                <span>📄</span>
+                <span>Download CV</span>
               </a>
               <a class="btn-ghost" href="#projects">View projects</a>
             </div>
           </div>
 
-          <div class="hero-photo-wrap" aria-hidden="true">
-            <div class="hero-orbit"></div>
-            <div class="hero-photo-card">
-              <div class="hero-photo-inner">
+          <div class="hero-media" aria-hidden="true">
+            <div class="hero-media__orbit"></div>
+            <div class="hero-card">
+              <div class="hero-card__inner">
                 <img src="profile.jpg" alt="" width="320" height="320" />
               </div>
-              <div class="hero-photo-meta text-mono">
+              <div class="hero-card__meta mono">
                 <span>AEROSPACE</span>
                 <span>EXPERIMENTAL &amp; CFD</span>
               </div>
@@ -1384,28 +1359,29 @@
         </div>
       </section>
 
-      <!-- Skills / Philosophy -->
-      <section id="skills" class="reveal">
-        <header class="section-header">
+      <!-- PROFILE & SKILLS -->
+      <section id="profile" class="reveal">
+        <header class="section-heading">
           <div>
-            <p class="section-kicker" data-section="01">Technical Profile</p>
-            <h2 class="section-title">Skills &amp; Approach</h2>
+            <p class="section-label" data-code="01">Profile</p>
+            <h2 class="section-title">Engineering Perspective &amp; Capabilities</h2>
             <p class="section-subtitle">
-              Core tools and methods spanning simulation, experimental aerodynamics and engineering workflows.
+              How computational tools, experimental setups and hands-on building converge in your engineering workflow.
             </p>
           </div>
         </header>
 
-        <div class="skills-layout">
-          <div class="skills-intro">
+        <div class="profile-layout">
+          <div class="profile-text">
             <p>
-              Engineering is the art of negotiating with physics. My methodology bridges the gap between digital simulation
-              (ANSYS/MATLAB) and physical validation (Wind Tunnel/Flight Test).
+              Engineering is the art of negotiating with physics. My methodology bridges the gap between digital
+              simulation (ANSYS/MATLAB) and physical validation (Wind Tunnel/Flight Test).
             </p>
             <p>
-              The following interests complement this technical focus and help maintain an engineering mindset beyond the lab.
+              The following interests complement this technical focus and help maintain an engineering mindset beyond
+              the lab.
             </p>
-            <div class="interests-grid">
+            <div class="interest-grid">
               <div class="interest-pill">RC Aviation (Scratch Build)</div>
               <div class="interest-pill">Sci-Fi Literature</div>
               <div class="interest-pill">Drone Photography</div>
@@ -1415,41 +1391,41 @@
 
           <div class="skills-grid" aria-label="Skill categories">
             <div class="skill-card">
-              <div class="skill-label text-mono">CAD &amp; Analysis</div>
+              <div class="skill-card__label mono">CAD &amp; Analysis</div>
               <p>CAD &amp; Analysis: CATIA, ANSYS, SolidWorks, MATLAB</p>
             </div>
             <div class="skill-card">
-              <div class="skill-label text-mono">Programming</div>
+              <div class="skill-card__label mono">Programming</div>
               <p>Programming: C, Python, MATLAB scripting</p>
             </div>
             <div class="skill-card">
-              <div class="skill-label text-mono">Simulation &amp; Testing</div>
+              <div class="skill-card__label mono">Simulation &amp; Testing</div>
               <p>Simulation: Wind Tunnel Testing, Flow Visualization</p>
             </div>
             <div class="skill-card">
-              <div class="skill-label text-mono">Productivity &amp; Drafting</div>
+              <div class="skill-card__label mono">Productivity &amp; Drafting</div>
               <p>Productivity: MS Office, LaTeX, AutoCAD</p>
             </div>
           </div>
         </div>
       </section>
 
-      <!-- Education & Experience -->
+      <!-- EDUCATION & EXPERIENCE -->
       <section id="education" class="reveal">
-        <header class="section-header">
+        <header class="section-heading">
           <div>
-            <p class="section-kicker" data-section="02">Academic &amp; Professional Path</p>
-            <h2 class="section-title">Education &amp; Experience</h2>
+            <p class="section-label" data-code="02">Trajectory</p>
+            <h2 class="section-title">Education &amp; Professional Experience</h2>
             <p class="section-subtitle">
-              Formal training in aerospace engineering and applied experience in testing, UAV operations and avionics.
+              Academic foundation in aerospace engineering complemented by internships and test-focused roles.
             </p>
           </div>
         </header>
 
-        <div class="timeline-grid">
+        <div class="edu-exp-grid">
           <!-- Education -->
           <div>
-            <div class="timeline-column-header text-mono">Education</div>
+            <p class="timeline-label mono">Education</p>
             <div class="timeline" aria-label="Education timeline">
               <div class="timeline-entry">
                 <div class="timeline-marker"></div>
@@ -1457,7 +1433,7 @@
                   <img src="ioe.png" alt="Institute of Engineering, Pulchowk logo" loading="lazy" />
                   <div class="timeline-info">
                     <h3>Institute of Engineering, Pulchowk</h3>
-                    <p class="timeline-meta text-mono">Bachelor’s in Aerospace Engineering (2019–2025)</p>
+                    <p class="timeline-meta mono">Bachelor’s in Aerospace Engineering (2019–2025)</p>
                     <p>Aggregate: 76.71%</p>
                   </div>
                 </article>
@@ -1469,7 +1445,7 @@
                   <img src="omega.png" alt="Omega International College logo" loading="lazy" />
                   <div class="timeline-info">
                     <h3>Omega International College</h3>
-                    <p class="timeline-meta text-mono">+2 Science</p>
+                    <p class="timeline-meta mono">+2 Science</p>
                     <p>+2 Science, GPA: 3.5</p>
                   </div>
                 </article>
@@ -1481,18 +1457,17 @@
                   <img src="westwing.png" alt="West Wing Secondary School logo" loading="lazy" />
                   <div class="timeline-info">
                     <h3>West Wing Secondary School</h3>
-                    <p class="timeline-meta text-mono">Secondary Education</p>
+                    <p class="timeline-meta mono">Secondary Education</p>
                     <p>SEE GPA: 4.0</p>
                   </div>
                 </article>
               </div>
             </div>
 
-            <!-- Academic Vault -->
-            <div class="academic-card">
-              <div class="academic-card-title text-mono">Academic Vault: IOE Pulchowk</div>
+            <div class="academics-card">
+              <div class="academics-card__title">Academic Vault: IOE Pulchowk</div>
               <p>Semester-wise scores:</p>
-              <div class="academic-grid">
+              <div class="academics-grid">
                 <span>1st: 59.68%</span>
                 <span>2nd: 67.43%</span>
                 <span>3rd: 65.29%</span>
@@ -1502,13 +1477,13 @@
                 <span>7th: 86.15%</span>
                 <span>8th: 89.2%</span>
               </div>
-              <p style="margin-top:0.35rem;">Aggregate: 76.71%</p>
+              <p style="margin-top:0.4rem;">Aggregate: 76.71%</p>
             </div>
           </div>
 
           <!-- Experience -->
-          <div id="experience">
-            <div class="timeline-column-header text-mono">Experience</div>
+          <section id="experience">
+            <p class="timeline-label mono">Experience</p>
             <div class="timeline" aria-label="Experience timeline">
               <div class="timeline-entry">
                 <div class="timeline-marker"></div>
@@ -1516,7 +1491,7 @@
                   <img src="airlift.png" alt="Airlift Technology logo" loading="lazy" />
                   <div class="timeline-info">
                     <h3>Engineering Intern – Airlift Technology, Nepal</h3>
-                    <p class="timeline-meta text-mono">2024 – Present</p>
+                    <p class="timeline-meta mono">2024 – Present</p>
                     <p>Led drone mapping for Kathmandu Metro. 3D Terrain modeling via photogrammetry.</p>
                     <p>• Drone mapping &amp; photogrammetry for Kathmandu Metropolitan City.</p>
                     <p>• Generated 3D terrain models &amp; orthomosaics.</p>
@@ -1530,7 +1505,7 @@
                 <article class="timeline-card">
                   <div class="timeline-info">
                     <h3>Associate Engineer – Integration Test, Airbus India</h3>
-                    <p class="timeline-meta text-mono">Dec 2024 – Present</p>
+                    <p class="timeline-meta mono">Dec 2024 – Present</p>
                     <p>Integration testing of avionics subsystems. Leveraging data analytics for flight test campaigns and test automation.</p>
                   </div>
                 </article>
@@ -1541,84 +1516,84 @@
                 <article class="timeline-card">
                   <div class="timeline-info">
                     <h3>Intern – System Testing, Airbus India</h3>
-                    <p class="timeline-meta text-mono">July 2024 – Nov 2024</p>
+                    <p class="timeline-meta mono">July 2024 – Nov 2024</p>
                     <p>Supported System V&amp;V. Performed functional testing on simulation benches and defect tracking.</p>
                   </div>
                 </article>
               </div>
             </div>
-          </div>
+          </section>
         </div>
       </section>
 
-      <!-- Projects -->
+      <!-- PROJECTS -->
       <section id="projects" class="reveal">
-        <header class="section-header">
+        <header class="section-heading">
           <div>
-            <p class="section-kicker" data-section="03">Selected Work</p>
-            <h2 class="section-title">Projects</h2>
+            <p class="section-label" data-code="03">Portfolio</p>
+            <h2 class="section-title">Selected Projects</h2>
             <p class="section-subtitle">
-              Academic and personal work across experimental setups, conceptual carrier studies, CFD analysis and software.
+              Work spanning wind tunnel design, launch concepts, scratch-built aircraft, CFD analysis and software.
             </p>
           </div>
         </header>
 
         <div class="projects-grid" aria-label="Project list">
-          <button class="project-card" type="button" data-modal-target="modal1">
-            <div class="project-kicker text-mono">Final Year Project</div>
+          <button class="project-card" type="button" data-modal-target="modal-windtunnel">
+            <div class="project-card__kicker mono">Final Year Project</div>
             <h3>Subsonic Wind Tunnel</h3>
-            <p>Final Year Project</p>
-            <div class="project-meta-line text-mono">
+            <p>Designed &amp; built open-jet tunnel with gust generator. Turbulent Intensity 0.88% validated experimentally.</p>
+            <div class="project-card__meta mono">
               <span>Experimental Aerodynamics</span>
               <span>View</span>
             </div>
           </button>
 
-          <button class="project-card" type="button" data-modal-target="modal2">
-            <div class="project-kicker text-mono">Conceptual Study</div>
+          <button class="project-card" type="button" data-modal-target="modal-b52">
+            <div class="project-card__kicker mono">Conceptual Study</div>
             <h3>B-52 Air Launch</h3>
-            <p>Conceptual Rocket Carrier</p>
-            <div class="project-meta-line text-mono">
+            <p>Conceptual Rocket Carrier.</p>
+            <div class="project-card__meta mono">
               <span>Launch Concepts</span>
               <span>View</span>
             </div>
           </button>
 
-          <button class="project-card" type="button" data-modal-target="modal3">
-            <div class="project-kicker text-mono">Flight Testing</div>
+          <button class="project-card" type="button" data-modal-target="modal-glider">
+            <div class="project-card__kicker mono">Flight Testing</div>
             <h3>Styrofoam Glider</h3>
-            <p>Design + Test flights</p>
-            <div class="project-meta-line text-mono">
+            <p>Design + Test flights.</p>
+            <div class="project-card__meta mono">
               <span>Model Flight</span>
               <span>View</span>
             </div>
           </button>
 
-          <button class="project-card" type="button" data-modal-target="modal4">
-            <div class="project-kicker text-mono">Conceptual Study</div>
+          <button class="project-card" type="button" data-modal-target="modal-u2">
+            <div class="project-card__kicker mono">Conceptual Study</div>
             <h3>U-2 Conversion</h3>
-            <p>Payload Testbed Study</p>
-            <div class="project-meta-line text-mono">
+            <p>Payload Testbed Study.</p>
+            <div class="project-card__meta mono">
               <span>High-Altitude</span>
               <span>View</span>
             </div>
           </button>
 
-          <button class="project-card" type="button" data-modal-target="modal5">
-            <div class="project-kicker text-mono">CFD Study</div>
+          <button class="project-card" type="button" data-modal-target="modal-f15">
+            <div class="project-card__kicker mono">CFD Study</div>
             <h3>F-15 Scale Model</h3>
-            <p>Lift-Drag CFD Study</p>
-            <div class="project-meta-line text-mono">
+            <p>Lift-Drag CFD Study.</p>
+            <div class="project-card__meta mono">
               <span>Aerodynamic Analysis</span>
               <span>View</span>
             </div>
           </button>
 
-          <button class="project-card" type="button" data-modal-target="modal6">
-            <div class="project-kicker text-mono">Programming</div>
+          <button class="project-card" type="button" data-modal-target="modal-canteen">
+            <div class="project-card__kicker mono">Programming</div>
             <h3>Canteen Billing System</h3>
-            <p>C Program</p>
-            <div class="project-meta-line text-mono">
+            <p>C Program.</p>
+            <div class="project-card__meta mono">
               <span>Software</span>
               <span>View</span>
             </div>
@@ -1626,227 +1601,243 @@
         </div>
       </section>
 
-      <!-- Project Modals -->
-
-      <!-- 1: Subsonic Wind Tunnel -->
-      <div class="modal" id="modal1" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="modal1-title" aria-describedby="modal1-desc">
-        <div class="modal-content" tabindex="-1">
-          <button class="modal-close" type="button" aria-label="Close dialog">×</button>
-          <div class="modal-details">
-            <div class="modal-meta text-mono">Final Year Project · Experimental Aerodynamics</div>
-            <h2 id="modal1-title">Subsonic Wind Tunnel</h2>
-            <p id="modal1-desc">
-              Designed &amp; built open-jet tunnel with gust generator. Turbulent Intensity 0.88% validated experimentally.
-            </p>
-            <p>
-              Designed and fabricated an open-jet wind tunnel featuring a custom gust generator with oscillating vanes.
-              The system was validated experimentally to achieve a turbulence intensity of 0.88%, providing a controlled environment for unsteady aerodynamic analysis.
-            </p>
-          </div>
-          <div class="carousel" data-carousel>
-            <div class="carousel-images">
-              <img src="windtunnel1.jpeg" alt="Subsonic wind tunnel build - overall view" loading="lazy" />
-              <img src="windtunnel2.jpeg" alt="Subsonic wind tunnel test section close-up" loading="lazy" />
-              <img src="windtunnel3.jpeg" alt="Subsonic wind tunnel during operation" loading="lazy" />
-            </div>
-            <button class="prev" type="button" data-carousel-prev aria-label="Previous image">‹</button>
-            <button class="next" type="button" data-carousel-next aria-label="Next image">›</button>
-            <div class="carousel-status text-mono" data-carousel-status aria-live="polite"></div>
-          </div>
-        </div>
-      </div>
-
-      <!-- 2: B-52 Air Launch -->
-      <div class="modal" id="modal2" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="modal2-title" aria-describedby="modal2-desc">
-        <div class="modal-content" tabindex="-1">
-          <button class="modal-close" type="button" aria-label="Close dialog">×</button>
-          <div class="modal-details">
-            <div class="modal-meta text-mono">Conceptual Study</div>
-            <h2 id="modal2-title">B-52 Air Launch</h2>
-            <p id="modal2-desc">Conceptual Rocket Carrier</p>
-            <p>
-              A feasibility study analyzing the retrofit of the B-52 Stratofortress as an air-launch carrier for small satellites.
-              Calculations demonstrated a reduction in Delta-V requirements compared to traditional ground launches.
-            </p>
-            <p class="modal-hint">Project media and additional technical breakdowns will be documented in a future update.</p>
-          </div>
-          <div class="carousel" data-carousel>
-            <div class="carousel-images">
-              <!-- No images currently available for this project -->
-            </div>
-            <button class="prev" type="button" data-carousel-prev aria-label="Previous image">‹</button>
-            <button class="next" type="button" data-carousel-next aria-label="Next image">›</button>
-            <div class="carousel-status text-mono" data-carousel-status aria-live="polite"></div>
-          </div>
-        </div>
-      </div>
-
-      <!-- 3: Styrofoam Glider -->
-      <div class="modal" id="modal3" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="modal3-title" aria-describedby="modal3-desc">
-        <div class="modal-content" tabindex="-1">
-          <button class="modal-close" type="button" aria-label="Close dialog">×</button>
-          <div class="modal-details">
-            <div class="modal-meta text-mono">Flight Testing</div>
-            <h2 id="modal3-title">Styrofoam Glider</h2>
-            <p id="modal3-desc">Design + Test flights</p>
-            <p>
-              End-to-end fabrication of a remote-controlled glider using styrofoam and hollow aluminum spars,
-              with emphasis on practical build techniques and iterative test flights.
-            </p>
-            <p class="modal-hint">Project media and additional details will be added in a future update.</p>
-          </div>
-          <div class="carousel" data-carousel>
-            <div class="carousel-images">
-              <!-- No images currently available for this project -->
-            </div>
-            <button class="prev" type="button" data-carousel-prev aria-label="Previous image">‹</button>
-            <button class="next" type="button" data-carousel-next aria-label="Next image">›</button>
-            <div class="carousel-status text-mono" data-carousel-status aria-live="polite"></div>
-          </div>
-        </div>
-      </div>
-
-      <!-- 4: U-2 Conversion -->
-      <div class="modal" id="modal4" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="modal4-title" aria-describedby="modal4-desc">
-        <div class="modal-content" tabindex="-1">
-          <button class="modal-close" type="button" aria-label="Close dialog">×</button>
-          <div class="modal-details">
-            <div class="modal-meta text-mono">Conceptual Study</div>
-            <h2 id="modal4-title">U-2 Conversion</h2>
-            <p id="modal4-desc">Payload Testbed Study</p>
-            <p class="modal-hint">Detailed project description and media will be documented in a future update.</p>
-          </div>
-          <div class="carousel" data-carousel>
-            <div class="carousel-images">
-              <!-- No images currently available for this project -->
-            </div>
-            <button class="prev" type="button" data-carousel-prev aria-label="Previous image">‹</button>
-            <button class="next" type="button" data-carousel-next aria-label="Next image">›</button>
-            <div class="carousel-status text-mono" data-carousel-status aria-live="polite"></div>
-          </div>
-        </div>
-      </div>
-
-      <!-- 5: F-15 Scale Model -->
-      <div class="modal" id="modal5" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="modal5-title" aria-describedby="modal5-desc">
-        <div class="modal-content" tabindex="-1">
-          <button class="modal-close" type="button" aria-label="Close dialog">×</button>
-          <div class="modal-details">
-            <div class="modal-meta text-mono">CFD Study</div>
-            <h2 id="modal5-title">F-15 Scale Model</h2>
-            <p id="modal5-desc">Lift-Drag CFD Study</p>
-            <p>
-              Computational Fluid Dynamics simulation of supersonic flow over an F-15 Eagle,
-              with focus on visualizing shock structures and estimating drag characteristics.
-            </p>
-            <p class="modal-hint">Additional simulation setup details and results visualisations will be added later.</p>
-          </div>
-          <div class="carousel" data-carousel>
-            <div class="carousel-images">
-              <!-- No images currently available for this project -->
-            </div>
-            <button class="prev" type="button" data-carousel-prev aria-label="Previous image">‹</button>
-            <button class="next" type="button" data-carousel-next aria-label="Next image">›</button>
-            <div class="carousel-status text-mono" data-carousel-status aria-live="polite"></div>
-          </div>
-        </div>
-      </div>
-
-      <!-- 6: Canteen Billing System -->
-      <div class="modal" id="modal6" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="modal6-title" aria-describedby="modal6-desc">
-        <div class="modal-content" tabindex="-1">
-          <button class="modal-close" type="button" aria-label="Close dialog">×</button>
-          <div class="modal-details">
-            <div class="modal-meta text-mono">Programming</div>
-            <h2 id="modal6-title">Canteen Billing System</h2>
-            <p id="modal6-desc">C Program</p>
-            <p class="modal-hint">Source code and example runs can be shared or linked in a future revision.</p>
-          </div>
-          <div class="carousel" data-carousel>
-            <div class="carousel-images">
-              <!-- No images currently available for this project -->
-            </div>
-            <button class="prev" type="button" data-carousel-prev aria-label="Previous image">‹</button>
-            <button class="next" type="button" data-carousel-next aria-label="Next image">›</button>
-            <div class="carousel-status text-mono" data-carousel-status aria-live="polite"></div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Contact -->
+      <!-- CONTACT -->
       <section id="contact" class="reveal">
-        <header class="section-header">
+        <header class="section-heading">
           <div>
-            <p class="section-kicker" data-section="04">Contact</p>
+            <p class="section-label" data-code="04">Contact</p>
             <h2 class="section-title">Establish Link</h2>
             <p class="section-subtitle">
-              Reach out for aerospace engineering roles, research collaborations, testing or CFD-focused projects.
+              Direct channels for aerospace roles, research collaborations, UAV mapping and test/CFD work.
             </p>
           </div>
         </header>
 
         <div class="contact-grid">
-          <div class="contact-intro">
+          <div class="contact-text">
             <p>
-              For opportunities related to aerospace engineering, experimental aerodynamics, CFD, UAV mapping
-              or avionics testing, the following channels provide the most direct connection.
+              For discussions around aerospace engineering, experimental aerodynamics, CFD, UAV systems, drone mapping
+              or avionics testing, please use the following contact details.
             </p>
           </div>
-
-          <div class="contact-details" aria-label="Contact details">
+          <div class="contact-card" aria-label="Contact details">
             <div class="contact-item">
-              <div class="contact-label text-mono">Email</div>
-              <a href="mailto:nischalraut6@gmail.com">nischalraut6@gmail.com</a>
+              <div class="contact-item__label mono">Email</div>
+              <div class="contact-item__value">
+                <a href="mailto:nischalraut6@gmail.com">nischalraut6@gmail.com</a>
+              </div>
             </div>
             <div class="contact-item">
-              <div class="contact-label text-mono">Phone</div>
-              <a href="tel:+9779813980068">+977-9813980068</a>
+              <div class="contact-item__label mono">Phone</div>
+              <div class="contact-item__value">
+                <a href="tel:+9779813980068">+977-9813980068</a>
+              </div>
             </div>
             <div class="contact-item">
-              <div class="contact-label text-mono">LinkedIn</div>
-              <a href="https://www.linkedin.com/in/nischal-raut-1b2227314/" target="_blank" rel="noopener noreferrer">
-                linkedin.com/in/nischal-raut
-              </a>
+              <div class="contact-item__label mono">LinkedIn</div>
+              <div class="contact-item__value">
+                <a href="https://www.linkedin.com/in/nischal-raut-1b2227314/" target="_blank" rel="noopener noreferrer">
+                  linkedin.com/in/nischal-raut
+                </a>
+              </div>
             </div>
             <div class="contact-item">
-              <div class="contact-label text-mono">GitHub</div>
-              <a href="https://github.com/Nischalraut" target="_blank" rel="noopener noreferrer">
-                github.com/Nischalraut
-              </a>
+              <div class="contact-item__label mono">GitHub</div>
+              <div class="contact-item__value">
+                <a href="https://github.com/Nischalraut" target="_blank" rel="noopener noreferrer">
+                  github.com/Nischalraut
+                </a>
+              </div>
             </div>
           </div>
         </div>
       </section>
     </main>
 
-    <footer>
-      <span class="text-mono">Portfolio of Nischal Raut · Aerospace Engineer</span>
-      <span>System: nominal · Built with a focus on experimental aerodynamics, CFD and professional engineering practice.</span>
+    <footer class="site-footer">
+      <span class="mono">Nischal Raut · Aerospace Engineer</span>
+      <span>Portfolio focused on experimental aerodynamics, CFD, UAV operations and avionics testing.</span>
     </footer>
+  </div>
+
+  <!-- PROJECT MODALS -->
+
+  <!-- Subsonic Wind Tunnel -->
+  <div class="modal" id="modal-windtunnel" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="modal-windtunnel-title" aria-describedby="modal-windtunnel-desc">
+    <div class="modal__dialog" tabindex="-1">
+      <button type="button" class="modal__close" aria-label="Close dialog">×</button>
+      <div class="modal__body">
+        <p class="modal__meta mono">Final Year Project · Experimental Aerodynamics</p>
+        <h2 id="modal-windtunnel-title" class="modal__title">Subsonic Wind Tunnel</h2>
+        <p id="modal-windtunnel-desc">
+          Designed &amp; built open-jet tunnel with gust generator. Turbulent Intensity 0.88% validated experimentally.
+        </p>
+        <p>
+          Designed and fabricated an open-jet wind tunnel featuring a custom gust generator with oscillating vanes.
+          The system was validated experimentally to achieve a turbulence intensity of 0.88%, providing a controlled
+          environment for unsteady aerodynamic analysis.
+        </p>
+      </div>
+      <div class="carousel" data-carousel>
+        <div class="carousel__viewport">
+          <img src="windtunnel1.jpeg" alt="Subsonic wind tunnel build - overall view" loading="lazy" class="carousel__img" />
+          <img src="windtunnel2.jpeg" alt="Subsonic wind tunnel test section close-up" loading="lazy" class="carousel__img" />
+          <img src="windtunnel3.jpeg" alt="Subsonic wind tunnel during operation" loading="lazy" class="carousel__img" />
+          <button type="button" class="carousel__btn carousel__btn--prev" data-carousel-prev aria-label="Previous image">‹</button>
+          <button type="button" class="carousel__btn carousel__btn--next" data-carousel-next aria-label="Next image">›</button>
+        </div>
+        <div class="carousel__status mono" data-carousel-status aria-live="polite"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- B-52 Air Launch -->
+  <div class="modal" id="modal-b52" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="modal-b52-title" aria-describedby="modal-b52-desc">
+    <div class="modal__dialog" tabindex="-1">
+      <button type="button" class="modal__close" aria-label="Close dialog">×</button>
+      <div class="modal__body">
+        <p class="modal__meta mono">Conceptual Study</p>
+        <h2 id="modal-b52-title" class="modal__title">B-52 Air Launch</h2>
+        <p id="modal-b52-desc">Conceptual Rocket Carrier.</p>
+        <p>
+          Study of using the B-52 Stratofortress as a carrier for satellite launch vehicles to optimize LEO insertion.
+        </p>
+        <p>
+          A feasibility study analyzing the retrofit of the B-52 Stratofortress as an air-launch carrier for small
+          satellites. Calculations demonstrated a significant reduction in Delta-V requirements compared to traditional
+          ground launches.
+        </p>
+        <p class="modal__hint">Project media and additional technical breakdowns will be added in a future update.</p>
+      </div>
+      <div class="carousel" data-carousel>
+        <div class="carousel__viewport">
+          <!-- No images currently available -->
+          <button type="button" class="carousel__btn carousel__btn--prev" data-carousel-prev aria-label="Previous image">‹</button>
+          <button type="button" class="carousel__btn carousel__btn--next" data-carousel-next aria-label="Next image">›</button>
+        </div>
+        <div class="carousel__status mono" data-carousel-status aria-live="polite"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Styrofoam Glider -->
+  <div class="modal" id="modal-glider" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="modal-glider-title" aria-describedby="modal-glider-desc">
+    <div class="modal__dialog" tabindex="-1">
+      <button type="button" class="modal__close" aria-label="Close dialog">×</button>
+      <div class="modal__body">
+        <p class="modal__meta mono">Flight Testing</p>
+        <h2 id="modal-glider-title" class="modal__title">Styrofoam Glider</h2>
+        <p id="modal-glider-desc">Design + Test flights.</p>
+        <p>
+          End-to-end fabrication of a remote-controlled glider. Utilized XFLR5 for airfoil selection and stability
+          analysis. Construction involved hot-wire foam cutting and reinforcement with hollow aluminum spars.
+        </p>
+        <p class="modal__hint">Project media and additional details will be added in a future update.</p>
+      </div>
+      <div class="carousel" data-carousel>
+        <div class="carousel__viewport">
+          <!-- No images currently available -->
+          <button type="button" class="carousel__btn carousel__btn--prev" data-carousel-prev aria-label="Previous image">‹</button>
+          <button type="button" class="carousel__btn carousel__btn--next" data-carousel-next aria-label="Next image">›</button>
+        </div>
+        <div class="carousel__status mono" data-carousel-status aria-live="polite"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- U-2 Conversion -->
+  <div class="modal" id="modal-u2" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="modal-u2-title" aria-describedby="modal-u2-desc">
+    <div class="modal__dialog" tabindex="-1">
+      <button type="button" class="modal__close" aria-label="Close dialog">×</button>
+      <div class="modal__body">
+        <p class="modal__meta mono">Conceptual Study</p>
+        <h2 id="modal-u2-title" class="modal__title">U-2 Conversion</h2>
+        <p id="modal-u2-desc">Payload Testbed Study.</p>
+        <p class="modal__hint">Detailed project description and media will be documented in a future update.</p>
+      </div>
+      <div class="carousel" data-carousel>
+        <div class="carousel__viewport">
+          <!-- No images currently available -->
+          <button type="button" class="carousel__btn carousel__btn--prev" data-carousel-prev aria-label="Previous image">‹</button>
+          <button type="button" class="carousel__btn carousel__btn--next" data-carousel-next aria-label="Next image">›</button>
+        </div>
+        <div class="carousel__status mono" data-carousel-status aria-live="polite"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- F-15 Scale Model -->
+  <div class="modal" id="modal-f15" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="modal-f15-title" aria-describedby="modal-f15-desc">
+    <div class="modal__dialog" tabindex="-1">
+      <button type="button" class="modal__close" aria-label="Close dialog">×</button>
+      <div class="modal__body">
+        <p class="modal__meta mono">CFD Study</p>
+        <h2 id="modal-f15-title" class="modal__title">F-15 Scale Model</h2>
+        <p id="modal-f15-desc">Lift-Drag CFD Study.</p>
+        <p>
+          Supersonic flow simulation (Mach 2.5) analysing shock diamonds and drag coefficients for an F‑15 Eagle
+          configuration.
+        </p>
+        <p>
+          Computational Fluid Dynamics simulation of supersonic flow over an F-15 Eagle. The study focused on visualizing
+          shock diamonds at the nozzle exit and calculating drag coefficients under high-speed conditions.
+        </p>
+        <p class="modal__hint">Additional simulation setup details and result visualisations will be added later.</p>
+      </div>
+      <div class="carousel" data-carousel>
+        <div class="carousel__viewport">
+          <!-- No images currently available -->
+          <button type="button" class="carousel__btn carousel__btn--prev" data-carousel-prev aria-label="Previous image">‹</button>
+          <button type="button" class="carousel__btn carousel__btn--next" data-carousel-next aria-label="Next image">›</button>
+        </div>
+        <div class="carousel__status mono" data-carousel-status aria-live="polite"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Canteen Billing System -->
+  <div class="modal" id="modal-canteen" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="modal-canteen-title" aria-describedby="modal-canteen-desc">
+    <div class="modal__dialog" tabindex="-1">
+      <button type="button" class="modal__close" aria-label="Close dialog">×</button>
+      <div class="modal__body">
+        <p class="modal__meta mono">Programming</p>
+        <h2 id="modal-canteen-title" class="modal__title">Canteen Billing System</h2>
+        <p id="modal-canteen-desc">C Program.</p>
+        <p class="modal__hint">Source code and example runs can be linked in a future revision.</p>
+      </div>
+      <div class="carousel" data-carousel>
+        <div class="carousel__viewport">
+          <!-- No images currently available -->
+          <button type="button" class="carousel__btn carousel__btn--prev" data-carousel-prev aria-label="Previous image">‹</button>
+          <button type="button" class="carousel__btn carousel__btn--next" data-carousel-next aria-label="Next image">›</button>
+        </div>
+        <div class="carousel__status mono" data-carousel-status aria-live="polite"></div>
+      </div>
+    </div>
   </div>
 
   <script>
     (function () {
       "use strict";
 
-      const nav = document.querySelector("nav");
-      const menuToggle = nav ? nav.querySelector(".menu-toggle") : null;
+      const nav = document.querySelector(".site-nav");
+      const navToggle = nav ? nav.querySelector(".nav-toggle") : null;
       const navList = nav ? nav.querySelector(".nav-links") : null;
       const navLinks = nav ? nav.querySelectorAll(".nav-links a[href^='#']") : [];
 
-      function closeMobileMenu() {
-        if (!navList || !menuToggle) return;
+      function closeNav() {
+        if (!navList || !navToggle) return;
         if (window.innerWidth <= 820) {
-          navList.classList.remove("active");
-          menuToggle.setAttribute("aria-expanded", "false");
+          navList.classList.remove("is-open");
+          navToggle.setAttribute("aria-expanded", "false");
         }
       }
 
-      // Mobile navigation toggle
-      if (menuToggle && navList) {
-        menuToggle.addEventListener("click", function () {
-          const isActive = navList.classList.toggle("active");
-          menuToggle.setAttribute("aria-expanded", String(isActive));
+      // Mobile nav toggle
+      if (navToggle && navList) {
+        navToggle.addEventListener("click", function () {
+          const isOpen = navList.classList.toggle("is-open");
+          navToggle.setAttribute("aria-expanded", String(isOpen));
         });
       }
 
@@ -1856,7 +1847,7 @@
           link.addEventListener("click", function (event) {
             const href = link.getAttribute("href");
             if (!href || !href.startsWith("#")) return;
-            const targetId = href.slice(1);
+            const targetId = href.substring(1);
             const target = document.getElementById(targetId);
             if (!target) return;
 
@@ -1864,27 +1855,28 @@
 
             const navHeight = nav.offsetHeight || 0;
             const rect = target.getBoundingClientRect();
-            const offsetTop = window.scrollY + rect.top - navHeight - 16;
+            const top = window.scrollY + rect.top - navHeight - 16;
             const prefersReducedMotion =
-              window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+              window.matchMedia &&
+              window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
             window.scrollTo({
-              top: offsetTop < 0 ? 0 : offsetTop,
+              top: top < 0 ? 0 : top,
               behavior: prefersReducedMotion ? "auto" : "smooth",
             });
 
-            closeMobileMenu();
+            closeNav();
           });
         });
       }
 
       // Active nav link on scroll
       const sections = document.querySelectorAll("main section[id]");
-      const sectionIdToNavLink = {};
-      navLinks.forEach(function (link) {
-        const href = link.getAttribute("href");
+      const idToLink = {};
+      navLinks.forEach(function (l) {
+        const href = l.getAttribute("href");
         if (href && href.startsWith("#")) {
-          sectionIdToNavLink[href.slice(1)] = link;
+          idToLink[href.substring(1)] = l;
         }
       });
 
@@ -1894,12 +1886,12 @@
             entries.forEach(function (entry) {
               if (entry.isIntersecting) {
                 const id = entry.target.id;
-                const activeLink = sectionIdToNavLink[id];
-                if (activeLink) {
-                  Object.keys(sectionIdToNavLink).forEach(function (key) {
-                    sectionIdToNavLink[key].classList.remove("active");
+                const link = idToLink[id];
+                if (link) {
+                  Object.keys(idToLink).forEach(function (key) {
+                    idToLink[key].classList.remove("is-active");
                   });
-                  activeLink.classList.add("active");
+                  link.classList.add("is-active");
                 }
               }
             });
@@ -1910,13 +1902,12 @@
             rootMargin: "0px 0px -40% 0px",
           }
         );
-
         sections.forEach(function (section) {
           observer.observe(section);
         });
       }
 
-      // Scroll reveal
+      // Reveal sections on scroll
       const revealEls = document.querySelectorAll(".reveal");
       if ("IntersectionObserver" in window && revealEls.length > 0) {
         const revealObserver = new IntersectionObserver(
@@ -1928,12 +1919,8 @@
               }
             });
           },
-          {
-            threshold: 0.18,
-            rootMargin: "0px 0px -10% 0px",
-          }
+          { threshold: 0.18, rootMargin: "0px 0px -10% 0px" }
         );
-
         revealEls.forEach(function (el) {
           if (!el.classList.contains("is-visible")) {
             revealObserver.observe(el);
@@ -1943,55 +1930,59 @@
 
       // Modal logic
       let activeModal = null;
-      let lastFocusedElement = null;
+      let lastFocused = null;
 
       function openModal(modal) {
         if (!modal) return;
-        lastFocusedElement = document.activeElement;
-        modal.classList.add("open");
+        lastFocused = document.activeElement;
+        modal.classList.add("is-open");
         modal.setAttribute("aria-hidden", "false");
         document.body.classList.add("modal-open");
         activeModal = modal;
 
-        const focusableSelectors =
+        const focusableSel =
           "button,[href],input,select,textarea,[tabindex]:not([tabindex='-1'])";
-        const focusable = modal.querySelectorAll(focusableSelectors);
-        if (focusable.length > 0) {
-          focusable[0].focus();
+        const focusables = modal.querySelectorAll(focusableSel);
+        if (focusables.length > 0) {
+          focusables[0].focus();
         } else {
-          const content = modal.querySelector(".modal-content");
-          if (content) content.focus();
+          const dialog = modal.querySelector(".modal__dialog");
+          if (dialog) dialog.focus();
           else modal.focus();
         }
       }
 
       function closeModal(modal) {
         if (!modal) return;
-        modal.classList.remove("open");
+        modal.classList.remove("is-open");
         modal.setAttribute("aria-hidden", "true");
         document.body.classList.remove("modal-open");
         activeModal = null;
 
-        if (lastFocusedElement && typeof lastFocusedElement.focus === "function") {
-          lastFocusedElement.focus();
+        if (lastFocused && typeof lastFocused.focus === "function") {
+          lastFocused.focus();
         }
       }
 
-      const projectCards = document.querySelectorAll(".project-card[data-modal-target]");
+      const projectCards = document.querySelectorAll(
+        ".project-card[data-modal-target]"
+      );
       projectCards.forEach(function (card) {
         card.addEventListener("click", function () {
-          const modalId = card.getAttribute("data-modal-target");
-          if (!modalId) return;
-          const modal = document.getElementById(modalId);
-          if (modal) openModal(modal);
+          const id = card.getAttribute("data-modal-target");
+          if (!id) return;
+          const modal = document.getElementById(id);
+          if (modal) {
+            openModal(modal);
+          }
         });
       });
 
       const modals = document.querySelectorAll(".modal");
       modals.forEach(function (modal) {
-        const closeButton = modal.querySelector(".modal-close");
-        if (closeButton) {
-          closeButton.addEventListener("click", function () {
+        const closeBtn = modal.querySelector(".modal__close");
+        if (closeBtn) {
+          closeBtn.addEventListener("click", function () {
             closeModal(modal);
           });
         }
@@ -2003,7 +1994,6 @@
         });
       });
 
-      // Escape & focus trap
       document.addEventListener("keydown", function (event) {
         if (event.key === "Escape" || event.key === "Esc") {
           if (activeModal) {
@@ -2011,18 +2001,21 @@
             closeModal(activeModal);
           }
         } else if (event.key === "Tab" && activeModal) {
-          const focusableSelectors =
+          const focusableSel =
             "button,[href],input,select,textarea,[tabindex]:not([tabindex='-1'])";
-          const focusableElements = activeModal.querySelectorAll(focusableSelectors);
-          if (focusableElements.length === 0) {
+          const focusables = activeModal.querySelectorAll(focusableSel);
+          if (focusables.length === 0) {
             event.preventDefault();
             return;
           }
-          const first = focusableElements[0];
-          const last = focusableElements[focusableElements.length - 1];
+          const first = focusables[0];
+          const last = focusables[focusables.length - 1];
 
           if (event.shiftKey) {
-            if (document.activeElement === first || document.activeElement === activeModal) {
+            if (
+              document.activeElement === first ||
+              document.activeElement === activeModal
+            ) {
               event.preventDefault();
               last.focus();
             }
@@ -2038,50 +2031,49 @@
       // Carousel logic
       const carousels = document.querySelectorAll("[data-carousel]");
       carousels.forEach(function (carousel) {
-        const images = Array.from(carousel.querySelectorAll("img"));
+        const images = Array.from(
+          carousel.querySelectorAll(".carousel__img")
+        );
         const prevBtn = carousel.querySelector("[data-carousel-prev]");
         const nextBtn = carousel.querySelector("[data-carousel-next]");
-        const statusEl = carousel.querySelector("[data-carousel-status]");
-        let currentIndex = 0;
+        const status = carousel.querySelector("[data-carousel-status]");
+        let current = 0;
 
         function update(index) {
           if (!images || images.length === 0) {
-            if (statusEl) {
-              statusEl.textContent = "No images available yet.";
-            }
+            if (status) status.textContent = "No images available yet.";
             if (prevBtn) prevBtn.disabled = true;
             if (nextBtn) nextBtn.disabled = true;
             return;
           }
 
-          currentIndex = (index + images.length) % images.length;
+          current = (index + images.length) % images.length;
           images.forEach(function (img, idx) {
-            img.classList.toggle("active", idx === currentIndex);
+            img.classList.toggle("is-active", idx === current);
           });
 
-          if (statusEl) {
-            statusEl.textContent = "Image " + (currentIndex + 1) + " of " + images.length;
+          if (status) {
+            status.textContent = "Image " + (current + 1) + " of " + images.length;
           }
 
-          const disableControls = images.length <= 1;
-          if (prevBtn) prevBtn.disabled = disableControls;
-          if (nextBtn) nextBtn.disabled = disableControls;
+          const disable = images.length <= 1;
+          if (prevBtn) prevBtn.disabled = disable;
+          if (nextBtn) nextBtn.disabled = disable;
         }
 
         images.forEach(function (img, idx) {
           img.addEventListener("error", function () {
-            img.classList.add("image-error");
-            if (statusEl) {
-              const remaining = images.filter(function (im) {
-                return !im.classList.contains("image-error");
+            img.classList.add("is-error");
+            if (status) {
+              const ok = images.filter(function (im) {
+                return !im.classList.contains("is-error");
               });
-              if (remaining.length === 0) {
-                statusEl.textContent = "Images failed to load.";
+              if (ok.length === 0) {
+                status.textContent = "Images failed to load.";
               }
             }
           });
-
-          if (idx === 0) img.classList.add("active");
+          if (idx === 0) img.classList.add("is-active");
         });
 
         update(0);
@@ -2089,14 +2081,14 @@
         if (prevBtn) {
           prevBtn.addEventListener("click", function () {
             if (!images || images.length === 0) return;
-            update(currentIndex - 1);
+            update(current - 1);
           });
         }
 
         if (nextBtn) {
           nextBtn.addEventListener("click", function () {
             if (!images || images.length === 0) return;
-            update(currentIndex + 1);
+            update(current + 1);
           });
         }
       });
