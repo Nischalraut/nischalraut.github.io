@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Nischal Raut | Aerospace Engineer</title>
+  <meta name="description" content="Portfolio of Nischal Raut, aspiring aerospace engineer with interests in experimental aerodynamics, CFD, and UAV applications." />
 
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Lato:wght@400;500;600&display=swap" rel="stylesheet">
@@ -13,241 +14,1090 @@
       --accent-red: #FC3D21;
       --text-main: #f8f9fa;
       --text-muted: #d1d5db;
-      --nav-bg: rgba(17,24,39,0.7);
+      --nav-bg: rgba(17, 24, 39, 0.7);
+      --bg-dark: #0b1432;
     }
-    * { margin:0; padding:0; box-sizing:border-box; scroll-behavior:smooth; }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+      *, *::before, *::after {
+        animation-duration: 0.001ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.001ms !important;
+      }
+    }
+
     body {
-      font-family:'Lato',sans-serif;
-      color:var(--text-main);
-      background: linear-gradient(-45deg,#0b1432,#0B3D91,#162447,#2b2e4a);
+      font-family: 'Lato', sans-serif;
+      color: var(--text-main);
+      background: linear-gradient(-45deg, #0b1432, #0B3D91, #162447, #2b2e4a);
       background-size: 400% 400%;
       animation: bgShift 30s ease infinite;
+      min-height: 100vh;
     }
+
     @keyframes bgShift {
-      0%{background-position:0% 50%}
-      50%{background-position:100% 50%}
-      100%{background-position:0% 50%}
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
     }
-    h1,h2,h3,h4 {font-family:'Playfair Display',serif;}
-    a{text-decoration:none;color:inherit;}
+
+    h1, h2, h3, h4 {
+      font-family: 'Playfair Display', serif;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    button {
+      font-family: inherit;
+    }
+
+    :focus-visible {
+      outline: 2px solid var(--accent-red);
+      outline-offset: 3px;
+    }
+
+    /* Skip link */
+    .skip-link {
+      position: absolute;
+      left: -999px;
+      top: 1rem;
+      background: #111827;
+      color: #ffffff;
+      padding: 0.5em 1em;
+      z-index: 1001;
+      border-radius: 4px;
+    }
+
+    .skip-link:focus {
+      left: 1rem;
+    }
 
     /* Navbar */
-    nav {
-      position:fixed;top:0;width:100%;
-      background:var(--nav-bg);backdrop-filter: blur(8px);
-      display:flex;justify-content:space-between;align-items:center;
-      padding:1em 2em;z-index:1000;
-    }
-    nav .brand{font-size:1.4em;font-weight:700;color:var(--accent-red);}
-    nav ul{list-style:none;display:flex;gap:1.5em;margin:0;}
-    nav ul li a{color:var(--text-main);font-weight:500;}
-    nav ul li a:hover{color:var(--accent-red);}
-    .menu-toggle{display:none;font-size:1.8em;cursor:pointer;color:white;}
-    @media(max-width:768px){
-      nav ul{display:none;flex-direction:column;background:#111827;padding:1em;position:absolute;right:0;top:100%;width:200px;}
-      nav ul.active{display:flex;}
-      .menu-toggle{display:block;}
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
     }
 
-    section{padding:5em 1.5em;max-width:1200px;margin:auto;}
+    nav {
+      width: 100%;
+      background: var(--nav-bg);
+      backdrop-filter: blur(8px);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1em 2em;
+    }
+
+    nav .brand {
+      font-size: 1.4em;
+      font-weight: 700;
+      color: var(--accent-red);
+    }
+
+    nav .brand a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    nav .nav-links {
+      list-style: none;
+      display: flex;
+      gap: 1.5em;
+      margin: 0;
+    }
+
+    nav .nav-links li a {
+      color: var(--text-main);
+      font-weight: 500;
+      padding-bottom: 0.1em;
+      border-bottom: 2px solid transparent;
+    }
+
+    nav .nav-links li a:hover {
+      color: var(--accent-red);
+    }
+
+    nav .nav-links li a.active {
+      color: var(--accent-red);
+      border-color: var(--accent-red);
+    }
+
+    .menu-toggle {
+      display: none;
+      font-size: 1.8em;
+      cursor: pointer;
+      color: #ffffff;
+      background: none;
+      border: none;
+    }
+
+    @media (max-width: 768px) {
+      nav {
+        padding: 0.75em 1.5em;
+      }
+
+      .menu-toggle {
+        display: block;
+      }
+
+      nav .nav-links {
+        display: none;
+        flex-direction: column;
+        background: #111827;
+        padding: 0.75em 0.5em;
+        position: absolute;
+        right: 1.5em;
+        top: 100%;
+        width: 220px;
+        border-radius: 0.5em;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+      }
+
+      nav .nav-links.active {
+        display: flex;
+      }
+
+      nav .nav-links li a {
+        padding: 0.4em 0.6em;
+      }
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    section {
+      padding: 5em 1.5em 4em;
+    }
 
     /* Hero */
     #hero {
-      min-height:100vh;
-      display:flex;align-items:center;justify-content:center;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       padding: 7em 2em 4em;
     }
+
     .hero-container {
-      display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:2em;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      gap: 2em;
     }
-    .hero-text h1 {font-size:3em;color:var(--accent-red);}
-    .hero-text h2 {font-size:1.5em;margin-bottom:.8em;color:var(--text-main);}
-    .hero-text p {font-size:1.1em;line-height:1.7;margin-bottom:1.5em;}
-    .btn {background:var(--accent-red);color:white;padding:.8em 1.3em;border-radius:6px;font-weight:600;transition:.3s;}
-    .btn:hover {background:white;color:var(--accent-red);}
+
+    .hero-text h1 {
+      font-size: 3em;
+      color: var(--accent-red);
+    }
+
+    .hero-text h2 {
+      font-size: 1.5em;
+      margin-bottom: 0.8em;
+      color: var(--text-main);
+    }
+
+    .hero-text p {
+      font-size: 1.1em;
+      line-height: 1.7;
+      margin-bottom: 1.5em;
+    }
+
+    .btn {
+      display: inline-block;
+      background: var(--accent-red);
+      color: white;
+      padding: 0.8em 1.3em;
+      border-radius: 6px;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+      transition: background 0.3s ease, color 0.3s ease, transform 0.2s ease;
+    }
+
+    .btn:hover {
+      background: #ffffff;
+      color: var(--accent-red);
+      text-decoration: none;
+      transform: translateY(-1px);
+    }
+
     .hero-img img {
-      width: 320px; height: 320px;border-radius:50%;object-fit:cover;
-      box-shadow:0 0 25px rgba(0,0,0,.4);
+      width: 320px;
+      height: 320px;
+      border-radius: 50%;
+      object-fit: cover;
+      box-shadow: 0 0 25px rgba(0, 0, 0, 0.4);
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
     }
-    @media(max-width:900px){.hero-container{grid-template-columns:1fr;text-align:center;} .hero-img img{margin:auto;}}
+
+    @media (max-width: 900px) {
+      #hero {
+        padding-top: 6em;
+      }
+      .hero-container {
+        grid-template-columns: 1fr;
+        text-align: center;
+      }
+      .hero-img img {
+        margin-bottom: 2em;
+      }
+    }
 
     /* Skills */
-    #skills h2{margin-bottom:1em;color:var(--accent-red);}
-    .skill-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1.2em;}
-    .skill-card{background:rgba(255,255,255,0.05);padding:1em;border-radius:8px;text-align:center;transition:.3s;}
-    .skill-card:hover{transform:translateY(-3px);box-shadow:0 0 12px rgba(252,61,33,.5);}
+    #skills h2 {
+      margin-bottom: 1em;
+      color: var(--accent-red);
+    }
 
-    /* Education / Experience with two-column layout */
-    h2.section-title {margin-bottom:1.5em;color:var(--accent-red);}
+    .skill-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.2em;
+    }
+
+    .skill-card {
+      background: rgba(255, 255, 255, 0.05);
+      padding: 1.2em;
+      border-radius: 8px;
+      text-align: center;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      min-height: 110px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .skill-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 0 12px rgba(252, 61, 33, 0.5);
+    }
+
+    /* Education / Experience */
+    h2.section-title {
+      margin-bottom: 1.5em;
+      color: var(--accent-red);
+    }
+
     .item-row {
-      display:grid;grid-template-columns:90px 1fr;gap:1.5em;
-      align-items:center;background:rgba(255,255,255,0.05);
-      padding:1.2em;border-radius:10px;margin-bottom:1em;
+      display: grid;
+      grid-template-columns: 90px 1fr;
+      gap: 1.5em;
+      align-items: center;
+      background: rgba(255, 255, 255, 0.05);
+      padding: 1.2em;
+      border-radius: 10px;
+      margin-bottom: 1em;
     }
+
     .item-row img {
-      width:80px;height:80px;object-fit:contain;
-      background:white;padding:.3em;border-radius:8px;
+      width: 80px;
+      height: 80px;
+      object-fit: contain;
+      background: white;
+      padding: 0.3em;
+      border-radius: 8px;
     }
-    .item-info h3 {margin:0;color:var(--accent-red);}
-    .item-info p{margin:.3em 0;color:var(--text-muted);}
+
+    .item-info h3 {
+      margin: 0;
+      color: var(--accent-red);
+      font-size: 1.1em;
+    }
+
+    .item-info p {
+      margin: 0.3em 0;
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+
+    @media (max-width: 600px) {
+      .item-row {
+        grid-template-columns: 1fr;
+        text-align: left;
+      }
+      .item-row img {
+        margin: 0 auto 0.5em;
+      }
+    }
 
     /* Projects */
-    #projects h2{margin-bottom:1em;color:var(--accent-red);}
-    .projects-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1em;}
-    .project-card{background:rgba(255,255,255,.05);padding:1.2em;border-radius:8px;cursor:pointer;transition:.3s;}
-    .project-card:hover{transform:translateY(-3px);box-shadow:0 0 12px rgba(252,61,33,.4);}
-    .project-card h3{margin:.3em 0;color:var(--accent-red);}
+    #projects h2 {
+      margin-bottom: 1em;
+      color: var(--accent-red);
+    }
+
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1em;
+    }
+
+    .project-card {
+      background: rgba(255, 255, 255, 0.05);
+      padding: 1.2em;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      text-align: left;
+      border: none;
+      color: inherit;
+      width: 100%;
+      display: block;
+    }
+
+    .project-card h3 {
+      margin: 0.3em 0;
+      color: var(--accent-red);
+      font-size: 1.1em;
+    }
+
+    .project-card p {
+      margin: 0;
+      color: var(--text-muted);
+      font-size: 0.95em;
+    }
+
+    .project-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 0 12px rgba(252, 61, 33, 0.4);
+    }
 
     /* Modals */
-    .modal{display:none;position:fixed;z-index:9999;top:0;left:0;width:100%;height:100%;
-      background:rgba(0,0,0,0.9);align-items:center;justify-content:center;padding:2em;}
-    .modal-content{background:#1f2937;color:white;border-radius:10px;padding:2em;max-width:1000px;width:100%;
-      display:grid;grid-template-columns:1fr 1fr;gap:2em;max-height:90vh;overflow-y:auto;position:relative;}
-    .modal h2{margin-top:0;color:var(--accent-red);}
-    .modal .close{position:absolute;top:10px;right:15px;font-size:1.5em;cursor:pointer;}
-    .details p{line-height:1.7;}
-    .carousel img{width:100%;display:none;border-radius:8px;}
-    .carousel img.active{display:block;}
-    .carousel button{position:absolute;top:50%;transform:translateY(-50%);background:rgba(0,0,0,0.4);border:none;color:white;font-size:1.5em;cursor:pointer;}
-    .carousel .prev{left:10px}.carousel .next{right:10px}
-    @media(max-width:900px){.modal-content{grid-template-columns:1fr;}}
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 9999;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.9);
+      align-items: center;
+      justify-content: center;
+      padding: 2em 1em;
+    }
+
+    .modal.open {
+      display: flex;
+    }
+
+    .modal-content {
+      background: #1f2937;
+      color: white;
+      border-radius: 10px;
+      padding: 2em;
+      max-width: 1000px;
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2em;
+      max-height: 90vh;
+      overflow-y: auto;
+      position: relative;
+    }
+
+    .modal-content:focus {
+      outline: none;
+    }
+
+    .modal h2 {
+      margin-top: 0;
+      color: var(--accent-red);
+    }
+
+    .modal .modal-close {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      font-size: 1.5em;
+      cursor: pointer;
+      background: none;
+      border: none;
+      color: #ffffff;
+    }
+
+    .details p {
+      line-height: 1.7;
+      margin-bottom: 0.8em;
+      color: var(--text-muted);
+    }
+
+    .details ul {
+      margin-left: 1.2em;
+      color: var(--text-muted);
+    }
+
+    .details ul li {
+      margin-bottom: 0.4em;
+    }
+
+    .carousel {
+      position: relative;
+    }
+
+    .carousel img {
+      width: 100%;
+      display: none;
+      border-radius: 8px;
+    }
+
+    .carousel img.active {
+      display: block;
+    }
+
+    .carousel .prev,
+    .carousel .next {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(0, 0, 0, 0.4);
+      border: none;
+      color: white;
+      font-size: 1.5em;
+      cursor: pointer;
+      width: 2.4em;
+      height: 2.4em;
+      border-radius: 999px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .carousel .prev {
+      left: 10px;
+    }
+
+    .carousel .next {
+      right: 10px;
+    }
+
+    .carousel .prev:disabled,
+    .carousel .next:disabled {
+      opacity: 0.4;
+      cursor: default;
+    }
+
+    .carousel-status {
+      margin-top: 0.75em;
+      font-size: 0.9em;
+      color: var(--text-muted);
+      text-align: center;
+    }
+
+    .image-error {
+      opacity: 0.3;
+    }
+
+    @media (max-width: 900px) {
+      .modal-content {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    body.modal-open {
+      overflow: hidden;
+    }
 
     /* Contact */
-    #contact h2{margin-bottom:1em;color:var(--accent-red);}
-    #contact p{margin:.4em 0;}
+    #contact h2 {
+      margin-bottom: 1em;
+      color: var(--accent-red);
+    }
+
+    #contact p {
+      margin: 0.4em 0;
+      color: var(--text-main);
+    }
+
+    #contact a {
+      color: var(--accent-red);
+    }
+
+    #contact a:hover {
+      text-decoration: underline;
+    }
   </style>
 </head>
 <body>
 
-  <!-- Navbar -->
-  <nav>
-    <div class="brand">Nischal Raut</div>
-    <div class="menu-toggle">&#9776;</div>
-    <ul>
-      <li><a href="#hero">Home</a></li>
-      <li><a href="#skills">Skills</a></li>
-      <li><a href="#education">Education</a></li>
-      <li><a href="#experience">Experience</a></li>
-      <li><a href="#projects">Projects</a></li>
-      <li><a href="#contact">Contact</a></li>
-    </ul>
-  </nav>
+  <a href="#hero" class="skip-link">Skip to main content</a>
 
-  <!-- Hero -->
-  <section id="hero">
-    <div class="hero-container">
-      <div class="hero-text">
-        <h1>Nischal Raut</h1>
-        <h2>Aerospace Engineer</h2>
-        <p>
-          Hi! I'm an aspiring aerospace engineer passionate about experimental aerodynamics & CFD.  
-          Bridging computational models with experimental validation. <br> Bachelor’s Aggregate: <b>76.71%</b>.
-        </p>
-        <a href="Nischal_Raut_CV.pdf" class="btn">📄 Download CV</a>
+  <header>
+    <nav aria-label="Main navigation">
+      <div class="brand">
+        <a href="#hero">Nischal Raut</a>
       </div>
-      <div class="hero-img"><img src="profile.jpg" alt="Profile Picture"></div>
+      <button class="menu-toggle" type="button" aria-expanded="false" aria-label="Toggle navigation menu">
+        &#9776;
+      </button>
+      <ul class="nav-links">
+        <li><a href="#hero">Home</a></li>
+        <li><a href="#skills">Skills</a></li>
+        <li><a href="#education">Education</a></li>
+        <li><a href="#experience">Experience</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main id="main-content">
+    <!-- Hero -->
+    <section id="hero">
+      <div class="hero-container">
+        <div class="hero-text">
+          <h1>Nischal Raut</h1>
+          <h2>Aerospace Engineer</h2>
+          <p>
+            Hi! I'm an aspiring aerospace engineer passionate about experimental aerodynamics &amp; CFD.
+            Bridging computational models with experimental validation. <br>
+            Bachelor’s Aggregate: <b>76.71%</b>.
+          </p>
+          <a href="Nischal_Raut_CV.pdf" class="btn" download="Nischal_Raut_CV.pdf">📄 Download CV</a>
+        </div>
+        <div class="hero-img">
+          <img src="profile.jpg" alt="Portrait of Nischal Raut" width="320" height="320">
+        </div>
+      </div>
+    </section>
+
+    <!-- Skills -->
+    <section id="skills">
+      <h2>Skills &amp; Tools</h2>
+      <div class="skill-grid">
+        <div class="skill-card">CAD &amp; Analysis: CATIA, ANSYS, SolidWorks, MATLAB</div>
+        <div class="skill-card">Programming: C, Python, MATLAB scripting</div>
+        <div class="skill-card">Simulation: Wind Tunnel Testing, Flow Visualization</div>
+        <div class="skill-card">Productivity: MS Office, LaTeX, AutoCAD</div>
+      </div>
+    </section>
+
+    <!-- Education -->
+    <section id="education">
+      <h2 class="section-title">Education</h2>
+      <div class="item-row">
+        <img src="ioe.png" alt="Institute of Engineering, Pulchowk Campus logo" loading="lazy">
+        <div class="item-info">
+          <h3>Institute of Engineering, Pulchowk</h3>
+          <p>Bachelor’s in Aerospace Engineering (2019–2025)</p>
+          <p>Aggregate: 76.71%</p>
+        </div>
+      </div>
+      <div class="item-row">
+        <img src="omega.png" alt="Omega International College logo" loading="lazy">
+        <div class="item-info">
+          <h3>Omega International College</h3>
+          <p>+2 Science, GPA: 3.5</p>
+        </div>
+      </div>
+      <div class="item-row">
+        <img src="westwing.png" alt="West Wing Secondary School logo" loading="lazy">
+        <div class="item-info">
+          <h3>West Wing Secondary School</h3>
+          <p>SEE GPA: 4.0</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Experience -->
+    <section id="experience">
+      <h2 class="section-title">Experience</h2>
+      <div class="item-row">
+        <img src="airlift.png" alt="Airlift Technology logo" loading="lazy">
+        <div class="item-info">
+          <h3>Engineering Intern – Airlift Technology, Nepal</h3>
+          <p>2024 – Present</p>
+          <p>• Drone mapping &amp; photogrammetry for Kathmandu Metropolitan City.</p>
+          <p>• Generated 3D terrain models &amp; orthomosaics.</p>
+          <p>• Supported UAV mission planning &amp; calibration.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Projects -->
+    <section id="projects">
+      <h2>Projects</h2>
+      <div class="projects-grid">
+        <button class="project-card" type="button" data-modal-target="modal1">
+          <h3>Subsonic Wind Tunnel</h3>
+          <p>Final Year Project</p>
+        </button>
+        <button class="project-card" type="button" data-modal-target="modal2">
+          <h3>B-52 Air Launch</h3>
+          <p>Conceptual Rocket Carrier</p>
+        </button>
+        <button class="project-card" type="button" data-modal-target="modal3">
+          <h3>Styrofoam Glider</h3>
+          <p>Design + Test flights</p>
+        </button>
+        <button class="project-card" type="button" data-modal-target="modal4">
+          <h3>U-2 Conversion</h3>
+          <p>Payload Testbed Study</p>
+        </button>
+        <button class="project-card" type="button" data-modal-target="modal5">
+          <h3>F-15 Scale Model</h3>
+          <p>Lift-Drag CFD Study</p>
+        </button>
+        <button class="project-card" type="button" data-modal-target="modal6">
+          <h3>Canteen Billing System</h3>
+          <p>C Program</p>
+        </button>
+      </div>
+    </section>
+
+    <!-- Project Modals -->
+
+    <!-- Modal 1: Subsonic Wind Tunnel -->
+    <div class="modal" id="modal1" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="modal1-title" aria-describedby="modal1-desc">
+      <div class="modal-content" tabindex="-1">
+        <button class="modal-close" type="button" aria-label="Close dialog">&times;</button>
+        <div class="details">
+          <h2 id="modal1-title">Subsonic Wind Tunnel</h2>
+          <p id="modal1-desc">
+            Designed &amp; built an open-jet subsonic wind tunnel with a gust generator. Turbulent intensity
+            of 0.88% validated experimentally.
+          </p>
+          <ul>
+            <li>Open-jet configuration with controlled test section.</li>
+            <li>Integration of gust generator for unsteady flow experiments.</li>
+            <li>Experimental validation of turbulence characteristics.</li>
+          </ul>
+        </div>
+        <div class="carousel" data-carousel>
+          <div class="carousel-images">
+            <img src="windtunnel1.jpeg" alt="Subsonic wind tunnel build - overall view" loading="lazy">
+            <img src="windtunnel2.jpeg" alt="Subsonic wind tunnel test section close-up" loading="lazy">
+            <img src="windtunnel3.jpeg" alt="Subsonic wind tunnel during operation" loading="lazy">
+          </div>
+          <button class="prev" type="button" data-carousel-prev aria-label="Previous image">&#10094;</button>
+          <button class="next" type="button" data-carousel-next aria-label="Next image">&#10095;</button>
+          <div class="carousel-status" data-carousel-status aria-live="polite"></div>
+        </div>
+      </div>
     </div>
-  </section>
 
-  <!-- Skills -->
-  <section id="skills">
-    <h2>Skills & Tools</h2>
-    <div class="skill-grid">
-      <div class="skill-card">CAD & Analysis: CATIA, ANSYS, SolidWorks, MATLAB</div>
-      <div class="skill-card">Programming: C, Python, MATLAB scripting</div>
-      <div class="skill-card">Simulation: Wind Tunnel Testing, Flow Visualization</div>
-      <div class="skill-card">Productivity: MS Office, LaTeX, AutoCAD</div>
+    <!-- Modal 2: B-52 Air Launch -->
+    <div class="modal" id="modal2" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="modal2-title" aria-describedby="modal2-desc">
+      <div class="modal-content" tabindex="-1">
+        <button class="modal-close" type="button" aria-label="Close dialog">&times;</button>
+        <div class="details">
+          <h2 id="modal2-title">B-52 Air Launch</h2>
+          <p id="modal2-desc">
+            Conceptual rocket carrier study using the B-52 platform for air-launch missions.
+          </p>
+          <ul>
+            <li>Configuration-level conceptual study.</li>
+            <li>Focused on carrier–payload integration and mission profile concepts.</li>
+            <li>Detailed technical documentation and imagery to be added.</li>
+          </ul>
+        </div>
+        <div class="carousel" data-carousel>
+          <div class="carousel-images">
+            <!-- No images currently available for this project. -->
+          </div>
+          <button class="prev" type="button" data-carousel-prev aria-label="Previous image">&#10094;</button>
+          <button class="next" type="button" data-carousel-next aria-label="Next image">&#10095;</button>
+          <div class="carousel-status" data-carousel-status aria-live="polite"></div>
+        </div>
+      </div>
     </div>
-  </section>
 
-  <!-- Education -->
-  <section id="education">
-    <h2 class="section-title">Education</h2>
-    <div class="item-row">
-      <img src="ioe.png" alt="Pulchowk IOE">
-      <div class="item-info"><h3>Institute of Engineering, Pulchowk</h3><p>Bachelor’s in Aerospace Engineering (2019–2025)</p><p>Aggregate: 76.71%</p></div>
+    <!-- Modal 3: Styrofoam Glider -->
+    <div class="modal" id="modal3" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="modal3-title" aria-describedby="modal3-desc">
+      <div class="modal-content" tabindex="-1">
+        <button class="modal-close" type="button" aria-label="Close dialog">&times;</button>
+        <div class="details">
+          <h2 id="modal3-title">Styrofoam Glider</h2>
+          <p id="modal3-desc">
+            Hand-built styrofoam glider project involving basic aerodynamic design and test flights.
+          </p>
+          <ul>
+            <li>Conceptual and practical design of a small glider.</li>
+            <li>Physical construction using styrofoam and simple structural elements.</li>
+            <li>Test flights used for qualitative performance assessment.</li>
+          </ul>
+        </div>
+        <div class="carousel" data-carousel>
+          <div class="carousel-images">
+            <!-- No images currently available for this project. -->
+          </div>
+          <button class="prev" type="button" data-carousel-prev aria-label="Previous image">&#10094;</button>
+          <button class="next" type="button" data-carousel-next aria-label="Next image">&#10095;</button>
+          <div class="carousel-status" data-carousel-status aria-live="polite"></div>
+        </div>
+      </div>
     </div>
-    <div class="item-row">
-      <img src="omega.png" alt="Omega College">
-      <div class="item-info"><h3>Omega International College</h3><p>+2 Science, GPA: 3.5</p></div>
+
+    <!-- Modal 4: U-2 Conversion -->
+    <div class="modal" id="modal4" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="modal4-title" aria-describedby="modal4-desc">
+      <div class="modal-content" tabindex="-1">
+        <button class="modal-close" type="button" aria-label="Close dialog">&times;</button>
+        <div class="details">
+          <h2 id="modal4-title">U-2 Conversion</h2>
+          <p id="modal4-desc">
+            Conceptual study of converting a U-2 style platform into a payload testbed.
+          </p>
+          <ul>
+            <li>Focused on payload integration and mission concept exploration.</li>
+            <li>High-altitude operations considered at conceptual level.</li>
+            <li>Detailed analyses and imagery to be added in future updates.</li>
+          </ul>
+        </div>
+        <div class="carousel" data-carousel>
+          <div class="carousel-images">
+            <!-- No images currently available for this project. -->
+          </div>
+          <button class="prev" type="button" data-carousel-prev aria-label="Previous image">&#10094;</button>
+          <button class="next" type="button" data-carousel-next aria-label="Next image">&#10095;</button>
+          <div class="carousel-status" data-carousel-status aria-live="polite"></div>
+        </div>
+      </div>
     </div>
-    <div class="item-row">
-      <img src="westwing.png" alt="West Wing">
-      <div class="item-info"><h3>West Wing Secondary School</h3><p>SEE GPA: 4.0</p></div>
+
+    <!-- Modal 5: F-15 Scale Model -->
+    <div class="modal" id="modal5" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="modal5-title" aria-describedby="modal5-desc">
+      <div class="modal-content" tabindex="-1">
+        <button class="modal-close" type="button" aria-label="Close dialog">&times;</button>
+        <div class="details">
+          <h2 id="modal5-title">F-15 Scale Model</h2>
+          <p id="modal5-desc">
+            Scale model project focused on lift–drag CFD study of an F-15 configuration.
+          </p>
+          <ul>
+            <li>CFD-oriented investigation of aerodynamic performance.</li>
+            <li>Use of a scale model representation for analysis setup.</li>
+            <li>Further numerical details and results to be documented.</li>
+          </ul>
+        </div>
+        <div class="carousel" data-carousel>
+          <div class="carousel-images">
+            <!-- No images currently available for this project. -->
+          </div>
+          <button class="prev" type="button" data-carousel-prev aria-label="Previous image">&#10094;</button>
+          <button class="next" type="button" data-carousel-next aria-label="Next image">&#10095;</button>
+          <div class="carousel-status" data-carousel-status aria-live="polite"></div>
+        </div>
+      </div>
     </div>
-  </section>
 
-  <!-- Experience -->
-  <section id="experience">
-    <h2 class="section-title">Experience</h2>
-    <div class="item-row">
-      <img src="airlift.png" alt="Airlift Tech">
-      <div class="item-info"><h3>Engineering Intern – Airlift Technology, Nepal</h3><p>2024 – Present</p>
-        <p>• Drone mapping & photogrammetry for Kathmandu Metropolitan City.</p>
-        <p>• Generated 3D terrain models & orthomosaics.</p>
-        <p>• Supported UAV mission planning & calibration.</p></div>
+    <!-- Modal 6: Canteen Billing System -->
+    <div class="modal" id="modal6" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="modal6-title" aria-describedby="modal6-desc">
+      <div class="modal-content" tabindex="-1">
+        <button class="modal-close" type="button" aria-label="Close dialog">&times;</button>
+        <div class="details">
+          <h2 id="modal6-title">Canteen Billing System</h2>
+          <p id="modal6-desc">
+            A C language program implementing a simple canteen billing system.
+          </p>
+          <ul>
+            <li>Structured programming in C for basic billing operations.</li>
+            <li>Focus on control flow, data handling, and user interaction in console.</li>
+            <li>Source code and sample runs can be added in future updates.</li>
+          </ul>
+        </div>
+        <div class="carousel" data-carousel>
+          <div class="carousel-images">
+            <!-- No images currently available for this project. -->
+          </div>
+          <button class="prev" type="button" data-carousel-prev aria-label="Previous image">&#10094;</button>
+          <button class="next" type="button" data-carousel-next aria-label="Next image">&#10095;</button>
+          <div class="carousel-status" data-carousel-status aria-live="polite"></div>
+        </div>
+      </div>
     </div>
-  </section>
 
-  <!-- Projects -->
-  <section id="projects">
-    <h2>Projects</h2>
-    <div class="projects-grid">
-      <div class="project-card" onclick="openModal('modal1')"><h3>Subsonic Wind Tunnel</h3><p>Final Year Project</p></div>
-      <div class="project-card" onclick="openModal('modal2')"><h3>B-52 Air Launch</h3><p>Conceptual Rocket Carrier</p></div>
-      <div class="project-card" onclick="openModal('modal3')"><h3>Styrofoam Glider</h3><p>Design + Test flights</p></div>
-      <div class="project-card" onclick="openModal('modal4')"><h3>U-2 Conversion</h3><p>Payload Testbed Study</p></div>
-      <div class="project-card" onclick="openModal('modal5')"><h3>F-15 Scale Model</h3><p>Lift-Drag CFD Study</p></div>
-      <div class="project-card" onclick="openModal('modal6')"><h3>Canteen Billing System</h3><p>C Program</p></div>
-    </div>
-  </section>
+    <!-- Contact -->
+    <section id="contact">
+      <h2>Contact</h2>
+      <p>Email: <a href="mailto:nischalraut6@gmail.com">nischalraut6@gmail.com</a></p>
+      <p>Phone: <a href="tel:+9779813980068">+977-9813980068</a></p>
+      <p>LinkedIn: <a href="https://www.linkedin.com/in/nischal-raut-1b2227314/" target="_blank" rel="noopener noreferrer">linkedin.com/in/nischal-raut</a></p>
+    </section>
+  </main>
 
-  <!-- Example Project Modal -->
-  <div class="modal" id="modal1"><div class="modal-content">
-    <span class="close" onclick="closeModal('modal1')">&times;</span>
-    <div class="details">
-      <h2>Subsonic Wind Tunnel</h2>
-      <p>Designed & built open-jet tunnel with gust generator. Turbulent Intensity 0.88% validated experimentally.</p>
-    </div>
-    <div class="carousel">
-      <button class="prev" onclick="prevSlide(this)">&#10094;</button>
-      <img src="windtunnel1.jpeg" class="active">
-      <img src="windtunnel2.jpeg">
-      <img src="windtunnel3.jpeg">
-      <button class="next" onclick="nextSlide(this)">&#10095;</button>
-    </div>
-  </div></div>
+  <script>
+    (function () {
+      'use strict';
 
-  <!-- Contact -->
-  <section id="contact">
-    <h2>Contact</h2>
-    <p>Email: <a href="mailto:nischalraut6@gmail.com">nischalraut6@gmail.com</a></p>
-    <p>Phone: +977-9813980068</p>
-    <p>LinkedIn: <a href="https://www.linkedin.com/in/nischal-raut-1b2227314/" target="_blank">linkedin.com/in/nischal-raut</a></p>
-  </section>
+      const nav = document.querySelector('nav');
+      const menuToggle = nav ? nav.querySelector('.menu-toggle') : null;
+      const navList = nav ? nav.querySelector('.nav-links') : null;
+      const navLinks = nav ? nav.querySelectorAll('.nav-links a[href^="#"]') : [];
 
-<script>
-  // Mobile menu
-  document.querySelector('.menu-toggle').onclick=()=>document.querySelector('nav ul').classList.toggle('active');
+      function closeMobileMenu() {
+        if (!navList || !menuToggle) return;
+        if (window.innerWidth <= 768) {
+          navList.classList.remove('active');
+          menuToggle.setAttribute('aria-expanded', 'false');
+        }
+      }
 
-  // Modal controls
-  function openModal(id){document.getElementById(id).style.display='flex';}
-  function closeModal(id){document.getElementById(id).style.display='none';}
+      // Mobile menu toggle
+      if (menuToggle && navList) {
+        menuToggle.addEventListener('click', function () {
+          const isActive = navList.classList.toggle('active');
+          menuToggle.setAttribute('aria-expanded', String(isActive));
+        });
+      }
 
-  // Carousel
-  function nextSlide(btn){
-    const imgs=btn.parentElement.querySelectorAll('img');
-    let idx=[...imgs].findIndex(im=>im.classList.contains('active'));
-    imgs[idx].classList.remove('active');
-    imgs[(idx+1)%imgs.length].classList.add('active');
-  }
-  function prevSlide(btn){
-    const imgs=btn.parentElement.querySelectorAll('img');
-    let idx=[...imgs].findIndex(im=>im.classList.contains('active'));
-    imgs[idx].classList.remove('active');
-    imgs[(idx-1+imgs.length)%imgs.length].classList.add('active');
-  }
-</script>
+      // Smooth scrolling with offset for nav links
+      if (nav && navLinks.length > 0) {
+        navLinks.forEach(function (link) {
+          link.addEventListener('click', function (event) {
+            const href = link.getAttribute('href');
+            if (!href || !href.startsWith('#')) return;
+            const targetId = href.slice(1);
+            const target = document.getElementById(targetId);
+            if (!target) return;
 
+            event.preventDefault();
+
+            const navHeight = nav.offsetHeight || 0;
+            const rect = target.getBoundingClientRect();
+            const offsetTop = window.scrollY + rect.top - navHeight - 16;
+            const prefersReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+            window.scrollTo({
+              top: offsetTop < 0 ? 0 : offsetTop,
+              behavior: prefersReducedMotion ? 'auto' : 'smooth'
+            });
+
+            closeMobileMenu();
+          });
+        });
+      }
+
+      // Active nav link via IntersectionObserver
+      const sections = document.querySelectorAll('main section[id]');
+      const sectionIdToNavLink = {};
+      navLinks.forEach(function (link) {
+        const href = link.getAttribute('href');
+        if (href && href.startsWith('#')) {
+          sectionIdToNavLink[href.slice(1)] = link;
+        }
+      });
+
+      if ('IntersectionObserver' in window && sections.length > 0) {
+        const observer = new IntersectionObserver(function (entries) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+              const id = entry.target.id;
+              const activeLink = sectionIdToNavLink[id];
+              if (activeLink) {
+                Object.keys(sectionIdToNavLink).forEach(function (key) {
+                  sectionIdToNavLink[key].classList.remove('active');
+                });
+                activeLink.classList.add('active');
+              }
+            }
+          });
+        }, {
+          root: null,
+          threshold: 0.25,
+          rootMargin: '0px 0px -50% 0px'
+        });
+
+        sections.forEach(function (section) {
+          observer.observe(section);
+        });
+      }
+
+      // Modal logic
+      let activeModal = null;
+      let lastFocusedElement = null;
+
+      function openModal(modal) {
+        if (!modal) return;
+        lastFocusedElement = document.activeElement;
+        modal.classList.add('open');
+        modal.setAttribute('aria-hidden', 'false');
+        document.body.classList.add('modal-open');
+        activeModal = modal;
+
+        const focusableSelectors = 'button,[href],input,select,textarea,[tabindex]:not([tabindex="-1"])';
+        const focusable = modal.querySelectorAll(focusableSelectors);
+        if (focusable.length > 0) {
+          focusable[0].focus();
+        } else {
+          const content = modal.querySelector('.modal-content');
+          if (content) {
+            content.focus();
+          } else {
+            modal.focus();
+          }
+        }
+      }
+
+      function closeModal(modal) {
+        if (!modal) return;
+        modal.classList.remove('open');
+        modal.setAttribute('aria-hidden', 'true');
+        document.body.classList.remove('modal-open');
+        activeModal = null;
+
+        if (lastFocusedElement && typeof lastFocusedElement.focus === 'function') {
+          lastFocusedElement.focus();
+        }
+      }
+
+      // Attach modal open events to project cards
+      const projectCards = document.querySelectorAll('.project-card[data-modal-target]');
+      projectCards.forEach(function (card) {
+        card.addEventListener('click', function () {
+          const modalId = card.getAttribute('data-modal-target');
+          if (!modalId) return;
+          const modal = document.getElementById(modalId);
+          if (modal) {
+            openModal(modal);
+          }
+        });
+      });
+
+      // Attach modal close & backdrop events
+      const modals = document.querySelectorAll('.modal');
+      modals.forEach(function (modal) {
+        const closeButton = modal.querySelector('.modal-close');
+        if (closeButton) {
+          closeButton.addEventListener('click', function () {
+            closeModal(modal);
+          });
+        }
+
+        // Backdrop click
+        modal.addEventListener('click', function (event) {
+          if (event.target === modal) {
+            closeModal(modal);
+          }
+        });
+      });
+
+      // Escape key & focus trap
+      document.addEventListener('keydown', function (event) {
+        if (event.key === 'Escape' || event.key === 'Esc') {
+          if (activeModal) {
+            event.preventDefault();
+            closeModal(activeModal);
+          }
+        } else if (event.key === 'Tab' && activeModal) {
+          const focusableSelectors = 'button,[href],input,select,textarea,[tabindex]:not([tabindex="-1"])';
+          const focusableElements = activeModal.querySelectorAll(focusableSelectors);
+          if (focusableElements.length === 0) {
+            event.preventDefault();
+            return;
+          }
+          const first = focusableElements[0];
+          const last = focusableElements[focusableElements.length - 1];
+
+          if (event.shiftKey) {
+            if (document.activeElement === first || document.activeElement === activeModal) {
+              event.preventDefault();
+              last.focus();
+            }
+          } else {
+            if (document.activeElement === last) {
+              event.preventDefault();
+              first.focus();
+            }
+          }
+        }
+      });
+
+      // Carousel initialization
+      const carousels = document.querySelectorAll('[data-carousel]');
+      carousels.forEach(function (carousel) {
+        const images = Array.from(carousel.querySelectorAll('img'));
+        const prevBtn = carousel.querySelector('[data-carousel-prev]');
+        const nextBtn = carousel.querySelector('[data-carousel-next]');
+        const statusEl = carousel.querySelector('[data-carousel-status]');
+
+        let currentIndex = 0;
+
+        function update(index) {
+          if (!images || images.length === 0) {
+            if (statusEl) {
+              statusEl.textContent = 'No images available yet.';
+            }
+            if (prevBtn) prevBtn.disabled = true;
+            if (nextBtn) nextBtn.disabled = true;
+            return;
+          }
+
+          currentIndex = (index + images.length) % images.length;
+
+          images.forEach(function (img, idx) {
+            img.classList.toggle('active', idx === currentIndex);
+          });
+
+          if (statusEl) {
+            statusEl.textContent = 'Image ' + (currentIndex + 1) + ' of ' + images.length;
+          }
+
+          const disableControls = images.length <= 1;
+          if (prevBtn) prevBtn.disabled = disableControls;
+          if (nextBtn) nextBtn.disabled = disableControls;
+        }
+
+        images.forEach(function (img, idx) {
+          img.addEventListener('error', function () {
+            img.classList.add('image-error');
+            if (statusEl) {
+              const remaining = images.filter(function (im) {
+                return !im.classList.contains('image-error');
+              });
+              if (remaining.length === 0) {
+                statusEl.textContent = 'Images failed to load.';
+              }
+            }
+          });
+          // Mark first image active initially
+          if (idx === 0) {
+            img.classList.add('active');
+          }
+        });
+
+        update(0);
+
+        if (prevBtn) {
+          prevBtn.addEventListener('click', function () {
+            if (!images || images.length === 0) return;
+            update(currentIndex - 1);
+          });
+        }
+
+        if (nextBtn) {
+          nextBtn.addEventListener('click', function () {
+            if (!images || images.length === 0) return;
+            update(currentIndex + 1);
+          });
+        }
+      });
+
+    })();
+  </script>
 </body>
 </html>
